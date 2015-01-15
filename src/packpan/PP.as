@@ -14,6 +14,12 @@ package packpan
 		public static const GAME_SUCCESS:int = 11;
 		public static const GAME_FAILURE:int = 12;
 		
+		public static const DIR_NONE:int = 20;
+		public static const DIR_LEFT:int = 21;
+		public static const DIR_UP:int = 22;
+		public static const DIR_RIGHT:int = 23;
+		public static const DIR_DOWN:int = 24;
+		
 		public function PP() 
 		{
 			// -- Static class; do not instantiate

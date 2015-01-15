@@ -1,4 +1,4 @@
-package packpan 
+package packpan.mails
 {
 	import cobaltric.ABST_ContainerGame;
 	import flash.geom.Point;

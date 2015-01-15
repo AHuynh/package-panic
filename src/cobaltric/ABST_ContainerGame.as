@@ -5,8 +5,10 @@
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.ui.Mouse;
-	import packpan.ABST_Mail;
-	import packpan.ABST_Node;
+	import packpan.mails.ABST_Mail;
+	import packpan.mails.MailNormal;
+	import packpan.nodes.ABST_Node;
+	import packpan.nodes.NodeConveyorNormal;
 	import packpan.PP;
 	
 	/**
@@ -66,7 +68,7 @@
 			game.mc_gui.addChild(cursor);
 			cursor.visible = false;*/
 			
-			// setup nodeArray
+			// setup nodeGrid
 			nodeGrid = [];
 			for (var i:int = 0; i < 10; i++)		// going top to bottom
 			{
@@ -74,6 +76,8 @@
 				for (var j:int = 0; j < 15; j++)	// going from left to right		
 					nodeGrid[i].push(null);
 			}
+			nodeArray = [];
+			mailArray = [];
 			
 			setUp();
 		}
@@ -89,10 +93,16 @@
 			// populate all grid squares
 			for (var i:int = 0; i < 15; i++)
 				for (var j:int = 0; j < 10; j++)
-				{
-					nodeGrid[j][i] = new ABST_Node(this, "left", new Point(i, j), false);
+				{					
+					var d:int = (i+2+j) % 4 + 1;
+					d += PP.DIR_NONE;
+					//d = PP.DIR_RIGHT;
+					//trace("Spawning " + i + "," + j + " " + d);
+					nodeGrid[j][i] = new NodeConveyorNormal(this, "conveyor", new Point(i, j), d, true);
 					nodeArray.push(nodeGrid[j][i]);
 				}
+				
+			mailArray.push(new MailNormal(this, "default", new Point(5, 5)));
 		}
 		
 		/**
@@ -131,6 +141,7 @@
 			var i:int;
 			var mail:ABST_Mail;
 			var allSuccess:Boolean = true;
+			if (mailArray.length > 0)
 			for (i = mailArray.length - 1; i >= 0; i--)
 			{
 				mail = mailArray[i];
@@ -148,6 +159,7 @@
 			
 			// step all (non-null) Node
 			var node:ABST_Node;
+			if (nodeArray.length > 0)
 			for (i = nodeArray.length - 1; i >= 0; i--)
 			{
 				node = nodeArray[i];
