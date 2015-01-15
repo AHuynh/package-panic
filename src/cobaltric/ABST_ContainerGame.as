@@ -5,6 +5,9 @@
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.ui.Mouse;
+	import packpan.ABST_Mail;
+	import packpan.ABST_Node;
+	import packpan.PP;
 	
 	/**
 	 * Primary game container and controller
@@ -13,18 +16,20 @@
 	 */
 	public class ABST_ContainerGame extends ABST_Container
 	{		
-		public var engine:Engine;
-		public var game:SWC_ContainerGame;	// the Game SWC, containing all the base assets
-		
-		private var managers:Array;			// array of all managers
-		private var manLen:int;				// length of the manager array
-		// TODO define managers here
+		public var engine:Engine;					// the game's Engine
+		public var game:SWC_ContainerGame;			// the Game SWC, containing all the base assets
 
 		public var cursor:MovieClip;
 		
-		protected const GRID_ORIGIN:Point = new Point(-100, -100);
-		//protected const GRID_ORIGIN:Point = new Point(24.2, 15.8);
-		protected const GRID_SIZE:int = 50;
+		// grid is 15 x 10
+		protected const GRID_ORIGIN:Point = new Point(-350, -260);		// actual x, y coordinate of upper-left grid
+		protected const GRID_SIZE:int = 50;								// grid square size
+		
+		public var nodeGrid:Array;		// a 2D array containing either null or the node at a (x, y) grid location
+		public var nodeArray:Array;		// a 1D array containing all ABST_Node objects
+		public var mailArray:Array;		// a 1D array containing all ABST_Mail objects
+		
+		protected var gameState:int;
 		
 		// TODO more definitions here
 	
@@ -33,6 +38,8 @@
 			super();
 			engine = eng;
 			addEventListener(Event.ADDED_TO_STAGE, init);
+			
+			gameState = PP.GAME_IDLE;
 		}
 		
 		/**
@@ -53,29 +60,65 @@
 			game = new SWC_ContainerGame();
 			game.x = 400; game.y = 300;
 			addChild(game);
-			//game.x -= XXX;
-			//game.y -= XXX;
-			//game.bg.cacheAsBitmap = true;
-			
-			// initialize managers
-			// TODO manager instantiation here
-			managers = [];
-			manLen = managers.length - 1;
 
 			// cursor
 			/*cursor = new GameCursor();
 			game.mc_gui.addChild(cursor);
 			cursor.visible = false;*/
 			
-			// temp
-			var pos:Array = [new Point(4, 3), new Point(5, 3), new Point(6, 3)];
-			for (var i:int = 0; i < pos.length; i++)
+			// setup nodeArray
+			nodeGrid = [];
+			for (var i:int = 0; i < 10; i++)		// going top to bottom
 			{
-				var node:Node = new Node();
-				node.x = GRID_ORIGIN.x + GRID_SIZE * pos[i].x;
-				node.y = GRID_ORIGIN.y + GRID_SIZE * pos[i].y;
-				game.holder_main.addChild(node);
+				nodeGrid.push([]);
+				for (var j:int = 0; j < 15; j++)	// going from left to right		
+					nodeGrid[i].push(null);
 			}
+			
+			setUp();
+		}
+		
+		/**
+		 * Level-specific constructor
+		 */
+		protected function setUp():void
+		{
+			// -- OVERRIDE THIS FUNCTION
+			
+			// TEMPORARY
+			// populate all grid squares
+			for (var i:int = 0; i < 15; i++)
+				for (var j:int = 0; j < 10; j++)
+				{
+					nodeGrid[j][i] = new ABST_Node(this, "left", new Point(i, j), false);
+					nodeArray.push(nodeGrid[j][i]);
+				}
+		}
+		
+		/**
+		 * Adds the given MovieClip to holder_main aligned to the grid based on position.
+		 * @param	mc			the MovieClip to add
+		 * @param	position	the grid coordinate to use (0-based, top-left origin, L/R x, U/D y)
+		 * @return				mc
+		 */
+		public function addChildToGrid(mc:MovieClip, position:Point):MovieClip
+		{
+			mc.x = GRID_ORIGIN.x + GRID_SIZE * position.x;
+			mc.y = GRID_ORIGIN.y + GRID_SIZE * position.y;
+			game.holder_main.addChild(mc);
+			return mc;
+		}
+		
+		/**
+		 * Removes the given MovieClip from holder_main, if applicable
+		 * @param	mc			the MovieClip to remove
+		 * @return				mc
+		 */
+		public function removeChildFromGrid(mc:MovieClip):MovieClip
+		{
+			if (game.holder_main.contains(mc))
+				game.holder_main.removeChild(mc);
+			return mc;
 		}
 		
 		// called by Engine every frame
@@ -84,22 +127,46 @@
 			//cursor.x = mouseX - game.x - game.mc_gui.x;
 			//cursor.y = mouseY - game.y - game.mc_gui.y;
 			
-			// update each manager
-			for (var i:int = manLen; i >= 0; i--)
-				managers[i].step();
+			// step all Mail
+			var i:int;
+			var mail:ABST_Mail;
+			var allSuccess:Boolean = true;
+			for (i = mailArray.length - 1; i >= 0; i--)
+			{
+				mail = mailArray[i];
+				var mailState:int = mail.step();
+				if (gameState != PP.GAME_FAILURE)
+				{
+					if (mailState != PP.MAIL_SUCCESS)
+						allSuccess = false;
+					if (mailState == PP.MAIL_FAILURE)
+						gameState = PP.GAME_FAILURE;
+				}
+			}
+			if (allSuccess)
+				gameState = PP.GAME_SUCCESS;
 			
-			return puzzleStep();
+			// step all (non-null) Node
+			var node:ABST_Node;
+			for (i = nodeArray.length - 1; i >= 0; i--)
+			{
+				node = nodeArray[i];
+				node.step();			// TODO check return state
+			}
+			
+			//puzzleStep();
+			
+			return completed;
 		}
 		
 		/**
 		 * The to-be-implemented step() function for this specific puzzle.
 		 * @return	completed, true if this container is done
 		 */
-		protected function puzzleStep():Boolean
+		/*protected function puzzleStep():void
 		{
 			// -- OVERRIDE THIS FUNCTION
-			return completed;
-		}
+		}*/
 		
 		/*protected function overButton(e:MouseEvent):void
 		{
@@ -118,8 +185,6 @@
 		 */
 		protected function destroy(e:Event):void
 		{
-			for (var i:int = manLen; i >= 0; i--)
-				managers[i].destroy();
 			removeEventListener(Event.REMOVED_FROM_STAGE, destroy);
 			Mouse.show();
 		}
