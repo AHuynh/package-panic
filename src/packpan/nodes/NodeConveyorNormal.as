@@ -17,50 +17,35 @@ package packpan.nodes
 		public function NodeConveyorNormal(_cg:ABST_ContainerGame, _type:String, _position:Point,
 										   _facing:int, _clickable:Boolean)
 		{
-			var lbl:String;
-			switch (_facing)
-			{
-				case PP.DIR_RIGHT:
-					lbl = "right";
-				break;
-				case PP.DIR_UP:
-					lbl = "up";
-				break;
-				case PP.DIR_LEFT:
-					lbl = "left";
-				break;
-				case PP.DIR_DOWN:
-					lbl = "down";
-				break;
-				default:
-					lbl = "bin";
-			}
 			super(_cg, _type, _position, _facing, _clickable);
-			mc_node.gotoAndStop(lbl);
+			
+			if (facing != PP.DIR_NONE)
+				mc_node.rotation = facing;
+			else
+				trace("WARNING: NodeConveyorNormal at " + position + " has no facing!");
 		}
 		
 		
-		override protected function onClick(e:MouseEvent):void
+		override public function onClick(e:MouseEvent):void
 		{
 			switch (facing)
 			{
 				case PP.DIR_RIGHT:
 					facing = PP.DIR_LEFT;
-					mc_node.gotoAndStop("left");
 				break;
 				case PP.DIR_UP:
 					facing = PP.DIR_DOWN;
-					mc_node.gotoAndStop("down");
 				break;
 				case PP.DIR_LEFT:
 					facing = PP.DIR_RIGHT;
-					mc_node.gotoAndStop("right");
 				break;
 				case PP.DIR_DOWN:
 					facing = PP.DIR_UP;
-					mc_node.gotoAndStop("up");
 				break;
 			}
+			
+			mc_node.rotation = facing;
+			//trace("new facing: " + facing);
 		}
 		
 		/**
@@ -108,6 +93,8 @@ package packpan.nodes
 						mail.mc_mail.x += speed;
 					mail.mc_mail.y += speed;
 				break;
+				default:
+					trace("WARNING: " + this + " has no facing at " + position);
 			}
 		}
 	}

@@ -31,6 +31,9 @@ package packpan.mails
 			position = _position;
 			
 			mc_mail = cg.addChildToGrid(new Mail(), position);
+			mc_mail.buttonMode = false;
+			mc_mail.mouseEnabled = false;
+			mc_mail.mouseChildren = false;
 		}
 		
 		/**
@@ -46,7 +49,15 @@ package packpan.mails
 					 "\tMail grid: " + position.y + "," + position.x);*/
 			
 			if (position)
-				cg.nodeGrid[position.y][position.x].affectMail(this);
+			{
+				if (!cg.nodeGrid[position.x][position.y])
+				{
+					trace("OFF NODE!");
+					mailState = PP.MAIL_FAILURE;
+				}
+				else
+					cg.nodeGrid[position.x][position.y].affectMail(this);
+			}
 				  
 			return mailState;
 		}
@@ -57,9 +68,9 @@ package packpan.mails
 		 */
 		protected function findGridSquare():Point
 		{
-			trace("\tabs coords " + mc_mail.x + " " + mc_mail.y);
-			var p:Point = new Point(Math.round((mc_mail.x + 350) / 50), Math.round((mc_mail.y + 260) / 50));
-			if (p.x < 0 || p.y < 0)		// TODO upper bounds
+			// black magic; but don't worry, I'm a Super High-School Level Electromage
+			var p:Point = new Point(Math.round((mc_mail.y + 260) / 50), Math.round((mc_mail.x + 350) / 50));
+			if (p.x < 0 || p.x > 10 || p.y < 0 || p.y > 15)		// TODO upper bounds
 			{
 				mailState = PP.MAIL_FAILURE;
 				p = null;

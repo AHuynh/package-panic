@@ -9,7 +9,9 @@
 	import packpan.mails.MailNormal;
 	import packpan.nodes.ABST_Node;
 	import packpan.nodes.NodeConveyorNormal;
+	import packpan.nodes.NodeGroup;
 	import packpan.PP;
+	import flash.utils.getDefinitionByName;
 	
 	/**
 	 * Primary game container and controller
@@ -32,6 +34,9 @@
 		public var mailArray:Array;		// a 1D array containing all ABST_Mail objects
 		
 		protected var gameState:int;
+		
+		// allows getDefinitionByName to work
+		private var ncn:NodeConveyorNormal;
 		
 		// TODO more definitions here
 	
@@ -89,32 +94,95 @@
 		{
 			// -- OVERRIDE THIS FUNCTION
 			
+			
+			// TEMPORARY
+			// make 1 line
+			/*addLineOfNodes(new Point(0, 0), new Point(0, 9), "packpan.nodes.NodeConveyorNormal").setDirection(PP.DIR_RIGHT);	
+			mailArray.push(new MailNormal(this, "default", new Point(0, 0)));*/
+			// END TEMPORARY
+			
 			// TEMPORARY
 			// populate all grid squares
-			for (var i:int = 0; i < 15; i++)
-				for (var j:int = 0; j < 10; j++)
+			/*for (var i:int = 0; i < 10; i++)
+				for (var j:int = 0; j < 15; j++)
 				{					
-					var d:int = (i+2+j) % 4 + 1;
-					d += PP.DIR_NONE;
-					//d = PP.DIR_RIGHT;
-					//trace("Spawning " + i + "," + j + " " + d);
-					nodeGrid[j][i] = new NodeConveyorNormal(this, "conveyor", new Point(i, j), d, true);
-					nodeArray.push(nodeGrid[j][i]);
+					var d:int = (i+2+j) % 4;
+					d *= 90;
+					nodeGrid[i][j] = new NodeConveyorNormal(this, "NodeConveyorNormal", new Point(i, j), d, true);
+					nodeArray.push(nodeGrid[i][j]);
 				}
 				
-			mailArray.push(new MailNormal(this, "default", new Point(5, 5)));
+			mailArray.push(new MailNormal(this, "default", new Point(5, 5)));*/
+			// END TEMPORARY
+			
+			// TEMPORARY
+			// make an example puzzle
+			/*addLineOfNodes(new Point(2, 2), new Point(2, 4), "packpan.nodes.NodeConveyorNormal").setDirection(PP.DIR_RIGHT);
+			addLineOfNodes(new Point(2, 5), new Point(8, 5), "packpan.nodes.NodeConveyorNormal").setDirection(PP.DIR_UP);
+			
+			mailArray.push(new MailNormal(this, "default", new Point(2, 2)));*/
+			// END TEMPORARY
+			
+			
+			// TEMPORARY
+			// make an example puzzle
+			addLineOfNodes(new Point(2, 9), new Point(9, 9), "packpan.nodes.NodeConveyorNormal").setDirection(PP.DIR_DOWN); trace("X");
+			addLineOfNodes(new Point(2, 3), new Point(2, 8), "packpan.nodes.NodeConveyorNormal").setDirection(PP.DIR_LEFT); trace("X");
+			addLineOfNodes(new Point(5, 2), new Point(5, 8), "packpan.nodes.NodeConveyorNormal").setDirection(PP.DIR_RIGHT); trace("X");
+			addLineOfNodes(new Point(8, 10), new Point(8, 14), "packpan.nodes.NodeConveyorNormal").setDirection(PP.DIR_RIGHT); trace("X");
+			
+			mailArray.push(new MailNormal(this, "default", new Point(2, 7)));
+			mailArray.push(new MailNormal(this, "default", new Point(5, 3)));
+			mailArray.push(new MailNormal(this, "default", new Point(8, 10)));
+			// END TEMPORARY
+			
+			trace("GRID");
+			for (var i:int = 0; i < 10; i++)
+			{
+				var s:String = "";
+				for (var j:int = 0; j < 15; j++)
+					s += nodeGrid[i][j] ? "X" : ".";
+				trace(s);
+			}
+		}
+		
+		/**
+		 * Creates a line of grouped Nodes
+		 * @param	start		the grid coordinates to begin from
+		 * @param	end			the grid coordinates to end at, inclusive
+		 * @param	type		the name of the ABST_Node class to use
+		 * @return				the NodeGroup created
+		 */
+		public function addLineOfNodes(start:Point, end:Point, type:String):NodeGroup
+		{
+			var ng:NodeGroup = new NodeGroup();
+			
+			var NodeClass:Class = getDefinitionByName(type) as Class;
+			var node:ABST_Node;
+			
+			for (var i:int = start.x; i <= end.x; i++)
+				for (var j:int = start.y; j <= end.y; j++)
+				{
+					node = new NodeClass(this, type, new Point(i, j), PP.DIR_NONE, false);
+					nodeGrid[i][j] = node;
+					nodeArray.push(node);
+					ng.addToGroup(node);
+				}
+			ng.setupListeners();
+
+			return ng;
 		}
 		
 		/**
 		 * Adds the given MovieClip to holder_main aligned to the grid based on position.
 		 * @param	mc			the MovieClip to add
-		 * @param	position	the grid coordinate to use (0-based, top-left origin, L/R x, U/D y)
+		 * @param	position	the grid coordinate to use (0-based, top-left origin, U/D x, L/R y)
 		 * @return				mc
 		 */
 		public function addChildToGrid(mc:MovieClip, position:Point):MovieClip
 		{
-			mc.x = GRID_ORIGIN.x + GRID_SIZE * position.x;
-			mc.y = GRID_ORIGIN.y + GRID_SIZE * position.y;
+			mc.x = GRID_ORIGIN.x + GRID_SIZE * position.y;
+			mc.y = GRID_ORIGIN.y + GRID_SIZE * position.x;
 			game.holder_main.addChild(mc);
 			return mc;
 		}

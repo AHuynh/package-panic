@@ -64,11 +64,22 @@ package packpan.nodes
 		
 		/**
 		 * Called when this Node is clicked
-		 * @param	e
+		 * @param	e		the captured MouseEvent, unused, can be null
 		 */
-		protected function onClick(e:MouseEvent):void
+		public function onClick(e:MouseEvent):void
 		{
 			// -- OVERRIDE THIS FUNCTION
+		}
+		
+		/**
+		 * Remove the eventListeners on this node's mc_node.
+		 * Called internally and externally by NodeGroup.
+		 */
+		public function removeListeners():void
+		{
+			mc_node.clickable = false;
+			if (mc_node.hasEventListener(MouseEvent.CLICK))
+				mc_node.removeEventListener(MouseEvent.CLICK, onClick);
 		}
 		
 		/**
@@ -80,8 +91,7 @@ package packpan.nodes
 				return;
 			if (cg)
 				cg.removeChildFromGrid(mc_node);
-			if (mc_node.hasEventListener(MouseEvent.CLICK))
-				mc_node.removeEventListener(MouseEvent.CLICK, onClick);
+			removeListeners();
 			mc_node = null;
 			cg = null;
 		}
