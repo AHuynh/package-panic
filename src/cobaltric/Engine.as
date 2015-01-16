@@ -6,6 +6,8 @@
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
 	import flash.net.SharedObject;
+	import flash.utils.getDefinitionByName;
+	import packpan.levels.*;
 	
 	/** 
 	 * Primary game loop event firer and state machine.
@@ -17,14 +19,20 @@
 		private var gameState:int;				// 0:Intro, 1:Game, 2:Outro
 		private var container:ABST_Container;	// the currently active container
 		
+		public var levelClass:String;			// the name of the game class to load
+		
 		// save data
 		public const SAVE_DATA:String = "PACK_PAN";
 		public var saveData:SharedObject = SharedObject.getLocal(SAVE_DATA, "/");
 		
+		// allows getDefinitionByName to work
+		private var lvld:ABST_ContainerGame;
+		private var lvl1:level2;
+		private var lvl2:level3;
+		private var lvl3:level1;
+		
 		public function Engine()
 		{
-			trace("OK");
-			
 			// try to load save data
 			/*if (saveData.data.sd_isValid)
 			{
@@ -53,6 +61,8 @@
 			
 			//SoundPlayer.playBGM(true);
 			
+			levelClass = "cobaltric.ABST_ContainerGame";
+			
 		}
 		
 		/*public function newGame():void
@@ -77,7 +87,8 @@
 			switch (gameState)			// determine which new container to go to next
 			{
 				case 0:
-					container = new ABST_ContainerGame(this);
+					var GameClass:Class = getDefinitionByName(levelClass) as Class;
+					container = new GameClass(this);
 					gameState++;
 					//SoundPlayer.stopBGM();
 				break;

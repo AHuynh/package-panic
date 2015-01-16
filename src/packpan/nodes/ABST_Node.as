@@ -14,7 +14,7 @@ package packpan.nodes
 	{		
 		protected var cg:ABST_ContainerGame;	// the parent container
 		
-		public var type:String;					// the name of this Node
+		public var type:String;					// the label to use for this Node
 		public var clickable:Boolean;			// if a mouse click manipulates this Node
 		public var position:Point;				// the grid square of this Node (0-indexed, origin top-left, L/R is x, U/D is y)
 		public var facing:int;					// which direction this Node is facing, if applicable (PP constant)
@@ -31,6 +31,7 @@ package packpan.nodes
 			clickable = _clickable;
 			
 			mc_node = cg.addChildToGrid(new Node(), position);		// add the Node MovieClip to the game
+			mc_node.gotoAndStop(type);
 			
 			if (clickable)
 				mc_node.addEventListener(MouseEvent.CLICK, onClick);

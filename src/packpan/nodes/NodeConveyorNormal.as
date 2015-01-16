@@ -12,7 +12,7 @@ package packpan.nodes
 	 */
 	public class NodeConveyorNormal extends ABST_Node 
 	{
-		public var speed:Number = 1;
+		public var speed:Number = 2;
 		
 		public function NodeConveyorNormal(_cg:ABST_ContainerGame, _type:String, _position:Point,
 										   _facing:int, _clickable:Boolean)

@@ -2,6 +2,9 @@ package packpan
 {
 	/**
 	 * PackagePanic static helper
+	 * 
+	 * Contains global consants
+	 * 
 	 * @author Alexander Huynh
 	 */
 	public class PP 
@@ -25,7 +28,7 @@ package packpan
 		public function PP() 
 		{
 			// -- Static class; do not instantiate
-			trace("DO NOT INSTANTIATE PP!");
+			trace("WARNING: DO NOT INSTANTIATE PP!");
 		}
 	}
 }
