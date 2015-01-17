@@ -33,17 +33,8 @@ package packpan.nodes
 			mc_node = cg.addChildToGrid(new Node(), position);		// add the Node MovieClip to the game
 			mc_node.gotoAndStop(type);
 			
-			if (clickable)
+			if (clickable)		// attach a listener for clicks if this Node can be clicked
 				mc_node.addEventListener(MouseEvent.CLICK, onClick);
-				
-			/*if (facing != PP.DIR_NONE)
-				switch (facing)
-				{
-					case PP.DIR_RIGHT: mc_node.rotation = 0; break;
-					case PP.DIR_UP: mc_node.rotation = 90; break;
-					case PP.DIR_LEFT: mc_node.rotation = 180; break;
-					case PP.DIR_DOWN: mc_node.rotation = 270; break;
-				}*/
 		}
 		
 		/**
@@ -51,7 +42,7 @@ package packpan.nodes
 		 */
 		public function step():void
 		{
-			// -- OVERRIDE THIS FUNCTION
+			// -- OVERRIDE THIS FUNCTION as needed
 		}
 		
 		/**
@@ -69,7 +60,7 @@ package packpan.nodes
 		 */
 		public function onClick(e:MouseEvent):void
 		{
-			// -- OVERRIDE THIS FUNCTION
+			// -- OVERRIDE THIS FUNCTION as needed
 		}
 		
 		/**

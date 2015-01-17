@@ -7,12 +7,14 @@ package packpan.nodes
 	import packpan.PP;
 	
 	/**
-	 * A normal conveyor belt
+	 * A normal conveyor belt that moves Mail in the direction it is facing.
+	 * Can be clicked to invert the direction.
+	 * 
 	 * @author Alexander Huynh
 	 */
 	public class NodeConveyorNormal extends ABST_Node 
 	{
-		public var speed:Number = 2;
+		public var speed:Number = 2;		// how fast to move Mail
 		
 		public function NodeConveyorNormal(_cg:ABST_ContainerGame, _type:String, _position:Point,
 										   _facing:int, _clickable:Boolean)
@@ -25,9 +27,13 @@ package packpan.nodes
 				trace("WARNING: NodeConveyorNormal at " + position + " has no facing!");
 		}
 		
-		
+		/**
+		 * Called when this Node is clicked, if this Node is clickable.
+		 * @param	e		the captured MouseEvent, unused
+		 */
 		override public function onClick(e:MouseEvent):void
 		{
+			// face the opposite direction
 			switch (facing)
 			{
 				case PP.DIR_RIGHT:
@@ -42,10 +48,11 @@ package packpan.nodes
 				case PP.DIR_DOWN:
 					facing = PP.DIR_UP;
 				break;
+				default:
+					trace("WARNING: NodeConveyorNormal at " + position + " has an invalid facing!");
 			}
 			
-			mc_node.rotation = facing;
-			//trace("new facing: " + facing);
+			mc_node.rotation = facing;		// rotate the graphic appropriately
 		}
 		
 		/**
@@ -54,12 +61,11 @@ package packpan.nodes
 		 */
 		override public function affectMail(mail:ABST_Mail):void
 		{
-			//trace("Conveyor is affecting: " + mail + " with facing " + facing);
 			switch (facing)
 			{
 				case PP.DIR_RIGHT:
-					mail.mc_mail.x += speed;
-					if (Math.abs(mail.mc_mail.y - mc_node.y) < 1.5 * speed)
+					mail.mc_mail.x += speed;										// primary movement
+					if (Math.abs(mail.mc_mail.y - mc_node.y) < 1.5 * speed)			// center the package for other axis
 						mail.mc_mail.y = mc_node.y;
 					else if (mail.mc_mail.y > mc_node.y)
 						mail.mc_mail.y -= speed;
@@ -94,7 +100,7 @@ package packpan.nodes
 					mail.mc_mail.y += speed;
 				break;
 				default:
-					trace("WARNING: " + this + " has no facing at " + position);
+					trace("WARNING: NodeConveyorNormal at " + position + " has an invalid facing!");
 			}
 		}
 	}

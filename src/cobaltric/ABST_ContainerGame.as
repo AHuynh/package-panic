@@ -12,7 +12,8 @@
 	import packpan.PP;
 	
 	/**
-	 * Primary game container and controller
+	 * Primary game container and controller. The base class for a level.
+	 * Extended into packpan/levels to create a level. (Override setUp()).
 	 * 
 	 * Note:	All coordinates except actual locations (i.e. movieclip.x) use x as up/down, y as left/right.
 	 * 			Origin is top-left corner. Dimensions are 10 x 15 (indexes 0-9 and 0-14)
@@ -85,7 +86,7 @@
 			game.mc_gui.addChild(cursor);
 			cursor.visible = false;*/
 			
-			// setup nodeGrid
+			// setup node and mail arrays
 			nodeGrid = [];
 			for (var i:int = 0; i < 10; i++)		// going top to bottom
 			{
@@ -96,69 +97,31 @@
 			nodeArray = [];
 			mailArray = [];
 			
+			// call level-specific constructir
 			setUp();
 		}
 		
 		/**
 		 * Level-specific constructor
+		 * Override this in individual levels to create Node and Mail objects.
 		 */
 		protected function setUp():void
 		{
 			// -- OVERRIDE THIS FUNCTION
 			
+			// -- examples
 			
-			// TEMPORARY
-			// make 1 line
-			/*addLineOfNodes(new Point(0, 0), new Point(0, 9), "packpan.nodes.NodeConveyorNormal").setDirection(PP.DIR_RIGHT);	
-			mailArray.push(new MailNormal(this, "default", new Point(0, 0)));*/
-			// END TEMPORARY
+			// create a single conveyor at (2, 9) facing UP
+			//addNode(new Point(2, 9), "packpan.nodes.NodeConveyorNormal", PP.DIR_UP, true);
 			
-			// TEMPORARY
-			// populate all grid squares
-			/*for (var i:int = 0; i < 10; i++)
-				for (var j:int = 0; j < 15; j++)
-				{					
-					var d:int = (i+2+j) % 4;
-					d *= 90;
-					nodeGrid[i][j] = new NodeConveyorNormal(this, "NodeConveyorNormal", new Point(i, j), d, true);
-					nodeArray.push(nodeGrid[i][j]);
-				}
-				
-			mailArray.push(new MailNormal(this, "default", new Point(5, 5)));*/
-			// END TEMPORARY
+			// create a long conveyor from (4, 4) to (4, 9) facing RIGHT
+			//addLineOfNodes(new Point(4, 4), new Point(4, 9), "packpan.nodes.NodeConveyorNormal").setDirection(PP.DIR_RIGHT);
 			
-			// TEMPORARY
-			// make an example puzzle
-			/*addLineOfNodes(new Point(2, 2), new Point(2, 4), "packpan.nodes.NodeConveyorNormal").setDirection(PP.DIR_RIGHT);
-			addLineOfNodes(new Point(2, 5), new Point(8, 5), "packpan.nodes.NodeConveyorNormal").setDirection(PP.DIR_UP);
-			
-			mailArray.push(new MailNormal(this, "default", new Point(2, 2)));*/
-			// END TEMPORARY
-			
-			// TEMPORARY
-			// make an example puzzle
-			addLineOfNodes(new Point(2, 9), new Point(8, 9), "packpan.nodes.NodeConveyorNormal").setDirection(PP.DIR_DOWN); trace("X");
-			addLineOfNodes(new Point(2, 3), new Point(2, 8), "packpan.nodes.NodeConveyorNormal").setDirection(PP.DIR_LEFT); trace("X");
-			addLineOfNodes(new Point(5, 2), new Point(5, 8), "packpan.nodes.NodeConveyorNormal").setDirection(PP.DIR_RIGHT); trace("X");
-			addLineOfNodes(new Point(8, 10), new Point(8, 14), "packpan.nodes.NodeConveyorNormal").setDirection(PP.DIR_RIGHT); trace("X");
-			
-			addNode(new Point(1, 9), "packpan.nodes.NodeBin");
-			addNode(new Point(9, 9), "packpan.nodes.NodeBin");
-			addNode(new Point(5, 1), "packpan.nodes.NodeBin");
-			
-			mailArray.push(new MailNormal(this, "default", new Point(2, 7)));
-			mailArray.push(new MailNormal(this, "default", new Point(5, 3)));
-			mailArray.push(new MailNormal(this, "default", new Point(8, 10)));
-			// END TEMPORARY
-			
-			trace("GRID");
-			for (var i:int = 0; i < 10; i++)
-			{
-				var s:String = "";
-				for (var j:int = 0; j < 15; j++)
-					s += nodeGrid[i][j] ? "X" : ".";
-				trace(s);
-			}
+			// create a bin at (3, 3)
+			//addNode(new Point(3, 3), "packpan.nodes.NodeBin");
+
+			// create a package at (2, 0)
+			//mailArray.push(new MailNormal(this, "default", new Point(2, 0)));
 		}
 		
 		/**
@@ -237,8 +200,9 @@
 		 */
 		override public function step():Boolean
 		{
-			//cursor.x = mouseX - game.x - game.mc_gui.x;
-			//cursor.y = mouseY - game.y - game.mc_gui.y;
+			// TODO use custom cursor
+			//cursor.x = mouseX - game.x;
+			//cursor.y = mouseY - game.y;
 			
 			// step all Mail
 			var i:int;
@@ -263,11 +227,11 @@
 						}
 					}
 				}
-			if (allSuccess)
+			if (allSuccess && timerTick != 0)	// if all packages are in a success state and the level isn't done
 			{
-				gameState = PP.GAME_SUCCESS;
-				game.mc_overlay.visible = true;
-				timerTick = 0;			// halt the timer
+				gameState = PP.GAME_SUCCESS;	// mark the level as done
+				game.mc_overlay.visible = true;	// show the success screen
+				timerTick = 0;					// halt the timer
 			}
 			
 			// step all (non-null) Node
@@ -329,6 +293,10 @@
 			SoundPlayer.play("sfx_menu_blip");
 		}*/
 		
+		/**
+		 * Called when the Retry button is clicked.
+		 * @param	e		the captured MouseEvent, unused
+		 */
 		protected function onRetry(e:MouseEvent):void
 		{
 			completed = true;
@@ -336,6 +304,10 @@
 			destroy(null);
 		}
 		
+		/**
+		 * Called when the Quit button is clicked.
+		 * @param	e		the captured MouseEvent, unused
+		 */
 		protected function onQuit(e:MouseEvent):void
 		{
 			completed = true;

@@ -30,8 +30,8 @@ package packpan.mails
 			type = _type;
 			position = _position;
 			
-			mc_mail = cg.addChildToGrid(new Mail(), position);
-			mc_mail.buttonMode = false;
+			mc_mail = cg.addChildToGrid(new Mail(), position);		// create the MovieClip
+			mc_mail.buttonMode = false;								// disable click captures
 			mc_mail.mouseEnabled = false;
 			mc_mail.mouseChildren = false;
 		}
@@ -42,20 +42,18 @@ package packpan.mails
 		 */
 		public function step():int
 		{
-			// OVERRIDE THIS FUNCTION
-			position = findGridSquare();
-			/*if (position)
-				trace("Mail position: " + Math.round(mc_mail.x) + "," + Math.round(mc_mail.y) +
-					 "\tMail grid: " + position.y + "," + position.x);*/
+			// -- OVERRIDE THIS FUNCTION TO PROVIDE CUSTOM FUNCTIONALITY
 			
-			if (position)
+			position = findGridSquare();		// find the current grid coordinates
+			
+			if (position)						// if we are in bounds
 			{
-				if (!cg.nodeGrid[position.x][position.y])
+				if (!cg.nodeGrid[position.x][position.y])		// if we are not on a Node (we are on the ground)
 				{
 					trace("OFF NODE!");
 					mailState = PP.MAIL_FAILURE;
 				}
-				else
+				else							// otherwise have the Node in this grid square affect us
 					cg.nodeGrid[position.x][position.y].affectMail(this);
 			}
 				  
@@ -64,13 +62,15 @@ package packpan.mails
 		
 		/**
 		 * Returns the grid coordinates of this Mail object based on its actual coordinates
-		 * @return
+		 * Sets state to failure if not on a valid point (out of bounds)
+		 * 
+		 * @return		the grid square as a Point, or null if invalid
 		 */
 		protected function findGridSquare():Point
 		{
 			// black magic; but don't worry, I'm a Super High-School Level Electromage
 			var p:Point = new Point(Math.round((mc_mail.y + 260) / 50), Math.round((mc_mail.x + 350) / 50));
-			if (p.x < 0 || p.x > 10 || p.y < 0 || p.y > 15)		// TODO upper bounds
+			if (p.x < 0 || p.x > 10 || p.y < 0 || p.y > 15)
 			{
 				mailState = PP.MAIL_FAILURE;
 				p = null;

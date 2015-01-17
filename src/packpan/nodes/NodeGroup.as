@@ -54,6 +54,10 @@ package packpan.nodes
 				nodeArray[i].onClick(e);
 		}
 		
+		/**
+		 * Sets the direction of all Nodes in this group to facing.
+		 * @param	facing		the (PP) direction to face all Nodes in this group
+		 */
 		public function setDirection(facing:int):void
 		{
 			if (nodeArray.length == 0) return;
