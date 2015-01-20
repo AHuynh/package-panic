@@ -31,6 +31,8 @@
 		private var lvl2:level3;
 		private var lvl3:level1;
 		
+		public var levelArray:Array = [["level1", "level2", "level3"]];
+		
 		public function Engine()
 		{
 			// try to load save data
