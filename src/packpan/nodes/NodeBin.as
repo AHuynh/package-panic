@@ -12,7 +12,7 @@ package packpan.nodes
 	 */
 	public class NodeBin extends ABST_Node 
 	{
-		private const SPEED:int = 2;
+		private const SPEED:int = 2;		// speed at which to move Mail towards the center
 		
 		public var occupied:Boolean;		// if true, there is a package in this bin
 		public var colorGoal:uint;			// the color this bin accepts
@@ -32,6 +32,8 @@ package packpan.nodes
 		
 		/**
 		 * Called by a Mail object to manipulate the Mail object
+		 * Draws Mail objects to its center
+		 * 
 		 * @param	mail	the Mail to be affected
 		 */
 		override public function affectMail(mail:ABST_Mail):void
@@ -41,13 +43,15 @@ package packpan.nodes
 				return;		// TODO failure state
 			}
 			
+			// move towards center of x axis, snapping when close
 			if (Math.abs(mail.mc_mail.x - mc_node.x) < 5)
 				mail.mc_mail.x = mc_node.x;
 			else if (mail.mc_mail.x > mc_node.x)
 				mail.mc_mail.x -= SPEED;
 			else
 				mail.mc_mail.x += SPEED;
-				
+			
+			// move towards center of y axis, snapping when close
 			if (Math.abs(mail.mc_mail.y - mc_node.y) < 5)
 				mail.mc_mail.y = mc_node.y;
 			else if (mail.mc_mail.y > mc_node.y)
