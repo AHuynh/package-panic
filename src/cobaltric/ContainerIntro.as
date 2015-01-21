@@ -16,7 +16,7 @@
 		private var levelButtons:Array;		// list of level buttons
 		private var page:int = 0;			// current page of 15 levels; also the first index into eng.levelArray
 		
-		public function ContainerIntro(_eng:Engine)
+		public function ContainerIntro(_eng:Engine, _showLevels:Boolean)
 		{
 			super();
 			eng = _eng;
@@ -25,7 +25,7 @@
 			swc = new SWC_ContainerMenu();
 			addChild(swc);
 			
-			swc.mc_levels.visible = false;		// hide level select screen
+			swc.mc_levels.visible = _showLevels;		// hide/show level select screen
 			
 			swc.mc_main.btn_start.addEventListener(MouseEvent.CLICK, onStart);
 			swc.mc_levels.btn_quit.addEventListener(MouseEvent.CLICK, onQuit);
@@ -93,7 +93,7 @@
 			levelButtons = null;
 			
 			// get the index of the button clicked (0-15)
-			var ind:int = int(MovieClip(e.target).parent.name);
+			var ind:int = int(MovieClip(e.target).parent.name.substring(6));		// level_xx
 			
 			// get the name of the level AS3 file
 			eng.levelClass = "packpan.levels." + eng.levelArray[page][ind];

@@ -31,6 +31,7 @@ package packpan.mails
 			position = _position;
 			
 			mc_mail = cg.addChildToGrid(new Mail(), position);		// create the MovieClip
+			mc_mail.stop();											// default mail frame
 			mc_mail.buttonMode = false;								// disable click captures
 			mc_mail.mouseEnabled = false;
 			mc_mail.mouseChildren = false;

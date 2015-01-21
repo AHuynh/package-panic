@@ -30,8 +30,9 @@
 		private var lvl1:level2;
 		private var lvl2:level3;
 		private var lvl3:level1;
+		private var lvl4:level4;
 		
-		public var levelArray:Array = [["level1", "level2", "level3"]];
+		public var levelArray:Array = [["level1", "level2", "level3", "level4"]];
 		
 		public function Engine()
 		{
@@ -51,12 +52,12 @@
 				
 			gameState = 0;
 			
-			container = new ContainerIntro(this);
+			container = new ContainerIntro(this, false);
 			addChild(container);
 
 			// center the container
-			container.x = 0;//stage.width * .5;
-			container.y = 0;//stage.height * .5;
+			container.x = 0;
+			container.y = 0;
 			
 			addEventListener(Event.ENTER_FRAME, step);
 			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
@@ -91,17 +92,16 @@
 				case 0:
 					var GameClass:Class = getDefinitionByName(levelClass) as Class;
 					container = new GameClass(this);
-					gameState++;
+					gameState = 1;
 					//SoundPlayer.stopBGM();
 				break;
 				case 1:
-					container = new ContainerIntro(this);
+					container = new ContainerIntro(this, true);
 					gameState = 0;
 				break;
 			}
 			
 			addChild(container);		// add the new container
-			
 		}
 		
 		/**
@@ -124,11 +124,11 @@
 		{
 			if (!container.stage)
 				return;
-			if (e.keyCode == 76)		// -- 1
+			if (e.keyCode == 76)		// -- l
 				container.stage.quality = StageQuality.LOW;
-			else if (e.keyCode == 77)	// -- 2
+			else if (e.keyCode == 77)	// -- m
 				container.stage.quality = StageQuality.MEDIUM;
-			else if (e.keyCode == 72)	// -- 3
+			else if (e.keyCode == 72)	// -- h
 				container.stage.quality = StageQuality.HIGH;
 		}
 		

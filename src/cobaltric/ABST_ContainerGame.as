@@ -45,15 +45,13 @@
 		public var timerTick:Number = 1000 / 30;		// time to take off per frame
 		public const SECOND:int = 1000;
 		public var timeLeft:Number = 30 * SECOND;
-		
-		// TODO more definitions here
 	
 		public function ABST_ContainerGame(eng:Engine)
 		{
 			super();
 			engine = eng;
-			addEventListener(Event.ADDED_TO_STAGE, init);
-			
+			addEventListener(Event.ADDED_TO_STAGE, init);		// set up after added to stage
+
 			gameState = PP.GAME_IDLE;
 		}
 		
@@ -97,6 +95,8 @@
 			nodeArray = [];
 			mailArray = [];
 			
+			trace(this);
+			
 			// call level-specific constructir
 			setUp();
 		}
@@ -112,13 +112,13 @@
 			// -- examples
 			
 			// create a single conveyor at (2, 9) facing UP
-			//addNode(new Point(2, 9), "packpan.nodes.NodeConveyorNormal", PP.DIR_UP, true);
+			//addNode(new Point(2, 9), PP.NODE_CONV_NORMAL, PP.DIR_UP, true);
 			
 			// create a long conveyor from (4, 4) to (4, 9) facing RIGHT
-			//addLineOfNodes(new Point(4, 4), new Point(4, 9), "packpan.nodes.NodeConveyorNormal").setDirection(PP.DIR_RIGHT);
+			//addLineOfNodes(new Point(4, 4), new Point(4, 9), PP.NODE_CONV_NORMAL).setDirection(PP.DIR_RIGHT);
 			
 			// create a bin at (3, 3)
-			//addNode(new Point(3, 3), "packpan.nodes.NodeBin");
+			//addNode(new Point(3, 3), PP.NODE_BIN_NORMAL);
 
 			// create a package at (2, 0)
 			//mailArray.push(new MailNormal(this, "default", new Point(2, 0)));
@@ -136,6 +136,19 @@
 			var NodeClass:Class = getDefinitionByName(type) as Class;
 			var node:ABST_Node = new NodeClass(this, type.substring(type.lastIndexOf('.') + 1),
 											   new Point(position.x, position.y), facing, clickable);
+									
+			// error check
+			if (position.x < 0 || position.x > 9)
+			{
+				trace("ERROR: in addNode, x = " + position.x + " is out of bounds!");
+				return null;
+			}
+			if (position.y < 0 || position.y > 14)
+			{
+				trace("ERROR: in addNode, y = " + position.y + " is out of bounds!");
+				return null;
+			}
+											   
 			nodeGrid[position.x][position.y] = node;
 			nodeArray.push(node);
 			return node;

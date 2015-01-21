@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<level>
+	<!-- Nodes -->
+	<node type="single">
+		<type>ConveyorNormal</type>
+		<position>(0,0)</position>
+		<facing>UP</facing>
+	</node>
+	<node type="group">
+		<type>ConveyorNormal</type>
+		<position>(1,0)</position>
+		<tail>(1,8)</tail>
+		<facing>LEFT</facing>
+	</node>
+	
+	<!-- Bins -->
+	<node type="single">
+		<type>BinNormal</type>
+		<position>(1,9)</position>
+	</node>
+	
+	<!-- Mail -->
+	<mail>
+		<type>ConveyorNormal</type>
+		<position>(0,0)</position>
+	</mail>
+</level>

@@ -25,6 +25,9 @@ package packpan
 		public static const DIR_RIGHT:int = 0;
 		public static const DIR_DOWN:int = 90;
 		
+		public static const NODE_CONV_NORMAL:String = "packpan.nodes.NodeConveyorNormal";
+		public static const NODE_BIN_NORMAL:String = "packpan.nodes.NodeBin";
+		
 		public function PP() 
 		{
 			// -- Static class; do not instantiate

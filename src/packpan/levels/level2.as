@@ -22,14 +22,14 @@ package packpan.levels
 		{
 			timeLeft = 15 * SECOND;
 			
-			addLineOfNodes(new Point(2, 9), new Point(8, 9), "packpan.nodes.NodeConveyorNormal").setDirection(PP.DIR_DOWN);
-			addLineOfNodes(new Point(2, 3), new Point(2, 8), "packpan.nodes.NodeConveyorNormal").setDirection(PP.DIR_LEFT);
-			addLineOfNodes(new Point(5, 2), new Point(5, 8), "packpan.nodes.NodeConveyorNormal").setDirection(PP.DIR_RIGHT);
-			addLineOfNodes(new Point(8, 10), new Point(8, 14), "packpan.nodes.NodeConveyorNormal").setDirection(PP.DIR_RIGHT);
+			addLineOfNodes(new Point(2, 9), new Point(8, 9), PP.NODE_CONV_NORMAL).setDirection(PP.DIR_DOWN);
+			addLineOfNodes(new Point(2, 3), new Point(2, 8), PP.NODE_CONV_NORMAL).setDirection(PP.DIR_LEFT);
+			addLineOfNodes(new Point(5, 2), new Point(5, 8), PP.NODE_CONV_NORMAL).setDirection(PP.DIR_RIGHT);
+			addLineOfNodes(new Point(8, 10), new Point(8, 14), PP.NODE_CONV_NORMAL).setDirection(PP.DIR_RIGHT);
 			
-			addNode(new Point(1, 9), "packpan.nodes.NodeBin");
-			addNode(new Point(9, 9), "packpan.nodes.NodeBin");
-			addNode(new Point(5, 1), "packpan.nodes.NodeBin");
+			addNode(new Point(1, 9), PP.NODE_BIN_NORMAL);
+			addNode(new Point(9, 9), PP.NODE_BIN_NORMAL);
+			addNode(new Point(5, 1), PP.NODE_BIN_NORMAL);
 			
 			mailArray.push(new MailNormal(this, "default", new Point(2, 7)));
 			mailArray.push(new MailNormal(this, "default", new Point(5, 3)));
