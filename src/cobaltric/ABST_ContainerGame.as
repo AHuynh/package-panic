@@ -4,6 +4,8 @@
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
+	import flash.net.URLLoader;
+	import flash.net.URLRequest;
 	import flash.ui.Mouse;
 	import flash.utils.getDefinitionByName;
 	import packpan.nodes.*;
@@ -45,14 +47,20 @@
 		public var timerTick:Number = 1000 / 30;		// time to take off per frame
 		public const SECOND:int = 1000;
 		public var timeLeft:Number = 30 * SECOND;
-	
-		public function ABST_ContainerGame(eng:Engine)
+		
+		// XML
+		private var levelXML:String;
+		private var loader:URLLoader;
+		private var xml:XML;
+		
+		public function ABST_ContainerGame(eng:Engine, _levelXML:String = "../xml/level_basic.xml")
 		{
 			super();
 			engine = eng;
+			levelXML = _levelXML;
 			addEventListener(Event.ADDED_TO_STAGE, init);		// set up after added to stage
 
-			gameState = PP.GAME_IDLE;
+			gameState = PP.GAME_SETUP;
 		}
 		
 		/**
@@ -95,10 +103,91 @@
 			nodeArray = [];
 			mailArray = [];
 			
-			trace(this);
+			// start loading XML
+			loader = new URLLoader();
+			loader.load(new URLRequest(levelXML));
+			loader.addEventListener(Event.COMPLETE, parseXML);
 			
 			// call level-specific constructir
-			setUp();
+			//setUp();
+		}
+		/**
+		 * Create the level based off of XML.
+		 * @param	e		the captured Event, used to access XML data
+		 */
+		private function parseXML(e:Event):void
+		{
+			loader.removeEventListener(Event.COMPLETE, parseXML);
+			
+			xml = new XML(e.target.data);
+			gameState = PP.GAME_IDLE;
+			
+			if (xml.node.length() > 0)
+				for (var i:int = 0; i < xml.node.length(); i++)
+				{
+					trace("\nNODE: " + xml.node[i]);
+					// -- <type>
+					var typeRaw:String = xml.node[i].type;
+					var type:String;
+					switch (typeRaw.toLowerCase())
+					{
+						case "bin_normal":		type = PP.NODE_BIN_NORMAL;		break;
+						case "conveyor_normal":	type = PP.NODE_CONV_NORMAL;		break;
+						default:				trace("WARNING: invalid type in XML! (" + typeRaw + ")");
+					}
+					// -- <facing>
+					var dirRaw:String = xml.node[i].facing;
+					var dir:int = PP.DIR_NONE;
+					if (dirRaw)
+						switch (dirRaw.toLowerCase())
+						{
+							case "up":		dir = PP.DIR_UP;	break;
+							case "left":	dir = PP.DIR_LEFT;	break;
+							case "right":	dir = PP.DIR_RIGHT;	break;
+							case "down":	dir = PP.DIR_DOWN;	break;
+							default:		trace("WARNING: invalid direction in XML! (" + dirRaw + ")");
+						}
+					// -- <position>
+					var posRaw:String = xml.node[i].position;
+					var posX:int = int(posRaw.substring(1, posRaw.indexOf(",")));
+					if (posX < 0 || posX > PP.DIM_X_MAX)
+						trace("WARNING: position of X is not within 0-" + PP.DIM_X_MAX + "! (" + posX + ")");
+					var posY:int = int(posRaw.substring(posRaw.indexOf(",") + 1, posRaw.indexOf(")")));
+					if (posY < 0 || posX > PP.DIM_Y_MAX)
+						trace("WARNING: position of Y is not within 0-" + PP.DIM_Y_MAX + "! (" + posY + ")");
+					// -- <tail>
+					var tailRaw:String = xml.node[i].tail;
+					if (tailRaw)
+					{
+						var tailX:int = int(tailRaw.substring(1, tailRaw.indexOf(",")));
+						if (tailX < 0 || tailX > PP.DIM_X_MAX)
+							trace("WARNING: tail of X is not within 0-" + PP.DIM_X_MAX + "! (" + tailX + ")");
+						var tailY:int = int(tailRaw.substring(tailRaw.indexOf(",") + 1, tailRaw.indexOf(")")));
+						if (tailY < 0 || tailY > PP.DIM_Y_MAX)
+							trace("WARNING: tail of Y is not within 0-" + PP.DIM_Y_MAX + "! (" + tailY + ")");
+					}
+					// -- <clickable>
+					var clickableRaw:String = xml.node[i].clickable;
+					var clickable:Boolean;
+					if (!clickableRaw)
+						clickable = false;
+					else
+						clickable = (clickableRaw == "true");
+
+					switch (String(xml.node[i].@type))
+					{
+						case "single":
+							addNode(new Point(posX, posY), type, dir, clickable);
+							trace("Created " + type + " at " + posX + "," + posY);
+						break;
+						case "group":
+							addLineOfNodes(new Point(posX, posY), new Point(tailX, tailY), type, clickable).setDirection(dir);
+							trace("Created " + type + " from " + posX + "," + posY + " to " + tailX + "," + tailY);
+						break;
+					}
+				}
+			else
+				trace("WARNING: No nodes found in XML!");
 		}
 		
 		/**
@@ -108,20 +197,6 @@
 		protected function setUp():void
 		{
 			// -- OVERRIDE THIS FUNCTION
-			
-			// -- examples
-			
-			// create a single conveyor at (2, 9) facing UP
-			//addNode(new Point(2, 9), PP.NODE_CONV_NORMAL, PP.DIR_UP, true);
-			
-			// create a long conveyor from (4, 4) to (4, 9) facing RIGHT
-			//addLineOfNodes(new Point(4, 4), new Point(4, 9), PP.NODE_CONV_NORMAL).setDirection(PP.DIR_RIGHT);
-			
-			// create a bin at (3, 3)
-			//addNode(new Point(3, 3), PP.NODE_BIN_NORMAL);
-
-			// create a package at (2, 0)
-			//mailArray.push(new MailNormal(this, "default", new Point(2, 0)));
 		}
 		
 		/**
@@ -129,6 +204,7 @@
 		 * @param	position	the grid coordinates to place this Node
 		 * @param	type		the name of the ABST_Node class to use - must use fully-qualified name! (with package .'s) 
 		 * @param	facing		OPTIONAL - the direction to face this Node in
+		 * @param	clickable	OPTIONAL - if this Node can be clicked
 		 * @return				the Node created
 		 */
 		public function addNode(position:Point, type:String, facing:int = PP.DIR_NONE, clickable:Boolean = false):ABST_Node
@@ -138,12 +214,12 @@
 											   new Point(position.x, position.y), facing, clickable);
 									
 			// error check
-			if (position.x < 0 || position.x > 9)
+			if (position.x < 0 || position.x > PP.DIM_X_MAX)
 			{
 				trace("ERROR: in addNode, x = " + position.x + " is out of bounds!");
 				return null;
 			}
-			if (position.y < 0 || position.y > 14)
+			if (position.y < 0 || position.y > PP.DIM_Y_MAX)
 			{
 				trace("ERROR: in addNode, y = " + position.y + " is out of bounds!");
 				return null;
@@ -159,9 +235,10 @@
 		 * @param	start		the grid coordinates to begin from
 		 * @param	end			the grid coordinates to end at, inclusive
 		 * @param	type		the name of the ABST_Node class to use - must use fully-qualified name! (with package .'s)
+		 * @param	clickable	OPTIONAL - if this NodeGroup can be clicked
 		 * @return				the NodeGroup created
 		 */
-		public function addLineOfNodes(start:Point, end:Point, type:String):NodeGroup
+		public function addLineOfNodes(start:Point, end:Point, type:String, clickable:Boolean = false):NodeGroup
 		{
 			var ng:NodeGroup = new NodeGroup();
 			
@@ -171,7 +248,7 @@
 			for (var i:int = start.x; i <= end.x; i++)
 				for (var j:int = start.y; j <= end.y; j++)
 				{
-					node = new NodeClass(this, type.substring(type.lastIndexOf('.') + 1), new Point(i, j), PP.DIR_NONE, false);
+					node = new NodeClass(this, type.substring(type.lastIndexOf('.') + 1), new Point(i, j), PP.DIR_NONE, clickable);
 					nodeGrid[i][j] = node;
 					nodeArray.push(node);
 					ng.addToGroup(node);
@@ -216,6 +293,9 @@
 			// TODO use custom cursor
 			//cursor.x = mouseX - game.x;
 			//cursor.y = mouseY - game.y;
+			
+			if (gameState == PP.GAME_SETUP)		// if still loading, quit
+				return completed;
 			
 			// step all Mail
 			var i:int;

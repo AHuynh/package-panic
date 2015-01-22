@@ -91,7 +91,7 @@
 			{
 				case 0:
 					var GameClass:Class = getDefinitionByName(levelClass) as Class;
-					container = new GameClass(this);
+					container = new GameClass(this, "../xml/level_basic.xml");
 					gameState = 1;
 					//SoundPlayer.stopBGM();
 				break;

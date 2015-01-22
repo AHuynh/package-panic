@@ -2,26 +2,28 @@
 <level>
 	<!-- Nodes -->
 	<node type="single">
-		<type>ConveyorNormal</type>
+		<type>Conveyor_Normal</type>
 		<position>(0,0)</position>
 		<facing>UP</facing>
+		<clickable>true</clickable>
 	</node>
 	<node type="group">
-		<type>ConveyorNormal</type>
+		<type>Conveyor_Normal</type>
 		<position>(1,0)</position>
 		<tail>(1,8)</tail>
 		<facing>LEFT</facing>
+		<clickable>true</clickable>
 	</node>
 	
 	<!-- Bins -->
 	<node type="single">
-		<type>BinNormal</type>
+		<type>Bin_Normal</type>
 		<position>(1,9)</position>
 	</node>
 	
 	<!-- Mail -->
 	<mail>
-		<type>ConveyorNormal</type>
+		<type>Mail_Normal</type>
 		<position>(0,0)</position>
 	</mail>
 </level>

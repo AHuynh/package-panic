@@ -13,7 +13,7 @@ package packpan.levels
 	public class level1 extends ABST_ContainerGame 
 	{
 		
-		public function level1(eng:Engine) 
+		public function level1(eng:Engine, _levelXML:String = "../xml/level_basic.xml") 
 		{
 			super(eng);
 		}

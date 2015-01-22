@@ -51,7 +51,7 @@ package packpan.mails
 			{
 				if (!cg.nodeGrid[position.x][position.y])		// if we are not on a Node (we are on the ground)
 				{
-					trace("OFF NODE!");
+					trace("OFF NODE!");			// TODO falling-off animation
 					mailState = PP.MAIL_FAILURE;
 				}
 				else							// otherwise have the Node in this grid square affect us
@@ -71,7 +71,7 @@ package packpan.mails
 		{
 			// black magic; but don't worry, I'm a Super High-School Level Electromage
 			var p:Point = new Point(Math.round((mc_mail.y + 260) / 50), Math.round((mc_mail.x + 350) / 50));
-			if (p.x < 0 || p.x > 10 || p.y < 0 || p.y > 15)
+			if (p.x < 0 || p.x > PP.DIM_X_MAX || p.y < 0 || p.y > PP.DIM_Y_MAX)
 			{
 				mailState = PP.MAIL_FAILURE;
 				p = null;
