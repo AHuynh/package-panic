@@ -1,6 +1,6 @@
 package packpan.mails
 {
-	import cobaltric.ABST_ContainerGame;
+	import cobaltric.ContainerGame;
 	import flash.display.MovieClip;
 	import flash.geom.Point;
 	import packpan.PP;
@@ -10,7 +10,7 @@ package packpan.mails
 	 */
 	public class ABST_Mail 
 	{
-		protected var cg:ABST_ContainerGame;		// the parent container
+		protected var cg:ContainerGame;		// the parent container
 		
 		public var type:String;						// the name of this Mail
 		public var position:Point;					// the current grid square of this Mail (0-indexed, origin top-left, L/R is x, U/D is y)
@@ -24,7 +24,7 @@ package packpan.mails
 		 * @param	_type		the type of this mail (String)
 		 * @param	_position	the starting grid location of this mail (Point)
 		 */
-		public function ABST_Mail(_cg:ABST_ContainerGame, _type:String, _position:Point) 
+		public function ABST_Mail(_cg:ContainerGame, _type:String, _position:Point) 
 		{
 			cg = _cg;
 			type = _type;
@@ -51,10 +51,9 @@ package packpan.mails
 			{
 				if (!cg.nodeGrid[position.x][position.y])		// if we are not on a Node (we are on the ground)
 				{
-					trace("OFF NODE!");			// TODO falling-off animation
-					mailState = PP.MAIL_FAILURE;
+					mailState = PP.MAIL_FAILURE;	// TODO falling-off animation
 				}
-				else							// otherwise have the Node in this grid square affect us
+				else								// otherwise have the Node in this grid square affect us
 					cg.nodeGrid[position.x][position.y].affectMail(this);
 			}
 				  

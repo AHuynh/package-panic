@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<level>
+	<!-- Nodes -->
+	<node type="group">
+		<type>Conveyor_Normal</type>
+		<position>2,9</position>
+		<tail>8,9</tail>
+		<facing>DOWN</facing>
+		<clickable>true</clickable>
+	</node>
+	<node type="group">
+		<type>Conveyor_Normal</type>
+		<position>2,3</position>
+		<tail>2,8</tail>
+		<facing>LEFT</facing>
+		<clickable>true</clickable>
+	</node>
+	<node type="group">
+		<type>Conveyor_Normal</type>
+		<position>5,2</position>
+		<tail>5,8</tail>
+		<facing>RIGHT</facing>
+		<clickable>true</clickable>
+	</node>
+	<node type="group">
+		<type>Conveyor_Normal</type>
+		<position>8,10</position>
+		<tail>8,14</tail>
+		<facing>RIGHT</facing>
+		<clickable>true</clickable>
+	</node>
+	
+	<!-- Bins -->
+	<node type="single">
+		<type>Bin_Normal</type>
+		<position>1,9</position>
+	</node>
+	<node type="single">
+		<type>Bin_Normal</type>
+		<position>9,9</position>
+	</node>
+	<node type="single">
+		<type>Bin_Normal</type>
+		<position>5,1</position>
+	</node>
+	
+	<!-- Mail -->
+	<mail>
+		<type>Mail_Normal</type>
+		<position>2,7</position>
+	</mail>
+	<mail>
+		<type>Mail_Normal</type>
+		<position>5,3</position>
+	</mail>
+	<mail>
+		<type>Mail_Normal</type>
+		<position>8,10</position>
+	</mail>
+	
+	<!-- Time -->
+	<time>
+		<value>0:15</value>
+	</time>
+</level>

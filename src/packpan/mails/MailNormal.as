@@ -1,6 +1,6 @@
 package packpan.mails
 {
-	import cobaltric.ABST_ContainerGame;
+	import cobaltric.ContainerGame;
 	import flash.geom.Point;
 	
 	/**
@@ -9,7 +9,7 @@ package packpan.mails
 	 */
 	public class MailNormal extends ABST_Mail 
 	{
-		public function MailNormal(_cg:ABST_ContainerGame, _type:String, _position:Point) 
+		public function MailNormal(_cg:ContainerGame, _type:String, _position:Point) 
 		{
 			super(_cg, _type, _position);
 		}	

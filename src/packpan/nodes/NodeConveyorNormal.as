@@ -1,6 +1,6 @@
 package packpan.nodes 
 {
-	import cobaltric.ABST_ContainerGame;
+	import cobaltric.ContainerGame;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import packpan.mails.ABST_Mail;
@@ -16,15 +16,14 @@ package packpan.nodes
 	{
 		public var speed:Number = 2;		// how fast to move Mail
 		
-		public function NodeConveyorNormal(_cg:ABST_ContainerGame, _type:String, _position:Point,
+		public function NodeConveyorNormal(_cg:ContainerGame, _type:String, _position:Point,
 										   _facing:int, _clickable:Boolean)
 		{
 			super(_cg, _type, _position, _facing, _clickable);
 			
 			if (facing != PP.DIR_NONE)
 				mc_node.rotation = facing;
-			else
-				trace("WARNING: NodeConveyorNormal at " + position + " has no facing!");
+			// if facing is not set here, it must be set through a NodeGroup
 		}
 		
 		/**

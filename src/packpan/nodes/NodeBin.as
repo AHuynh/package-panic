@@ -1,6 +1,6 @@
 package packpan.nodes 
 {
-	import cobaltric.ABST_ContainerGame;
+	import cobaltric.ContainerGame;
 	import flash.geom.ColorTransform;
 	import packpan.mails.ABST_Mail;
 	import packpan.PP;
@@ -17,7 +17,7 @@ package packpan.nodes
 		public var occupied:Boolean;		// if true, there is a package in this bin
 		public var colorGoal:uint;			// the color this bin accepts
 		
-		public function NodeBin(_cg:ABST_ContainerGame, _type:String, _position:Point,
+		public function NodeBin(_cg:ContainerGame, _type:String, _position:Point,
 								_facing:int, _clickable:Boolean, _colorGoal:uint = 0x0e3a5d) 
 		{
 			super(_cg, "NodeBin", _position, PP.DIR_NONE, false);

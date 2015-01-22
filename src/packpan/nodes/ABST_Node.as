@@ -1,6 +1,6 @@
 package packpan.nodes
 {
-	import cobaltric.ABST_ContainerGame;
+	import cobaltric.ContainerGame;
 	import flash.display.MovieClip;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
@@ -12,7 +12,7 @@ package packpan.nodes
 	 */
 	public class ABST_Node 
 	{		
-		protected var cg:ABST_ContainerGame;	// the parent container
+		protected var cg:ContainerGame;	// the parent container
 		
 		public var type:String;					// the label to use for this Node
 		public var clickable:Boolean;			// if a mouse click manipulates this Node
@@ -21,7 +21,7 @@ package packpan.nodes
 		
 		public var mc_node:MovieClip;			// the node MovieClip (SWC)
 
-		public function ABST_Node(_cg:ABST_ContainerGame, _type:String, _position:Point,
+		public function ABST_Node(_cg:ContainerGame, _type:String, _position:Point,
 								  _facing:int, _clickable:Boolean)
 		{
 			cg = _cg;

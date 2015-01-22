@@ -9,20 +9,19 @@
 	import flash.ui.Mouse;
 	import flash.utils.getDefinitionByName;
 	import packpan.nodes.*;
-	import packpan.levels.*;
 	import packpan.mails.*;
 	import packpan.PP;
 	
 	/**
-	 * Primary game container and controller. The base class for a level.
-	 * Extended into packpan/levels to create a level. (Override setUp()).
+	 * Primary game container and controller.
+	 * Reads the given XML file to create a level.
 	 * 
 	 * Note:	All coordinates except actual locations (i.e. movieclip.x) use x as up/down, y as left/right.
 	 * 			Origin is top-left corner. Dimensions are 10 x 15 (indexes 0-9 and 0-14)
 	 * 
 	 * @author Alexander Huynh
 	 */
-	public class ABST_ContainerGame extends ABST_Container
+	public class ContainerGame extends ABST_Container
 	{		
 		public var engine:Engine;					// the game's Engine
 		public var game:SWC_ContainerGame;			// the Game SWC, containing all the base assets
@@ -53,7 +52,7 @@
 		private var loader:URLLoader;
 		private var xml:XML;
 		
-		public function ABST_ContainerGame(eng:Engine, _levelXML:String = "../xml/level_basic.xml")
+		public function ContainerGame(eng:Engine, _levelXML:String)
 		{
 			super();
 			engine = eng;
@@ -107,10 +106,8 @@
 			loader = new URLLoader();
 			loader.load(new URLRequest(levelXML));
 			loader.addEventListener(Event.COMPLETE, parseXML);
-			
-			// call level-specific constructir
-			//setUp();
 		}
+
 		/**
 		 * Create the level based off of XML.
 		 * @param	e		the captured Event, used to access XML data
@@ -120,12 +117,12 @@
 			loader.removeEventListener(Event.COMPLETE, parseXML);
 			
 			xml = new XML(e.target.data);
-			gameState = PP.GAME_IDLE;
+			
+			var i:int;
 			
 			if (xml.node.length() > 0)
-				for (var i:int = 0; i < xml.node.length(); i++)
+				for (i = 0; i < xml.node.length(); i++)
 				{
-					trace("\nNODE: " + xml.node[i]);
 					// -- <type>
 					var typeRaw:String = xml.node[i].type;
 					var type:String;
@@ -149,20 +146,20 @@
 						}
 					// -- <position>
 					var posRaw:String = xml.node[i].position;
-					var posX:int = int(posRaw.substring(1, posRaw.indexOf(",")));
+					var posX:int = int(posRaw.substring(0, posRaw.indexOf(",")));
 					if (posX < 0 || posX > PP.DIM_X_MAX)
 						trace("WARNING: position of X is not within 0-" + PP.DIM_X_MAX + "! (" + posX + ")");
-					var posY:int = int(posRaw.substring(posRaw.indexOf(",") + 1, posRaw.indexOf(")")));
+					var posY:int = int(posRaw.substring(posRaw.indexOf(",") + 1));
 					if (posY < 0 || posX > PP.DIM_Y_MAX)
 						trace("WARNING: position of Y is not within 0-" + PP.DIM_Y_MAX + "! (" + posY + ")");
 					// -- <tail>
 					var tailRaw:String = xml.node[i].tail;
 					if (tailRaw)
 					{
-						var tailX:int = int(tailRaw.substring(1, tailRaw.indexOf(",")));
+						var tailX:int = int(tailRaw.substring(0, tailRaw.indexOf(",")));
 						if (tailX < 0 || tailX > PP.DIM_X_MAX)
 							trace("WARNING: tail of X is not within 0-" + PP.DIM_X_MAX + "! (" + tailX + ")");
-						var tailY:int = int(tailRaw.substring(tailRaw.indexOf(",") + 1, tailRaw.indexOf(")")));
+						var tailY:int = int(tailRaw.substring(tailRaw.indexOf(",") + 1));
 						if (tailY < 0 || tailY > PP.DIM_Y_MAX)
 							trace("WARNING: tail of Y is not within 0-" + PP.DIM_Y_MAX + "! (" + tailY + ")");
 					}
@@ -188,15 +185,41 @@
 				}
 			else
 				trace("WARNING: No nodes found in XML!");
-		}
-		
-		/**
-		 * Level-specific constructor
-		 * Override this in individual levels to create Node and Mail objects.
-		 */
-		protected function setUp():void
-		{
-			// -- OVERRIDE THIS FUNCTION
+				
+				
+			if (xml.mail.length() > 0)
+				for (i = 0; i < xml.mail.length(); i++)
+				{
+					// -- <type>
+					var typeRawM:String = xml.mail[i].type;
+					var ClassM:Class;
+					switch (typeRawM.toLowerCase())
+					{
+						case "mail_normal":		ClassM = MailNormal;		break;
+						case "mail_png":		ClassM = MailPNG;			break;
+						default:				trace("WARNING: invalid type in XML! (" + typeRawM + ")");
+					}
+					// -- <position>
+					var posRawM:String = xml.mail[i].position;
+					var posXM:int = int(posRawM.substring(0, posRawM.indexOf(",")));
+					if (posXM < 0 || posXM > PP.DIM_X_MAX)
+						trace("WARNING: position of X is not within 0-" + PP.DIM_X_MAX + "! (" + posXM + ")");
+					var posYM:int = int(posRawM.substring(posRawM.indexOf(",") + 1));
+					if (posYM < 0 || posXM > PP.DIM_Y_MAX)
+						trace("WARNING: position of Y is not within 0-" + PP.DIM_Y_MAX + "! (" + posYM + ")");
+					
+					mailArray.push(new ClassM(this, "default", new Point(posXM, posYM)));
+					trace("Created " + ClassM + " at " + posXM + "," + posYM);
+				}
+			else
+				trace("WARNING: No mail found in XML!");
+				
+			// -- <time>
+			var timeRaw:String = xml.time.value;
+			timeLeft = int(timeRaw.substring(0, 1)) * 60000 + int(timeRaw.substring(2)) * 1000;
+			
+			// start the game
+			gameState = PP.GAME_IDLE;
 		}
 		
 		/**
@@ -244,6 +267,20 @@
 			
 			var NodeClass:Class = getDefinitionByName(type) as Class;
 			var node:ABST_Node;
+			
+			// ensure we go from low to high for the for loops to work
+			if (start.x > end.x)
+			{
+				var tx:int = start.x;
+				start.x = end.x;
+				end.x = tx;
+			}
+			if (start.y > end.y)
+			{
+				var ty:int = start.y;
+				start.y = end.y;
+				end.y = ty;
+			}
 			
 			for (var i:int = start.x; i <= end.x; i++)
 				for (var j:int = start.y; j <= end.y; j++)

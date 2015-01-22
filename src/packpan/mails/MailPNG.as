@@ -1,6 +1,6 @@
 package packpan.mails 
 {
-	import cobaltric.ABST_ContainerGame;
+	import cobaltric.ContainerGame;
 	import flash.display.Bitmap;
 	import flash.geom.Point;
 	
@@ -17,7 +17,7 @@ package packpan.mails
 		private var imgLayer:Class;									// needed to instantiate your image
 		private var img:Bitmap = new imgLayer();					// reference to your image
 		
-		public function MailPNG(_cg:ABST_ContainerGame, _type:String, _position:Point) 
+		public function MailPNG(_cg:ContainerGame, _type:String, _position:Point) 
 		{
 			super(_cg, _type, _position);
 

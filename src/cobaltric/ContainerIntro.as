@@ -21,7 +21,7 @@
 			super();
 			eng = _eng;
 			
-			// set up the MovieCLlip
+			// set up the MovieCllip
 			swc = new SWC_ContainerMenu();
 			addChild(swc);
 			
@@ -41,8 +41,9 @@
 			for (var i:int = 0; i < levelButtons.length; i++)
 			{
 				levelButtons[i].hitbox.addEventListener(MouseEvent.CLICK, onLevel);
-				levelButtons[i].tf_level.text = (i + 1);						// TODO get actual level name
-				levelButtons[i].visible = i < eng.levelArray[page].length;		// hide button if level doesn't exist for this index
+				levelButtons[i].visible = eng.levelArray[page][i];				// hide button if level doesn't exist for this index
+				if (levelButtons[i].visible)
+					levelButtons[i].tf_level.text = eng.levelArray[page][i][1];
 			}
 		}
 		
@@ -93,10 +94,10 @@
 			levelButtons = null;
 			
 			// get the index of the button clicked (0-15)
-			var ind:int = int(MovieClip(e.target).parent.name.substring(6));		// level_xx
+			var ind:int = int(MovieClip(e.target).parent.name.substring(6));		// name is in format of level_xx
 			
-			// get the name of the level AS3 file
-			eng.levelClass = "packpan.levels." + eng.levelArray[page][ind];
+			// get the name of the level XML file
+			eng.levelName = eng.levelArray[page][ind][0];
 			
 			// flag this Container as completed for the Engine
 			completed = true;
