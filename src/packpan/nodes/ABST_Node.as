@@ -4,6 +4,7 @@ package packpan.nodes
 	import flash.display.MovieClip;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
+	import flash.geom.ColorTransform;
 	import packpan.mails.ABST_Mail;
 	import packpan.PP;
 	/**
@@ -18,23 +19,37 @@ package packpan.nodes
 		public var clickable:Boolean;			// if a mouse click manipulates this Node
 		public var position:Point;				// the grid square of this Node (0-indexed, origin top-left, L/R is x, U/D is y)
 		public var facing:int;					// which direction this Node is facing, if applicable (PP constant)
+		public var colored:Boolean				// whether or not the Node is colored
+		public var color:uint;					// the color of the Node if applicable
 		
 		public var mc_node:MovieClip;			// the node MovieClip (SWC)
 
 		public function ABST_Node(_cg:ContainerGame, _type:String, _position:Point,
-								  _facing:int, _clickable:Boolean)
+								  _facing:int, _clickable:Boolean, _color:uint = 0x000001)
 		{
 			cg = _cg;
 			type = _type;
 			position = _position;
 			facing = _facing;
 			clickable = _clickable;
+			color = _color;
 			
 			mc_node = cg.addChildToGrid(new Node(), position);		// add the Node MovieClip to the game
 			mc_node.gotoAndStop(type);
 			
 			if (clickable)		// attach a listener for clicks if this Node can be clicked
 				mc_node.addEventListener(MouseEvent.CLICK, onClick);
+
+			if (color == 0x000001) {
+				colored = false;
+			} else {
+				colored = true;
+				var ct:ColorTransform = new ColorTransform();
+				ct.redMultiplier = int(color / 0x10000) / 255;
+				ct.greenMultiplier = int(color % 0x10000 / 0x100) / 255;
+				ct.blueMultiplier = color % 0x100 / 255;
+				mc_node.transform.colorTransform = ct;
+			}
 		}
 		
 		/**

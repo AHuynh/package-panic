@@ -17,9 +17,9 @@ package packpan.nodes
 		public var speed:Number = 2;		// how fast to move Mail
 		
 		public function NodeConveyorNormal(_cg:ContainerGame, _type:String, _position:Point,
-										   _facing:int, _clickable:Boolean)
+										   _facing:int, _clickable:Boolean, _color:uint)
 		{
-			super(_cg, _type, _position, _facing, _clickable);
+			super(_cg, _type, _position, _facing, _clickable, _color);
 			
 			if (facing != PP.DIR_NONE)
 				mc_node.rotation = facing;

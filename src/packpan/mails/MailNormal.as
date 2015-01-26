@@ -9,9 +9,9 @@ package packpan.mails
 	 */
 	public class MailNormal extends ABST_Mail 
 	{
-		public function MailNormal(_cg:ContainerGame, _type:String, _position:Point) 
+		public function MailNormal(_cg:ContainerGame, _type:String, _position:Point, _color:uint) 
 		{
-			super(_cg, _type, _position);
+			super(_cg, _type, _position, _color);
 		}	
 	}
 }
