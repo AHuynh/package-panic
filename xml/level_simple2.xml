@@ -34,10 +34,12 @@
 	<node type="single">
 		<type>Bin_Normal</type>
 		<position>1,9</position>
+		<color>0x0000ff</color>
 	</node>
 	<node type="single">
 		<type>Bin_Normal</type>
 		<position>9,9</position>
+		<color>0xffff00</color>
 	</node>
 	<node type="single">
 		<type>Bin_Normal</type>
@@ -48,6 +50,7 @@
 	<mail>
 		<type>Mail_Normal</type>
 		<position>2,7</position>
+		<color>0xffff00</color>
 	</mail>
 	<mail>
 		<type>Mail_Normal</type>
@@ -56,10 +59,11 @@
 	<mail>
 		<type>Mail_Normal</type>
 		<position>8,10</position>
+		<color>0x0000ff</color>
 	</mail>
 	
 	<!-- Time -->
 	<time>
-		<value>0:15</value>
+		<value>0:30</value>
 	</time>
 </level>
