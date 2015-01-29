@@ -2,7 +2,7 @@
 <level>
 	<!-- Nodes -->
 	<node type="single">
-		<type>Conveyor_Normal</type>
+		<type>Conveyor_Rotate</type>
 		<position>0,0</position>
 		<facing>DOWN</facing>
 		<clickable>true</clickable>
