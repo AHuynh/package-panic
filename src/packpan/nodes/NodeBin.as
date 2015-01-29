@@ -1,6 +1,7 @@
 package packpan.nodes 
 {
 	import cobaltric.ContainerGame;
+	import flash.display.ColorCorrection;
 	import flash.geom.ColorTransform;
 	import packpan.mails.ABST_Mail;
 	import packpan.PP;
@@ -15,19 +16,12 @@ package packpan.nodes
 		private const SPEED:int = 2;		// speed at which to move Mail towards the center
 		
 		public var occupied:Boolean;		// if true, there is a package in this bin
-		public var colorGoal:uint;			// the color this bin accepts
 		
 		public function NodeBin(_cg:ContainerGame, _type:String, _position:Point,
-								_facing:int, _clickable:Boolean, _colorGoal:uint = 0x0e3a5d) 
+								_facing:int, _clickable:Boolean, _color:uint = 0x000001) 
 		{
-			super(_cg, "NodeBin", _position, PP.DIR_NONE, false);
-			colorGoal = _colorGoal;
+			super(_cg, "NodeBin", _position, PP.DIR_NONE, false, _color);
 			occupied = false;
-			
-			/*var ct:ColorTransform = new ColorTransform();
-			ct.alphaMultiplier = .5;
-			ct.color = colorGoal;
-			mc_node.transform.colorTransform = ct;*/
 		}
 		
 		/**
@@ -59,12 +53,20 @@ package packpan.nodes
 			else
 				mail.mc_mail.y += SPEED;
 				
-			// success state
+			// once snapping animation is complete
 			if (mail.mc_mail.x == mc_node.x && mail.mc_mail.y == mc_node.y)
 			{
 				mail.mc_mail.scaleX = mail.mc_mail.scaleY = .8;
-				mail.mailState = PP.MAIL_SUCCESS;
 				occupied = true;
+				// Fail if mail and bin are colored and colors don't match.
+				if (colored && mail.colored) {
+					if (color != mail.color) {
+						mail.mailState = PP.MAIL_FAILURE;
+						return;
+					}
+				}
+				// success state
+				mail.mailState = PP.MAIL_SUCCESS;
 			}
 		}
 	}
