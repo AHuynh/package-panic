@@ -347,61 +347,66 @@
 			
 			if (gameState == PP.GAME_SETUP)		// if still loading, quit
 				return completed;
-			
-			// step all Mail
-			var i:int;
-			var mail:ABST_Mail;
-			var allSuccess:Boolean = true;					// check if all Mail is in success state
-			if (mailArray.length > 0)
-				for (i = mailArray.length - 1; i >= 0; i--)
+
+			// if the game state is idle, update everything and check for failure/success
+			if(gameState == PP.GAME_IDLE) {
+
+				// update the timer and check for time up
+				timeLeft = Math.max(timeLeft-timerTick,0);
+				game.tf_timer.text = updateTime();
+				if(timeLeft == 0)
+					setStateFailure();
+
+				// step all nodes
+				for(var node:ABST_Node in nodeArray)
+					node.step(); // TODO - check return state	
+
+				// step all Mail
+				var allSuccess:Boolean = true;			// check if all Mail is in success state				
+				var mailFailure:Boolean = false;		// check if any Mail is in failure state
+				for (var mail:ABST_Mail in mailArray)
 				{
-					mail = mailArray[i];
-					var mailState:int = mail.step();		// step this Mail
-					if (gameState != PP.GAME_FAILURE)		// check and update states
-					{
-						if (mailState != PP.MAIL_SUCCESS)
-							allSuccess = false;
-						if (mailState == PP.MAIL_FAILURE)
-						{
-							gameState = PP.GAME_FAILURE;		// TODO move this code into a method
-							game.mc_overlay.visible = true;
-							game.mc_overlay.tf_status.text = "Failure!";
-							timerTick = 0;			// halt the timer
-							
-						}
-					}
+					var mailState:int = mail.step();
+					if (mailState != PP.MAIL_SUCCESS)
+						allSuccess = false;
+					if (mailState == PP.MAIL_FAILURE)
+						mailFailure = true;
 				}
-			if (allSuccess && timerTick != 0)	// if all packages are in a success state and the level isn't done
-			{
-				gameState = PP.GAME_SUCCESS;	// mark the level as done
-				game.mc_overlay.visible = true;	// show the success screen
-				timerTick = 0;					// halt the timer
+
+				// check for success
+				if (allSuccess)
+					setStateSuccess();
+
+				// check for failure
+				if(mailFailure)
+					setStateFailure();
+
 			}
-			
-			// step all (non-null) Node
-			var node:ABST_Node;
-			if (nodeArray.length > 0)
-				for (i = nodeArray.length - 1; i >= 0; i--)
-				{
-					node = nodeArray[i];
-					node.step();			// TODO check return state
-				}
-			
-			// update the timer
-			timeLeft -= timerTick;
-			if (timeLeft <= 0)
-			{
-				timeLeft = 0;				// TODO move this code into a method
-				gameState = PP.GAME_FAILURE;
-				game.mc_overlay.visible = true;
-				game.mc_overlay.tf_status.text = "Failure!";
-			}
-						
-			game.tf_timer.text = updateTime();
-				
+
 			//puzzleStep();
 			
 			return completed;
+		}
+
+		/**
+		 * Changes the state of the game to success and displays the overlay
+		 */
+		private function setStateSuccess():void
+		{
+			gameState = PP.GAME_SUCCESS;	// mark the level as done
+			game.mc_overlay.visible = true;	// show the success screen
+			timerTick = 0;			// halt the timer
+		}
+
+		/**
+		 * Changes the state of the game to failure and displays the overlay
+		 */
+		private function setStateFailure():void
+		{
+			gameState = PP.GAME_FAILURE;	// mark the level as done
+			game.mc_overlay.visible = true;	// show the failure screen
+			game.mc_overlay.tf_status.text = "Failure!";
+			timerTick = 0;			// halt the timer
 		}
 		
 		/**
