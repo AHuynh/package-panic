@@ -16,8 +16,7 @@
 	 * Primary game container and controller.
 	 * Reads the given XML file to create a level.
 	 * 
-	 * Note:	All coordinates except actual locations (i.e. movieclip.x) use x as up/down, y as left/right.
-	 * 			Origin is top-left corner. Dimensions are 10 x 15 (indexes 0-9 and 0-14)
+	 * Note:	All coordinates use x positive right and y positive down. GRID_ORIGIN is the top left corner.
 	 * 
 	 * @author Alexander Huynh
 	 */
@@ -27,8 +26,7 @@
 		public var game:SWC_ContainerGame;			// the Game SWC, containing all the base assets
 
 		public var cursor:MovieClip;
-		
-		// grid is 10 (x as up/down) by 15 (y as left/right)
+
 		protected const GRID_ORIGIN:Point = new Point(-350, -260);		// actual x, y coordinate of upper-left grid
 		protected const GRID_SIZE:int = 50;								// grid square size
 		
@@ -94,10 +92,10 @@
 			
 			// setup node and mail arrays
 			nodeGrid = [];
-			for (var i:int = 0; i < 10; i++)		// going top to bottom
+			for (var i:int = 0; i <= PP.DIM_X_MAX; i++)		// going from left to right
 			{
 				nodeGrid.push([]);
-				for (var j:int = 0; j < 15; j++)	// going from left to right		
+				for (var j:int = 0; j <= PP.DIM_Y_MAX; j++)	// going from top to bottom		
 					nodeGrid[i].push(null);
 			}
 			nodeArray = [];
@@ -317,8 +315,8 @@
 		 */
 		public function addChildToGrid(mc:MovieClip, position:Point):MovieClip
 		{
-			mc.x = GRID_ORIGIN.x + GRID_SIZE * position.y;
-			mc.y = GRID_ORIGIN.y + GRID_SIZE * position.x;
+			mc.x = GRID_ORIGIN.x + GRID_SIZE * position.x;
+			mc.y = GRID_ORIGIN.y + GRID_SIZE * position.y;
 			game.holder_main.addChild(mc);
 			return mc;
 		}
@@ -358,13 +356,13 @@
 					setStateFailure();
 
 				// step all nodes
-				for(var node:ABST_Node in nodeArray)
+				for each (var node:ABST_Node in nodeArray)
 					node.step(); // TODO - check return state	
 
 				// step all Mail
 				var allSuccess:Boolean = true;			// check if all Mail is in success state				
 				var mailFailure:Boolean = false;		// check if any Mail is in failure state
-				for (var mail:ABST_Mail in mailArray)
+				for each (var mail:ABST_Mail in mailArray)
 				{
 					var mailState:int = mail.step();
 					if (mailState != PP.MAIL_SUCCESS)

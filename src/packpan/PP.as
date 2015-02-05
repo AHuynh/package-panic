@@ -9,8 +9,8 @@ package packpan
 	 */
 	public class PP 
 	{
-		public static const DIM_X_MAX:int = 9;			// max x (U/D) index of grid
-		public static const DIM_Y_MAX:int = 14;			// max y (L/R) index of grid
+		public static const DIM_X_MAX:int = 14;			// max x (U/D) index of grid
+		public static const DIM_Y_MAX:int = 9;			// max y (L/R) index of grid
 		
 		public static const DIM_LEVEL_MAX:int = 14;		// max index on level page
 		

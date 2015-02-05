@@ -84,7 +84,7 @@ package packpan.mails
 		protected function findGridSquare():Point
 		{
 			// black magic; but don't worry, I'm a Super High-School Level Electromage
-			var p:Point = new Point(Math.round((mc_mail.y + 260) / 50), Math.round((mc_mail.x + 350) / 50));
+			var p:Point = new Point(Math.round((mc_mail.x - cg.GRID_ORIGIN.x) / cg.GRID_SIZE), Math.round((mc_mail.y - cg.GRID_ORIGIN.y) / cg.GRID_SIZE));
 			if (p.x < 0 || p.x > PP.DIM_X_MAX || p.y < 0 || p.y > PP.DIM_Y_MAX)
 			{
 				mailState = PP.MAIL_FAILURE;
