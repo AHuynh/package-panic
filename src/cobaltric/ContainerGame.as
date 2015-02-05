@@ -11,6 +11,7 @@
 	import packpan.nodes.*;
 	import packpan.mails.*;
 	import packpan.PP;
+	import packpan.PhysicsUtils;
 	
 	/**
 	 * Primary game container and controller.
@@ -26,9 +27,6 @@
 		public var game:SWC_ContainerGame;			// the Game SWC, containing all the base assets
 
 		public var cursor:MovieClip;
-
-		protected const GRID_ORIGIN:Point = new Point(-350, -260);		// actual x, y coordinate of upper-left grid
-		protected const GRID_SIZE:int = 50;								// grid square size
 		
 		public var nodeGrid:Array;		// a 2D array containing either null or the node at a (x, y) grid location
 		public var nodeArray:Array;		// a 1D array containing all ABST_Node objects
@@ -150,7 +148,7 @@
 					if (posX < 0 || posX > PP.DIM_X_MAX)
 						trace("WARNING: position of X is not within 0-" + PP.DIM_X_MAX + "! (" + posX + ")");
 					var posY:int = int(posRaw.substring(posRaw.indexOf(",") + 1));
-					if (posY < 0 || posX > PP.DIM_Y_MAX)
+					if (posY < 0 || posY > PP.DIM_Y_MAX)
 						trace("WARNING: position of Y is not within 0-" + PP.DIM_Y_MAX + "! (" + posY + ")");
 					// -- <tail>
 					var tailRaw:String = xml.node[i].tail;
@@ -210,7 +208,7 @@
 					if (posXM < 0 || posXM > PP.DIM_X_MAX)
 						trace("WARNING: position of X is not within 0-" + PP.DIM_X_MAX + "! (" + posXM + ")");
 					var posYM:int = int(posRawM.substring(posRawM.indexOf(",") + 1));
-					if (posYM < 0 || posXM > PP.DIM_Y_MAX)
+					if (posYM < 0 || posYM > PP.DIM_Y_MAX)
 						trace("WARNING: position of Y is not within 0-" + PP.DIM_Y_MAX + "! (" + posYM + ")");
 					// -- <color>
 					var colorRawM:String = xml.mail[i].color;
@@ -315,8 +313,9 @@
 		 */
 		public function addChildToGrid(mc:MovieClip, position:Point):MovieClip
 		{
-			mc.x = GRID_ORIGIN.x + GRID_SIZE * position.x;
-			mc.y = GRID_ORIGIN.y + GRID_SIZE * position.y;
+			var positionOnScreen:Point = PhysicsUtils.gridToScreen(position);
+			mc.x = positionOnScreen.x;
+			mc.y = positionOnScreen.y;
 			game.holder_main.addChild(mc);
 			return mc;
 		}

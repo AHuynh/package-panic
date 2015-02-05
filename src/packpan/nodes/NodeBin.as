@@ -4,7 +4,9 @@ package packpan.nodes
 	import flash.display.ColorCorrection;
 	import flash.geom.ColorTransform;
 	import packpan.mails.ABST_Mail;
+	import packpan.PhysicalEntity;
 	import packpan.PP;
+	import packpan.PhysicsUtils;
 	import flash.geom.Point;
 	
 	/**
@@ -13,7 +15,9 @@ package packpan.nodes
 	 */
 	public class NodeBin extends ABST_Node 
 	{
-		private const SPEED:int = 2;		// speed at which to move Mail towards the center
+		//the strength of the forces that center the package
+		private var friction:Number = 5;
+		private var spring:Number = 10;
 		
 		public var occupied:Boolean;		// if true, there is a package in this bin
 		
@@ -37,25 +41,14 @@ package packpan.nodes
 				return;		// TODO failure state
 			}
 			
-			// move towards center of x axis, snapping when close
-			if (Math.abs(mail.mc_mail.x - mc_node.x) < 5)
-				mail.mc_mail.x = mc_node.x;
-			else if (mail.mc_mail.x > mc_node.x)
-				mail.mc_mail.x -= SPEED;
-			else
-				mail.mc_mail.x += SPEED;
-			
-			// move towards center of y axis, snapping when close
-			if (Math.abs(mail.mc_mail.y - mc_node.y) < 5)
-				mail.mc_mail.y = mc_node.y;
-			else if (mail.mc_mail.y > mc_node.y)
-				mail.mc_mail.y -= SPEED;
-			else
-				mail.mc_mail.y += SPEED;
+			mail.state.addForce(PhysicsUtils.linearDamping(friction, mail.state, new Point(0, 0)));
+			mail.state.addForce(PhysicsUtils.linearRestoreX(spring, mail.state, position.x));
+			mail.state.addForce(PhysicsUtils.linearRestoreY(spring, mail.state, position.y));
 				
 			// once snapping animation is complete
-			if (mail.mc_mail.x == mc_node.x && mail.mc_mail.y == mc_node.y)
+			if (Point.distance(position,mail.state.position) < 0.1)
 			{
+				mail.state = new PhysicalEntity(1, new Point(position.x, position.y));
 				mail.mc_mail.scaleX = mail.mc_mail.scaleY = .8;
 				occupied = true;
 				// Fail if mail and bin are colored and colors don't match.

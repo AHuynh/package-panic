@@ -5,6 +5,8 @@ package packpan.mails
 	import flash.geom.Point;
 	import flash.geom.ColorTransform;
 	import packpan.PP;
+	import packpan.PhysicalEntity;
+	import packpan.PhysicsUtils;
 	/**
 	 * An abstract Mail object, extended to become items that are manipulated by nodes.
 	 * @author Alexander Huynh
@@ -17,6 +19,8 @@ package packpan.mails
 		public var position:Point;					// the current grid square of this Mail (0-indexed, origin top-left, L/R is x, U/D is y)
 		public var colored:Boolean;					// whether or not this Mail is colored
 		public var color:uint;						// the color of this Mail if applicable
+
+		public var state:PhysicalEntity;	//The physical state of the mail
 		
 		public var mc_mail:MovieClip;				// the mail MovieClip (SWC)
 		public var mailState:int = PP.MAIL_IDLE;	// is this mail in a idle, success, or failure state
@@ -33,6 +37,8 @@ package packpan.mails
 			type = _type;
 			position = _position;
 			color = _color;
+			
+			state = new PhysicalEntity(1,new Point(_position.x,_position.y));
 			
 			mc_mail = cg.addChildToGrid(new Mail(), position);		// create the MovieClip
 			mc_mail.stop();											// default mail frame
@@ -71,7 +77,13 @@ package packpan.mails
 				else								// otherwise have the Node in this grid square affect us
 					cg.nodeGrid[position.x][position.y].affectMail(this);
 			}
-				  
+
+			//step the physics and update the position of the movie clip
+			state.step(cg.timerTick/1000);
+			var mc_pos:Point = PhysicsUtils.gridToScreen(state.position);
+			mc_mail.x = mc_pos.x;
+			mc_mail.y = mc_pos.y;
+
 			return mailState;
 		}
 		
@@ -83,8 +95,7 @@ package packpan.mails
 		 */
 		protected function findGridSquare():Point
 		{
-			// black magic; but don't worry, I'm a Super High-School Level Electromage
-			var p:Point = new Point(Math.round((mc_mail.x - cg.GRID_ORIGIN.x) / cg.GRID_SIZE), Math.round((mc_mail.y - cg.GRID_ORIGIN.y) / cg.GRID_SIZE));
+			var p:Point = new Point(Math.round(state.position.x),Math.round(state.position.y));
 			if (p.x < 0 || p.x > PP.DIM_X_MAX || p.y < 0 || p.y > PP.DIM_Y_MAX)
 			{
 				mailState = PP.MAIL_FAILURE;
