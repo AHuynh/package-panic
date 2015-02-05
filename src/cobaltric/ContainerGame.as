@@ -11,13 +11,13 @@
 	import packpan.nodes.*;
 	import packpan.mails.*;
 	import packpan.PP;
+	import packpan.PhysicsUtils;
 	
 	/**
 	 * Primary game container and controller.
 	 * Reads the given XML file to create a level.
 	 * 
-	 * Note:	All coordinates except actual locations (i.e. movieclip.x) use x as up/down, y as left/right.
-	 * 			Origin is top-left corner. Dimensions are 10 x 15 (indexes 0-9 and 0-14)
+	 * Note:	All coordinates use x positive right and y positive down. GRID_ORIGIN is the top left corner.
 	 * 
 	 * @author Alexander Huynh
 	 */
@@ -27,10 +27,6 @@
 		public var game:SWC_ContainerGame;			// the Game SWC, containing all the base assets
 
 		public var cursor:MovieClip;
-		
-		// grid is 10 (x as up/down) by 15 (y as left/right)
-		protected const GRID_ORIGIN:Point = new Point(-350, -260);		// actual x, y coordinate of upper-left grid
-		protected const GRID_SIZE:int = 50;								// grid square size
 		
 		public var nodeGrid:Array;		// a 2D array containing either null or the node at a (x, y) grid location
 		public var nodeArray:Array;		// a 1D array containing all ABST_Node objects
@@ -94,10 +90,10 @@
 			
 			// setup node and mail arrays
 			nodeGrid = [];
-			for (var i:int = 0; i < 10; i++)		// going top to bottom
+			for (var i:int = 0; i <= PP.DIM_X_MAX; i++)		// going from left to right
 			{
 				nodeGrid.push([]);
-				for (var j:int = 0; j < 15; j++)	// going from left to right		
+				for (var j:int = 0; j <= PP.DIM_Y_MAX; j++)	// going from top to bottom		
 					nodeGrid[i].push(null);
 			}
 			nodeArray = [];
@@ -152,7 +148,7 @@
 					if (posX < 0 || posX > PP.DIM_X_MAX)
 						trace("WARNING: position of X is not within 0-" + PP.DIM_X_MAX + "! (" + posX + ")");
 					var posY:int = int(posRaw.substring(posRaw.indexOf(",") + 1));
-					if (posY < 0 || posX > PP.DIM_Y_MAX)
+					if (posY < 0 || posY > PP.DIM_Y_MAX)
 						trace("WARNING: position of Y is not within 0-" + PP.DIM_Y_MAX + "! (" + posY + ")");
 					// -- <tail>
 					var tailRaw:String = xml.node[i].tail;
@@ -212,7 +208,7 @@
 					if (posXM < 0 || posXM > PP.DIM_X_MAX)
 						trace("WARNING: position of X is not within 0-" + PP.DIM_X_MAX + "! (" + posXM + ")");
 					var posYM:int = int(posRawM.substring(posRawM.indexOf(",") + 1));
-					if (posYM < 0 || posXM > PP.DIM_Y_MAX)
+					if (posYM < 0 || posYM > PP.DIM_Y_MAX)
 						trace("WARNING: position of Y is not within 0-" + PP.DIM_Y_MAX + "! (" + posYM + ")");
 					// -- <color>
 					var colorRawM:String = xml.mail[i].color;
@@ -317,8 +313,9 @@
 		 */
 		public function addChildToGrid(mc:MovieClip, position:Point):MovieClip
 		{
-			mc.x = GRID_ORIGIN.x + GRID_SIZE * position.y;
-			mc.y = GRID_ORIGIN.y + GRID_SIZE * position.x;
+			var positionOnScreen:Point = PhysicsUtils.gridToScreen(position);
+			mc.x = positionOnScreen.x;
+			mc.y = positionOnScreen.y;
 			game.holder_main.addChild(mc);
 			return mc;
 		}
@@ -347,61 +344,66 @@
 			
 			if (gameState == PP.GAME_SETUP)		// if still loading, quit
 				return completed;
-			
-			// step all Mail
-			var i:int;
-			var mail:ABST_Mail;
-			var allSuccess:Boolean = true;					// check if all Mail is in success state
-			if (mailArray.length > 0)
-				for (i = mailArray.length - 1; i >= 0; i--)
+
+			// if the game state is idle, update everything and check for failure/success
+			if(gameState == PP.GAME_IDLE) {
+
+				// update the timer and check for time up
+				timeLeft = Math.max(timeLeft-timerTick,0);
+				game.tf_timer.text = updateTime();
+				if(timeLeft == 0)
+					setStateFailure();
+
+				// step all nodes
+				for each (var node:ABST_Node in nodeArray)
+					node.step(); // TODO - check return state	
+
+				// step all Mail
+				var allSuccess:Boolean = true;			// check if all Mail is in success state				
+				var mailFailure:Boolean = false;		// check if any Mail is in failure state
+				for each (var mail:ABST_Mail in mailArray)
 				{
-					mail = mailArray[i];
-					var mailState:int = mail.step();		// step this Mail
-					if (gameState != PP.GAME_FAILURE)		// check and update states
-					{
-						if (mailState != PP.MAIL_SUCCESS)
-							allSuccess = false;
-						if (mailState == PP.MAIL_FAILURE)
-						{
-							gameState = PP.GAME_FAILURE;		// TODO move this code into a method
-							game.mc_overlay.visible = true;
-							game.mc_overlay.tf_status.text = "Failure!";
-							timerTick = 0;			// halt the timer
-							
-						}
-					}
+					var mailState:int = mail.step();
+					if (mailState != PP.MAIL_SUCCESS)
+						allSuccess = false;
+					if (mailState == PP.MAIL_FAILURE)
+						mailFailure = true;
 				}
-			if (allSuccess && timerTick != 0)	// if all packages are in a success state and the level isn't done
-			{
-				gameState = PP.GAME_SUCCESS;	// mark the level as done
-				game.mc_overlay.visible = true;	// show the success screen
-				timerTick = 0;					// halt the timer
+
+				// check for success
+				if (allSuccess)
+					setStateSuccess();
+
+				// check for failure
+				if(mailFailure)
+					setStateFailure();
+
 			}
-			
-			// step all (non-null) Node
-			var node:ABST_Node;
-			if (nodeArray.length > 0)
-				for (i = nodeArray.length - 1; i >= 0; i--)
-				{
-					node = nodeArray[i];
-					node.step();			// TODO check return state
-				}
-			
-			// update the timer
-			timeLeft -= timerTick;
-			if (timeLeft <= 0)
-			{
-				timeLeft = 0;				// TODO move this code into a method
-				gameState = PP.GAME_FAILURE;
-				game.mc_overlay.visible = true;
-				game.mc_overlay.tf_status.text = "Failure!";
-			}
-						
-			game.tf_timer.text = updateTime();
-				
+
 			//puzzleStep();
 			
 			return completed;
+		}
+
+		/**
+		 * Changes the state of the game to success and displays the overlay
+		 */
+		private function setStateSuccess():void
+		{
+			gameState = PP.GAME_SUCCESS;	// mark the level as done
+			game.mc_overlay.visible = true;	// show the success screen
+			timerTick = 0;			// halt the timer
+		}
+
+		/**
+		 * Changes the state of the game to failure and displays the overlay
+		 */
+		private function setStateFailure():void
+		{
+			gameState = PP.GAME_FAILURE;	// mark the level as done
+			game.mc_overlay.visible = true;	// show the failure screen
+			game.mc_overlay.tf_status.text = "Failure!";
+			timerTick = 0;			// halt the timer
 		}
 		
 		/**

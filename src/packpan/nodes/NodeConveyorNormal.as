@@ -5,6 +5,7 @@ package packpan.nodes
 	import flash.geom.Point;
 	import packpan.mails.ABST_Mail;
 	import packpan.PP;
+	import packpan.PhysicsUtils;
 	
 	/**
 	 * A normal conveyor belt that moves Mail in the direction it is facing.
@@ -14,8 +15,10 @@ package packpan.nodes
 	 */
 	public class NodeConveyorNormal extends ABST_Node 
 	{
-		public var speed:Number = 2;		// how fast to move Mail
-		
+		protected var speed:Number = 1;
+		protected var friction:Number = 10; //the strength of the friction
+		protected var spring: Number = 60; //the strength of the "spring" that centers the package
+	
 		public function NodeConveyorNormal(_cg:ContainerGame, _type:String, _position:Point,
 										   _facing:int, _clickable:Boolean, _color:uint)
 		{
@@ -60,45 +63,36 @@ package packpan.nodes
 		 */
 		override public function affectMail(mail:ABST_Mail):void
 		{
+			//provide a force to make the velocity of the mail match that of the conveyor
 			switch (facing)
 			{
 				case PP.DIR_RIGHT:
-					mail.mc_mail.x += speed;										// primary movement
-					if (Math.abs(mail.mc_mail.y - mc_node.y) < 1.5 * speed)			// center the package for other axis
-						mail.mc_mail.y = mc_node.y;
-					else if (mail.mc_mail.y > mc_node.y)
-						mail.mc_mail.y -= speed;
-					else
-						mail.mc_mail.y += speed;
+					mail.state.addForce(PhysicsUtils.linearDamping(friction,mail.state,new Point(speed,0)));
 				break;
 				case PP.DIR_UP:
-					if (Math.abs(mail.mc_mail.x - mc_node.x) < 1.5 * speed)
-						mail.mc_mail.x = mc_node.x;
-					else if (mail.mc_mail.x > mc_node.x)
-						mail.mc_mail.x -= speed;
-					else
-						mail.mc_mail.x += speed;
-					mail.mc_mail.y -= speed;
+					mail.state.addForce(PhysicsUtils.linearDamping(friction,mail.state,new Point(0,-speed)));
 				break;
 				case PP.DIR_LEFT:
-					mail.mc_mail.x -= speed;
-					if (Math.abs(mail.mc_mail.y - mc_node.y) < 1.5 * speed)
-						mail.mc_mail.y = mc_node.y;
-					else if (mail.mc_mail.y > mc_node.y)
-						mail.mc_mail.y -= speed;
-					else
-						mail.mc_mail.y += speed;
+					mail.state.addForce(PhysicsUtils.linearDamping(friction,mail.state,new Point(-speed,0)));
 				break;
 				case PP.DIR_DOWN:
-					if (Math.abs(mail.mc_mail.x - mc_node.x) < 1.5 * speed)
-						mail.mc_mail.x = mc_node.x;
-					else if (mail.mc_mail.x > mc_node.x)
-						mail.mc_mail.x -= speed;
-					else
-						mail.mc_mail.x += speed;
-					mail.mc_mail.y += speed;
+					mail.state.addForce(PhysicsUtils.linearDamping(friction,mail.state,new Point(0,speed)));
 				break;
 				default:
+					trace("WARNING: NodeConveyorNormal at " + position + " has an invalid facing!");
+			}
+			//provide a force to "spring" the position to the middle of the conveyor
+			switch (facing)
+			{
+				case PP.DIR_RIGHT:
+				case PP.DIR_LEFT:
+					mail.state.addForce(PhysicsUtils.linearRestoreY(spring,mail.state,position.y));
+				break;
+				case PP.DIR_UP:
+				case PP.DIR_DOWN:
+					mail.state.addForce(PhysicsUtils.linearRestoreX(spring,mail.state,position.x));
+				break;
+			default:
 					trace("WARNING: NodeConveyorNormal at " + position + " has an invalid facing!");
 			}
 		}

@@ -7,10 +7,16 @@ package packpan
 	 * 
 	 * @author Alexander Huynh
 	 */
+
+	import flash.geom.Point;
+
 	public class PP 
 	{
-		public static const DIM_X_MAX:int = 9;			// max x (U/D) index of grid
-		public static const DIM_Y_MAX:int = 14;			// max y (L/R) index of grid
+		public static const GRID_ORIGIN:Point = new Point(-350, -260);		// actual x, y coordinate of upper-left grid
+		public static const GRID_SIZE:int = 50;								// grid square size
+
+		public static const DIM_X_MAX:int = 14;			// max x (U/D) index of grid
+		public static const DIM_Y_MAX:int = 9;			// max y (L/R) index of grid
 		
 		public static const DIM_LEVEL_MAX:int = 14;		// max index on level page
 		

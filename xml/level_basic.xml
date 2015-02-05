@@ -9,8 +9,8 @@
 	</node>
 	<node type="group">
 		<type>Conveyor_Normal</type>
-		<position>1,0</position>
-		<tail>1,8</tail>
+		<position>0,1</position>
+		<tail>8,1</tail>
 		<facing>RIGHT</facing>
 		<clickable>true</clickable>
 	</node>
@@ -18,7 +18,7 @@
 	<!-- Bins -->
 	<node type="single">
 		<type>Bin_Normal</type>
-		<position>1,9</position>
+		<position>9,1</position>
 	</node>
 	
 	<!-- Mail -->

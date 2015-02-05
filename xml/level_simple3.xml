@@ -3,29 +3,29 @@
 	<!-- Nodes -->
 	<node type="group">
 		<type>Conveyor_Normal</type>
-		<position>0,7</position>
-		<tail>3,7</tail>
+		<position>7,0</position>
+		<tail>7,3</tail>
 		<facing>DOWN</facing>
 		<clickable>true</clickable>
 	</node>
 	<node type="group">
 		<type>Conveyor_Normal</type>
-		<position>4,9</position>
-		<tail>4,14</tail>
+		<position>9,4</position>
+		<tail>14,4</tail>
 		<facing>LEFT</facing>
 		<clickable>true</clickable>
 	</node>
 	<node type="group">
 		<type>Conveyor_Normal</type>
-		<position>6,8</position>
-		<tail>9,8</tail>
+		<position>8,6</position>
+		<tail>8,9</tail>
 		<facing>UP</facing>
 		<clickable>true</clickable>
 	</node>
 	<node type="group">
 		<type>Conveyor_Normal</type>
-		<position>5,0</position>
-		<tail>5,7</tail>
+		<position>0,5</position>
+		<tail>7,5</tail>
 		<facing>RIGHT</facing>
 		<clickable>true</clickable>
 	</node>
@@ -33,37 +33,37 @@
 	<!-- Bins -->
 	<node type="single">
 		<type>Bin_Normal</type>
-		<position>4,7</position>
+		<position>7,4</position>
 	</node>
 	<node type="single">
 		<type>Bin_Normal</type>
-		<position>4,8</position>
+		<position>8,4</position>
 	</node>
 	<node type="single">
 		<type>Bin_Normal</type>
-		<position>5,7</position>
+		<position>7,5</position>
 	</node>
 	<node type="single">
 		<type>Bin_Normal</type>
-		<position>5,8</position>
+		<position>8,5</position>
 	</node>
 	
 	<!-- Mail -->
 	<mail>
 		<type>Mail_PNG</type>
-		<position>0,7</position>
+		<position>7,0</position>
 	</mail>
 	<mail>
 		<type>Mail_PNG</type>
-		<position>4,14</position>
+		<position>14,4</position>
 	</mail>
 	<mail>
 		<type>Mail_Normal</type>
-		<position>9,8</position>
+		<position>8,9</position>
 	</mail>
 	<mail>
 		<type>Mail_Normal</type>
-		<position>5,0</position>
+		<position>0,5</position>
 	</mail>
 	
 	<!-- Time -->
