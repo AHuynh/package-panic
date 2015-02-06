@@ -16,6 +16,7 @@ package packpan.nodes
 		[Embed(source="../../../img/barrier.png")]
 		private var imgLayer:Class;
 		private var img:Bitmap = new imgLayer();
+		private var relativePosition:Point;
 		
 		public function NodeBarrier(_cg:ContainerGame, _type:String, _position:Point,
 										   _facing:int, _clickable:Boolean, _color:uint) 
@@ -27,9 +28,18 @@ package packpan.nodes
 		}
 		
 		override public function affectMail(mail:ABST_Mail):void
-		{		
-			mail.state.velocity.x *= -1;
-			mail.state.velocity.y *= -1;
+		{
+			//mail.state.velocity.x *= -1;
+			//mail.state.velocity.y *= -1;
+			relativePosition = new Point(position.x - mail.state.position.x, position.y - mail.state.position.y);
+			if (relativePosition.x > 0 && mail.state.velocity.x > 0 || 
+			    relativePosition.x < 0 && mail.state.velocity.x < 0) {
+				mail.state.velocity.x *= -1;
+			}
+			if (relativePosition.y > 0 && mail.state.velocity.y > 0 || 
+			    relativePosition.y < 0 && mail.state.velocity.y < 0) {
+				mail.state.velocity.y *= -1;
+			}
 		}
 	}
 
