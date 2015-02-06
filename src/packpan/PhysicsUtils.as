@@ -14,7 +14,7 @@ package packpan
 	{
 		/**
 		 *	Computes a linear damping force.
-		 *	@param	strength	the strength of the damping
+		 *	@param	strength	the strength of the damping (1~10)
 		 *	@param	state	the physics entity of the object being damped
 		 *	@param	velocityRelative	the velocity of the space, e.g, the underlying conveyor
 		 *	@returns	the damping force
@@ -86,7 +86,7 @@ package packpan
 		public function PhysicsUtils() 
 		{
 			// -- Static class; do not instantiate
-			trace("WARNING: DO NOT INSTANTIATE PP!");
+			trace("WARNING: DO NOT INSTANTIATE PhysicsUtils!");
 		}
 	}
 }

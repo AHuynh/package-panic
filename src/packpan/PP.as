@@ -37,8 +37,8 @@ package packpan
 		
 		public static const NODE_CONV_NORMAL:String = "packpan.nodes.NodeConveyorNormal";
 		public static const NODE_CONV_ROTATE:String = "packpan.nodes.NodeConveyorRotate";
+		public static const NODE_AIRTABLE:String = "packpan.nodes.NodeAirTable";
 		public static const NODE_BIN_NORMAL:String = "packpan.nodes.NodeBin";
-		
 		
 		public function PP() 
 		{

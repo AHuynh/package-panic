@@ -37,6 +37,7 @@
 		// allows getDefinitionByName to work
 		private var ncn:NodeConveyorNormal;
 		private var ncr:NodeConveyorRotate;
+		private var at:NodeAirTable;
 		private var nb:NodeBin;
 		
 		// timer
@@ -128,6 +129,7 @@
 						case "bin_normal":		type = PP.NODE_BIN_NORMAL;		break;
 						case "conveyor_normal":	type = PP.NODE_CONV_NORMAL;		break;
 						case "conveyor_rotate":	type = PP.NODE_CONV_ROTATE;		break;
+						case "air_table":		type = PP.NODE_AIRTABLE;		break;
 						default:				trace("WARNING: invalid type in XML! (" + typeRaw + ")");
 					}
 					// -- <facing>

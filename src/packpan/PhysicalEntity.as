@@ -7,7 +7,7 @@ package packpan
 	 */
 	public class PhysicalEntity 
 	{
-		public var mass:Number;
+		public var mass:Number;		// (standard/default 1)
 		public var position:Point;
 		public var velocity:Point;
 		public var force:Point;
