@@ -35,7 +35,11 @@ package packpan.nodes
 			color = _color;
 			
 			mc_node = cg.addChildToGrid(new Node(), position);		// add the Node MovieClip to the game
-			mc_node.gotoAndStop(type);
+			try {
+				mc_node.gotoAndStop(type);
+			} catch (e:ArgumentError) {
+				trace("Sprite not found: " + type);
+			}
 			
 			if (clickable)		// attach a listener for clicks if this Node can be clicked
 				mc_node.addEventListener(MouseEvent.CLICK, onClick);
