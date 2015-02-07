@@ -9,6 +9,7 @@ package packpan
 	 */
 
 	import flash.geom.Point;
+	import packpan.mails.ABST_Mail;
 
 	public class PhysicsUtils
 	{
@@ -55,6 +56,69 @@ package packpan
 				0,
 				strength*(y-state.position.y)
 			);
+		}
+
+		/**
+		 *	Computes an inverse power law force
+		 *	@param	strength	the coefficient of the power law
+		 *	@param	state	the physics state of the object being restored
+		 *	@param	origin	the origin of the attractor
+		 *	@param	power	the power (positive for decreasing with distance)
+		 *	@returns	the power law force
+		 */
+		public static function inversePower(strength:Number, state:PhysicalEntity, origin:Point, pow:Number):Point
+		{
+			var diff:Point = origin.subtract(state.position);
+			var length:Number = diff.length;
+			diff.normalize(1); //set the lenth to 1 to use as direction
+			if(length < 0.1) return new Point(0.0,0.0); //prevent huge forces near origin
+			return new Point(
+				strength*diff.x/Math.pow(length,pow),
+				strength*diff.y/Math.pow(length,pow)
+			);
+		}
+
+		/**
+		 *	Reduces a list of mail objects to those with their center in a rectangular region.
+		 *	@param	mails	an array of mail objects to cull from
+		 *	@param	upperleft	the upper left corner of the rectangle
+		 *	@param	lowerright	the lower right corner of the rectangle
+		 *	@returns	an array of mail objects that are within the culling region
+		 */
+		public static function cullRectangle(mails:Array, upperleft:Point, lowerright:Point):Array
+		{
+			var result:Array = [];
+			for each(var mail:ABST_Mail in mails)
+			{
+				if(upperleft.x <= mail.state.position.x &&
+				   mail.state.position.x < lowerright.x &&
+				   upperleft.y <= mail.state.position.y &&
+				   mail.state.position.y < lowerright.y)
+				{
+					result[result.length] = mail;
+				}
+			}
+			return result;
+		}
+
+		/**
+		 *	Reduces a list of mail objects to those with their center in a rectangular region.
+		 *	@param	mails	an array of mail objects to cull from
+		 *	@param	center	the center of the circle
+		 *	@param	radius	the radius of the circle
+		 *	@returns	an array of mail objects that are within the culling region
+		 */
+		public static function cullCircle(mails:Array, center:Point, radius:Number):Array
+		{
+			var result:Array = [];
+                        for each(var mail:ABST_Mail in mails)
+                        {
+                                if(mail.state.position.subtract(center).length <= radius)
+                                {
+                                        result[result.length] = mail;
+                                }
+                        }
+                        return result;
 		}
 
 		/**
