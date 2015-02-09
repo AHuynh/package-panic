@@ -1,6 +1,7 @@
 package packpan.nodes 
 {
 	import cobaltric.ContainerGame;
+	import flash.display.Bitmap;
 	import flash.display.ColorCorrection;
 	import flash.geom.ColorTransform;
 	import packpan.mails.ABST_Mail;
@@ -21,11 +22,20 @@ package packpan.nodes
 		
 		public var occupied:Boolean;		// if true, there is a package in this bin
 		
+		[Embed(source="../../../img/binNormal.png")]
+		private var imgLayer:Class;
+		private var img:Bitmap = new imgLayer();	
+		
 		public function NodeBin(_cg:ContainerGame, _type:String, _position:Point,
 								_facing:int, _clickable:Boolean, _color:uint = 0x000001) 
 		{
 			super(_cg, "NodeBin", _position, PP.DIR_NONE, false, _color);
 			occupied = false;
+			
+			mc_node.gotoAndStop("none");		// switch to an empty mail image
+			mc_node.addChild(img);				// add the new image
+			img.x -= img.width * .5;			// center the image
+			img.y -= img.height * .5;
 		}
 		
 		/**
