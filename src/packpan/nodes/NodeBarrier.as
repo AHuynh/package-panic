@@ -17,28 +17,31 @@ package packpan.nodes
 		private var imgLayer:Class;
 		private var img:Bitmap = new imgLayer();
 		private var relativePosition:Point;
+		private var blockedMail:Array;
 		
 		public function NodeBarrier(_cg:ContainerGame, _type:String, _position:Point,
 										   _facing:int, _clickable:Boolean, _color:uint) 
 		{
 			super(_cg, _type, _position, _facing, _clickable, _color);
+			mc_node.gotoAndStop("none");
 			mc_node.addChild(img);
 			img.x -= img.width * .5;
 			img.y -= img.height * .5;
 		}
 		
-		override public function affectMail(mail:ABST_Mail):void
+		override public function step():void
 		{
-			//mail.state.velocity.x *= -1;
-			//mail.state.velocity.y *= -1;
-			relativePosition = new Point(position.x - mail.state.position.x, position.y - mail.state.position.y);
-			if (relativePosition.x > 0 && mail.state.velocity.x > 0 || 
-			    relativePosition.x < 0 && mail.state.velocity.x < 0) {
-				mail.state.velocity.x *= -1;
-			}
-			if (relativePosition.y > 0 && mail.state.velocity.y > 0 || 
-			    relativePosition.y < 0 && mail.state.velocity.y < 0) {
-				mail.state.velocity.y *= -1;
+			blockedMail = PhysicsUtils.cullRectangle(ContainerGame.mailArray, new Point(position.x - .92, position.y - .82), new Point(position.x + .92, position.y + .82));
+			for each (var mail:ABST_Mail in blockedMail) {
+				relativePosition = new Point(position.x - mail.state.position.x, position.y - mail.state.position.y);
+				if (relativePosition.x > 0 && mail.state.velocity.x > 0 || 
+					relativePosition.x < 0 && mail.state.velocity.x < 0) {
+					mail.state.velocity.x *= -1;
+				}
+				if (relativePosition.y > 0 && mail.state.velocity.y > 0 || 
+					relativePosition.y < 0 && mail.state.velocity.y < 0) {
+					mail.state.velocity.y *= -1;
+				}
 			}
 		}
 	}

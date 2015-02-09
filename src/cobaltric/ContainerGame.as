@@ -28,26 +28,23 @@
 
 		public var cursor:MovieClip;
 		
-		public var nodeGrid:Array;		// a 2D array containing either null or the node at a (x, y) grid location
-		public var nodeArray:Array;		// a 1D array containing all ABST_Node objects
-		public var mailArray:Array;		// a 1D array containing all ABST_Mail objects
+		public static var nodeGrid:Array;		// a 2D array containing either null or the node at a (x, y) grid location
+		public static var nodeArray:Array;		// a 1D array containing all ABST_Node objects
+		public static var mailArray:Array;		// a 1D array containing all ABST_Mail objects
 		
-		protected var gameState:int;	// state of game using PP.as constants
+		protected static var gameState:int;		// state of game using PP.as constants
 		
 		// allows getDefinitionByName to work
 		private var ncn:NodeConveyorNormal;
 		private var ncr:NodeConveyorRotate;
-<<<<<<< HEAD
 		private var nbr:NodeBarrier;
-=======
 		private var at:NodeAirTable;
->>>>>>> upstream/master
 		private var nb:NodeBin;
 		
 		// timer
-		public var timerTick:Number = 1000 / 30;		// time to take off per frame
-		public const SECOND:int = 1000;
-		public var timeLeft:Number = 30 * SECOND;
+		public static var timerTick:Number = 1000 / 30;		// time to take off per frame
+		public static const SECOND:int = 1000;
+		public static var timeLeft:Number = 30 * SECOND;
 		
 		// XML
 		private var levelXML:String;
@@ -133,11 +130,8 @@
 						case "bin_normal":		type = PP.NODE_BIN_NORMAL;		break;
 						case "conveyor_normal":	type = PP.NODE_CONV_NORMAL;		break;
 						case "conveyor_rotate":	type = PP.NODE_CONV_ROTATE;		break;
-<<<<<<< HEAD
 						case "barrier":			type = PP.NODE_BARRIER;			break;
-=======
 						case "air_table":		type = PP.NODE_AIRTABLE;		break;
->>>>>>> upstream/master
 						default:				trace("WARNING: invalid type in XML! (" + typeRaw + ")");
 					}
 					// -- <facing>
