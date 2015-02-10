@@ -28,8 +28,8 @@
 
 		public var cursor:MovieClip;
 		
-		public static var nodeGrid:Array;		// a 2D array containing either null or the node at a (x, y) grid location
-		public static var nodeArray:Array;		// a 1D array containing all ABST_Node objects
+		public var nodeGrid:Array;		// a 2D array containing either null or the node at a (x, y) grid location
+		public var nodeArray:Array;		// a 1D array containing all ABST_Node objects
 		public static var mailArray:Array;		// a 1D array containing all ABST_Mail objects
 		
 		protected static var gameState:int;		// state of game using PP.as constants
@@ -42,9 +42,9 @@
 		private var nb:NodeBin;
 		
 		// timer
-		public static var timerTick:Number = 1000 / 30;		// time to take off per frame
-		public static const SECOND:int = 1000;
-		public static var timeLeft:Number = 30 * SECOND;
+		public var timerTick:Number = 1000 / 30;		// time to take off per frame
+		public const SECOND:int = 1000;
+		public var timeLeft:Number = 30 * SECOND;
 		
 		// XML
 		private var levelXML:String;
