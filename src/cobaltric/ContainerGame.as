@@ -31,13 +31,14 @@
 		
 		public var nodeGrid:Array;		// a 2D array containing either null or the node at a (x, y) grid location
 		public var nodeArray:Array;		// a 1D array containing all ABST_Node objects
-		public var mailArray:Array;		// a 1D array containing all ABST_Mail objects
+		public static var mailArray:Array;		// a 1D array containing all ABST_Mail objects
 		
-		protected var gameState:int;	// state of game using PP.as constants
+		protected static var gameState:int;		// state of game using PP.as constants
 		
 		// allows getDefinitionByName to work
 		private var ncn:NodeConveyorNormal;
 		private var ncr:NodeConveyorRotate;
+		private var nbr:NodeBarrier;
 		private var at:NodeAirTable;
 		private var nb:NodeBin;
 		
@@ -104,8 +105,10 @@
 			// ----------------------------------------------------------------------------------------
 			// TODO: remove this hack
 			var temp:Array = [];
+			temp.push(new NodeBarrier(this, 
+				{"type": "NodeBarrier", "x": 1, "y": 5}));
 			temp.push(new NodeConveyorNormal(this, 
-				{"type": "NodeConveyorNormal", "x": 2, "y": 5, "dir": "right", "clickable": "true"}));
+				{"type": "NodeConveyorNormal", "x": 2, "y": 5, "dir": "left", "clickable": "true"}));
 			temp.push(new NodeConveyorNormal(this, 
 				{"type": "NodeConveyorNormal", "x": 3, "y": 5, "dir": "right", "clickable": "true"}));
 			temp.push(new NodeConveyorNormal(this, 
@@ -162,6 +165,7 @@
 						case "bin_normal":		type = PP.NODE_BIN_NORMAL;		break;
 						case "conveyor_normal":	type = PP.NODE_CONV_NORMAL;		break;
 						case "conveyor_rotate":	type = PP.NODE_CONV_ROTATE;		break;
+						case "barrier":			type = PP.NODE_BARRIER;			break;
 						case "air_table":		type = PP.NODE_AIRTABLE;		break;
 						default:				trace("WARNING: invalid type in XML! (" + typeRaw + ")");
 					}

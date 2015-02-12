@@ -29,6 +29,12 @@
 		<slot>3</slot>
 	</puzzle>
 	<puzzle>
+		<id>level_simple4</id>
+		<name>T4</name>
+		<page>1</page>
+		<slot>4</slot>
+	</puzzle>
+	<puzzle>
 		<id>level_basic</id>
 		<name>R1</name>
 		<page>1</page>
