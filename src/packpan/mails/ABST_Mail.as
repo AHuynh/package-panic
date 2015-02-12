@@ -1,6 +1,7 @@
 package packpan.mails
 {
 	import cobaltric.ContainerGame;
+	import flash.display.Bitmap;
 	import flash.display.MovieClip;
 	import flash.geom.Point;
 	import flash.geom.ColorTransform;
@@ -15,26 +16,27 @@ package packpan.mails
 	public class ABST_Mail extends ABST_GameObject
 	{		
 		public var state:PhysicalEntity;			// the physical state of the mail
-		
-		public var mc_mail:MovieClip;				// the mail MovieClip (SWC)
 		public var mailState:int = PP.MAIL_IDLE;	// is this mail in a idle, success, or failure state
 		
 		/**
 		 * Should only be called through super(), never instantiated.
 		 * @param	_cg			The active instance of ContainerGame.
 		 * @param	_json		Object created by parsing JSON.
+		 * @param	_bitmap		Optional: A Bitmap to use for graphics.
 		 */
-		public function ABST_Mail(_cg:ContainerGame, _json:Object) 
+		public function ABST_Mail(_cg:ContainerGame, _json:Object, _bitmap:Bitmap = null) 
 		{
-			super(_cg, _json);
+			mc_object = new Mail();
+			
+			super(_cg, _json, _bitmap);
 
 			state = new PhysicalEntity(1, new Point(position.x, position.y));
 			
-			mc_mail = cg.addChildToGrid(new Mail(), position);		// create the MovieClip
-			mc_mail.stop();											// default mail frame
-			mc_mail.buttonMode = false;								// disable click captures
-			mc_mail.mouseEnabled = false;
-			mc_mail.mouseChildren = false;
+			cg.addChildToGrid(mc_object, position);		// add the MovieClip to the stage
+			mc_object.stop();							// default mail frame
+			mc_object.buttonMode = false;				// disable click captures
+			mc_object.mouseEnabled = false;
+			mc_object.mouseChildren = false;
 		}
 		
 		/**
@@ -61,8 +63,8 @@ package packpan.mails
 			// step the physics and update the position of the movie clip
 			state.step(cg.timerTick * .001);
 			var mc_pos:Point = PhysicsUtils.gridToScreen(state.position);
-			mc_mail.x = mc_pos.x;
-			mc_mail.y = mc_pos.y;
+			mc_object.x = mc_pos.x;
+			mc_object.y = mc_pos.y;
 
 			return mailState;
 		}

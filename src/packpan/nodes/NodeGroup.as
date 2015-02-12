@@ -39,7 +39,7 @@ package packpan.nodes
 			{
 				node = nodeArray[i];
 				node.removeListeners();
-				node.mc_node.addEventListener(MouseEvent.CLICK, onNodeGroup);
+				node.mc_object.addEventListener(MouseEvent.CLICK, onNodeGroup);
 			}
 		}
 		
