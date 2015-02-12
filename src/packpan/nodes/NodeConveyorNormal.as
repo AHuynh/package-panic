@@ -20,9 +20,9 @@ package packpan.nodes
 		protected var spring: Number = 60; //the strength of the "spring" that centers the package
 	
 		public function NodeConveyorNormal(_cg:ContainerGame, _type:String, _position:Point,
-										   _facing:int, _clickable:Boolean, _color:uint)
+										   _facing:int, _clickable:Boolean)
 		{
-			super(_cg, _type, _position, _facing, _clickable, _color);
+			super(_cg, _type, _position, _facing, _clickable);
 			
 			if (facing != PP.DIR_NONE)
 				mc_node.rotation = facing;

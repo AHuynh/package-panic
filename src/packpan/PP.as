@@ -40,10 +40,17 @@ package packpan
 		public static const NODE_AIRTABLE:String = "packpan.nodes.NodeAirTable";
 		public static const NODE_BIN_NORMAL:String = "packpan.nodes.NodeBin";
 		
+		public static const COLOR_NONE:uint = 0xFFFFFF;
+		
 		public function PP() 
 		{
 			// -- Static class; do not instantiate
 			trace("WARNING: DO NOT INSTANTIATE PP!");
 		}
+		
+		public static function getRand(min:Number, max:Number):Number   
+		{  
+			return int(Math.random() * (max - min + 1)) + min;  
+		} 
 	}
 }

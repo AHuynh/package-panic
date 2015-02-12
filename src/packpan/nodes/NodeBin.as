@@ -4,6 +4,7 @@ package packpan.nodes
 	import flash.display.Bitmap;
 	import flash.display.ColorCorrection;
 	import flash.geom.ColorTransform;
+	import packpan.iface.IColorable;
 	import packpan.mails.ABST_Mail;
 	import packpan.PhysicalEntity;
 	import packpan.PP;
@@ -14,28 +15,32 @@ package packpan.nodes
 	 * A goal bin.
 	 * @author Alexander Huynh
 	 */
-	public class NodeBin extends ABST_Node 
+	public class NodeBin extends ABST_Node implements IColorable 
 	{
 		//the strength of the forces that center the package
 		private var friction:Number = 5;
 		private var spring:Number = 10;
 		
-		public var occupied:Boolean;		// if true, there is a package in this bin
+		public var occupied:Boolean;			// if true, there is a package in this bin
+		public var color:uint = PP.COLOR_NONE;	// the color of this bin if it is colored
 		
 		[Embed(source="../../../img/binNormal.png")]
 		private var imgLayer:Class;
 		private var img:Bitmap = new imgLayer();	
 		
 		public function NodeBin(_cg:ContainerGame, _type:String, _position:Point,
-								_facing:int, _clickable:Boolean, _color:uint = 0x000001) 
+								_facing:int, _clickable:Boolean, _color:uint = PP.COLOR_NONE) 
 		{
-			super(_cg, "NodeBin", _position, PP.DIR_NONE, false, _color);
+			super(_cg, "NodeBin", _position, PP.DIR_NONE, false);
 			occupied = false;
 			
 			mc_node.gotoAndStop("none");		// switch to an empty mail image
 			mc_node.addChild(img);				// add the new image
 			img.x -= img.width * .5;			// center the image
 			img.y -= img.height * .5;
+			
+			/*if (_color != PP.COLOR_NONE)
+				setColor(_color);*/
 		}
 		
 		/**
@@ -61,16 +66,45 @@ package packpan.nodes
 				mail.state = new PhysicalEntity(1, new Point(position.x, position.y));
 				mail.mc_mail.scaleX = mail.mc_mail.scaleY = .8;
 				occupied = true;
-				// Fail if mail and bin are colored and colors don't match.
-				if (colored && mail.colored) {
-					if (color != mail.color) {
-						mail.mailState = PP.MAIL_FAILURE;
-						return;
-					}
+				// fail if mail and bin are colored and colors don't match.
+				if (mail is IColorable && isSameColor(IColorable(mail).getColor()))
+				{
+					mail.mailState = PP.MAIL_FAILURE;
+					return;
 				}
 				// success state
 				mail.mailState = PP.MAIL_SUCCESS;
 			}
+		}
+		
+		///////////////////////////////////////////////////////////////////////////////////////////
+		// IColorable
+		///////////////////////////////////////////////////////////////////////////////////////////
+		
+		public function isColored():Boolean
+		{
+			return color != PP.COLOR_NONE;
+		}
+		
+		public function isSameColor(col:uint):Boolean
+		{
+			return !isColored() || color == col;
+		}
+		
+		public function setColor(col:uint):void
+		{
+			var ct:ColorTransform = new ColorTransform();
+			ct.redMultiplier = int(col / 0x10000) / 255;
+			ct.greenMultiplier = int(col % 0x10000 / 0x100) / 255;
+			ct.blueMultiplier = col % 0x100 / 255;
+			mc_node.transform.colorTransform = ct;
+			
+			color = col;
+		}
+		
+		public function getColor():uint
+		{
+			return color;
 		}
 	}
 }
