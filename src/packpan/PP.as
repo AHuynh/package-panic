@@ -48,6 +48,11 @@ package packpan
 		public static const NODE_BIN_NORMAL:String = "packpan.nodes.NodeBin";
 		public static const NODE_MAGNET:String = "packpan.nodes.NodeMagnet";
 		
+		public static const COLOR_NONE:uint = 0xFFFFFF;
+		
+		// arbitary non-negative integer constants for indexing into GameObject.properties
+		public static const PROP_COLOR:int = 0;
+		
 		public function PP() 
 		{
 			// -- Static class; do not instantiate
