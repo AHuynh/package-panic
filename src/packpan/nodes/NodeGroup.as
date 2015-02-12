@@ -83,7 +83,7 @@ package packpan.nodes
 			var node:ABST_Node;
 			do
 			{
-				node = nodeArray[PP.getRand(0, nodeArray.length - 1)];
+				node = nodeArray[int(Math.random() * nodeArray.length)];
 			} while (node.isSameNode(nodeCalling))
 			return node;
 		}

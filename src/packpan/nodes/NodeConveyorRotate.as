@@ -13,10 +13,10 @@ package packpan.nodes
 	public class NodeConveyorRotate extends NodeConveyorNormal 
 	{
 		
-		public function NodeConveyorRotate(_cg:ContainerGame, _type:String, _position:Point, _facing:int, _clickable:Boolean)
+		public function NodeConveyorRotate(_cg:ContainerGame, _json:Object)
 		{
-			_type = "NodeConveyorNormal"
-			super(_cg, _type, _position, _facing, _clickable);
+			//_type = "NodeConveyorNormal"
+			super(_cg, _json);
 			
 		}
 		

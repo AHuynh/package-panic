@@ -4,6 +4,7 @@ package packpan.mails
 	import flash.display.MovieClip;
 	import flash.geom.Point;
 	import flash.geom.ColorTransform;
+	import packpan.ABST_GameObject;
 	import packpan.PP;
 	import packpan.PhysicalEntity;
 	import packpan.PhysicsUtils;
@@ -11,30 +12,23 @@ package packpan.mails
 	 * An abstract Mail object, extended to become items that are manipulated by nodes.
 	 * @author Alexander Huynh
 	 */
-	public class ABST_Mail 
-	{
-		protected var cg:ContainerGame;		// the parent container
-		
-		public var type:String;						// the name of this Mail
-		public var position:Point;					// the current grid square of this Mail (0-indexed, origin top-left, L/R is x, U/D is y)
-		public var state:PhysicalEntity;	//The physical state of the mail
+	public class ABST_Mail extends ABST_GameObject
+	{		
+		public var state:PhysicalEntity;			// the physical state of the mail
 		
 		public var mc_mail:MovieClip;				// the mail MovieClip (SWC)
 		public var mailState:int = PP.MAIL_IDLE;	// is this mail in a idle, success, or failure state
 		
 		/**
-		 * Constructor.
-		 * @param	_cg			the parent container (ABST_ContainerGame)
-		 * @param	_type		the type of this mail (String)
-		 * @param	_position	the starting grid location of this mail (Point)
+		 * Should only be called through super(), never instantiated.
+		 * @param	_cg			The active instance of ContainerGame.
+		 * @param	_json		Object created by parsing JSON.
 		 */
-		public function ABST_Mail(_cg:ContainerGame, _type:String, _position:Point) 
+		public function ABST_Mail(_cg:ContainerGame, _json:Object) 
 		{
-			cg = _cg;
-			type = _type;
-			position = _position;
-			
-			state = new PhysicalEntity(1,new Point(_position.x,_position.y));
+			super(_cg, _json);
+
+			state = new PhysicalEntity(1, new Point(position.x, position.y));
 			
 			mc_mail = cg.addChildToGrid(new Mail(), position);		// create the MovieClip
 			mc_mail.stop();											// default mail frame
@@ -44,8 +38,9 @@ package packpan.mails
 		}
 		
 		/**
-		 * Called by ABST_ContainerGame every frame to make this Mail do things
-		 * @return				PP.MAIL_IDLE, PP.MAIL_SUCCESS, or PP.MAIL_FAILURE
+		 * Called by ABST_ContainerGame every frame to make this Mail do things.
+		 * (OVERRIDE THIS FUNCTION TO PROVIDE CUSTOM FUNCTIONALITY)
+		 * @return			The status of this Mail: PP.MAIL_IDLE, PP.MAIL_SUCCESS, or PP.MAIL_FAILURE.
 		 */
 		public function step():int
 		{
@@ -63,8 +58,8 @@ package packpan.mails
 					cg.nodeGrid[position.x][position.y].affectMail(this);
 			}
 
-			//step the physics and update the position of the movie clip
-			state.step(cg.timerTick/1000);
+			// step the physics and update the position of the movie clip
+			state.step(cg.timerTick * .001);
 			var mc_pos:Point = PhysicsUtils.gridToScreen(state.position);
 			mc_mail.x = mc_pos.x;
 			mc_mail.y = mc_pos.y;
@@ -73,10 +68,10 @@ package packpan.mails
 		}
 		
 		/**
-		 * Returns the grid coordinates of this Mail object based on its actual coordinates
-		 * Sets state to failure if not on a valid point (out of bounds)
+		 * Returns the grid coordinates of this Mail object based on its actual coordinates.
+		 * Sets state to failure if not on a valid point (out of bounds).
 		 * 
-		 * @return		the grid square as a Point, or null if invalid
+		 * @return		The grid square as a Point, or null if invalid.
 		 */
 		protected function findGridSquare():Point
 		{

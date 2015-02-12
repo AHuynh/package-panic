@@ -5,41 +5,61 @@ package packpan.nodes
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import flash.geom.ColorTransform;
+	import packpan.ABST_GameObject;
 	import packpan.mails.ABST_Mail;
 	import packpan.PP;
 	/**
 	 * An abstract node, extended to create conveyor belts, ramps, bins, etc.
 	 * @author Alexander Huynh
 	 */
-	public class ABST_Node 
-	{		
-		protected var cg:ContainerGame;	// the parent container
+	public class ABST_Node extends ABST_GameObject
+	{				
+		/// If a mouse click manipulates this Node, clickable is true.
+		public var clickable:Boolean;	
 		
-		public var type:String;					// the label to use for this Node
-		public var clickable:Boolean;			// if a mouse click manipulates this Node
-		public var position:Point;				// the grid square of this Node (0-indexed, origin top-left, L/R is x, U/D is y)
-		public var facing:int;					// which direction this Node is facing, if applicable (PP constant)
-		
-		public var mc_node:MovieClip;			// the node MovieClip (SWC)
+		/// The node MovieClip (a SWC).
+		public var mc_node:MovieClip;
 
-		public function ABST_Node(_cg:ContainerGame, _type:String, _position:Point,
-								  _facing:int, _clickable:Boolean)
+		/**
+		 * Should only be called through super(), never instantiated.
+		 * @param	_cg			The active instance of ContainerGame.
+		 * @param	_json		Object created by parsing JSON.
+		 */
+		public function ABST_Node(_cg:ContainerGame, _json:Object)
 		{
-			cg = _cg;
-			type = _type;
-			position = _position;
-			facing = _facing;
-			clickable = _clickable;
+			super(_cg, _json);
 			
+			///////////////////////////////////////////////////////////////////////////////////////
+			//	now parse the "JSON" object for common properties all game objects could have
+			///////////////////////////////////////////////////////////////////////////////////////
+
 			mc_node = cg.addChildToGrid(new Node(), position);		// add the Node MovieClip to the game
-			mc_node.gotoAndStop(type);
+			
+			if (json["dir"])
+				facing = rotateToDir(json["facing"], mc_node);
+				
+			if (json["clickable"])
+				clickable = json["clickable"];
 			
 			if (clickable)		// attach a listener for clicks if this Node can be clicked
 				mc_node.addEventListener(MouseEvent.CLICK, onClick);
 		}
 		
 		/**
-		 * Called by ContainerGame every frame to perform an action
+		 * Rotates this object's graphic (MovieClip) to the given facing.
+		 * @param	dir		A PP.DIR_X value to be rotated to, ex: PP.DIR_LEFT.
+		 * @param	mc		The MovieClip to rotate, ex: mc_mail.
+		 * @return			The new direction, a PP.DIR_X value.
+		 */
+		public function rotateToDir(dir:int, mc:MovieClip):int
+		{
+			facing = dir;			
+			mc.rotation = facing;		// rotate the graphic appropriately
+			return facing;
+		}
+		
+		/**
+		 * Called by ContainerGame every frame to perform an action.
 		 */
 		public function step():void
 		{
@@ -48,7 +68,7 @@ package packpan.nodes
 		
 		/**
 		 * Called by a Mail object to manipulate the Mail object.
-		 * @param	mail	the Mail to be affected
+		 * @param	mail	The Mail to be affected.
 		 */
 		public function affectMail(mail:ABST_Mail):void
 		{
@@ -57,7 +77,7 @@ package packpan.nodes
 		
 		/**
 		 * Called when this Node is clicked.
-		 * @param	e		the captured MouseEvent, unused, can be null
+		 * @param	e		The captured MouseEvent, unused, can be null.
 		 */
 		public function onClick(e:MouseEvent):void
 		{
@@ -67,8 +87,8 @@ package packpan.nodes
 		/**
 		 * Returns true if the given Node is in the same grid position
 		 * as this Node.
-		 * @param	node	the Node to compare against; if null, method returns false
-		 * @return			true if both nodes are in the same grid position
+		 * @param	node	The Node to compare against; if null, function returns false.
+		 * @return			True if both Nodes are in the same grid position.
 		 */
 		public function isSameNode(node:ABST_Node):Boolean
 		{
@@ -77,7 +97,7 @@ package packpan.nodes
 		}
 		
 		/**
-		 * Remove the eventListeners on this node's mc_node.
+		 * Remove the eventListeners on this Node's mc_node.
 		 * Called internally and externally by NodeGroup.
 		 */
 		public function removeListeners():void
@@ -88,7 +108,7 @@ package packpan.nodes
 		}
 		
 		/**
-		 * Call to remove event listeners and clean up this Node
+		 * Called to remove event listeners and clean up this Node.
 		 */
 		public function destroy():void
 		{

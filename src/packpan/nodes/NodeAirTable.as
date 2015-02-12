@@ -17,9 +17,9 @@ package packpan.nodes
 		private var imgLayer:Class;									// needed to instantiate your image
 		private var img:Bitmap = new imgLayer();					// reference to your image
 		
-		public function NodeAirTable(_cg:ContainerGame, _type:String, _position:Point, _facing:int, _clickable:Boolean) 
+		public function NodeAirTable(_cg:ContainerGame, _json:Object) 
 		{
-			super(_cg, _type, _position, _facing, _clickable);
+			super(_cg, _json);
 			
 			mc_node.gotoAndStop("none");		// switch to an empty mail image
 			mc_node.addChild(img);				// add the new image

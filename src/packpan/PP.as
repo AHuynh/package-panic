@@ -42,15 +42,13 @@ package packpan
 		
 		public static const COLOR_NONE:uint = 0xFFFFFF;
 		
+		// arbitary non-negative integer constants for indexing into GameObject.properties
+		public static const PROP_COLOR:int = 0;
+		
 		public function PP() 
 		{
 			// -- Static class; do not instantiate
 			trace("WARNING: DO NOT INSTANTIATE PP!");
 		}
-		
-		public static function getRand(min:Number, max:Number):Number   
-		{  
-			return int(Math.random() * (max - min + 1)) + min;  
-		} 
 	}
 }

@@ -28,19 +28,15 @@ package packpan.nodes
 		private var imgLayer:Class;
 		private var img:Bitmap = new imgLayer();	
 		
-		public function NodeBin(_cg:ContainerGame, _type:String, _position:Point,
-								_facing:int, _clickable:Boolean, _color:uint = PP.COLOR_NONE) 
+		public function NodeBin(_cg:ContainerGame, _json:Object) 
 		{
-			super(_cg, "NodeBin", _position, PP.DIR_NONE, false);
+			super(_cg, _json);
 			occupied = false;
 			
 			mc_node.gotoAndStop("none");		// switch to an empty mail image
 			mc_node.addChild(img);				// add the new image
 			img.x -= img.width * .5;			// center the image
 			img.y -= img.height * .5;
-			
-			/*if (_color != PP.COLOR_NONE)
-				setColor(_color);*/
 		}
 		
 		/**
@@ -66,9 +62,11 @@ package packpan.nodes
 				mail.state = new PhysicalEntity(1, new Point(position.x, position.y));
 				mail.mc_mail.scaleX = mail.mc_mail.scaleY = .8;
 				occupied = true;
+				
 				// fail if mail and bin are colored and colors don't match.
-				if (mail is IColorable && isSameColor(IColorable(mail).getColor()))
+				if (mail is IColorable && !isSameColor(IColorable(mail).getColor()))
 				{
+					trace("Failing!");
 					mail.mailState = PP.MAIL_FAILURE;
 					return;
 				}

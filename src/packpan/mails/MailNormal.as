@@ -19,17 +19,14 @@ package packpan.mails
 		private var imgLayer:Class;									// needed to instantiate your image
 		private var img:Bitmap = new imgLayer();					// reference to your image
 		
-		public function MailNormal(_cg:ContainerGame, _type:String, _position:Point, _color:uint = PP.COLOR_NONE) 
+		public function MailNormal(_cg:ContainerGame, _json:Object) 
 		{
-			super(_cg, _type, _position);
+			super(_cg, _json);
 
 			mc_mail.gotoAndStop("none");		// switch to an empty mail image
 			mc_mail.addChild(img);				// add the new image
 			img.x -= img.width * .5;			// center the image
 			img.y -= img.height * .5;
-
-			if (_color != PP.COLOR_NONE)
-				setColor(_color);
 		}
 		
 		///////////////////////////////////////////////////////////////////////////////////////////

@@ -8,6 +8,7 @@
 	import flash.net.URLRequest;
 	import flash.ui.Mouse;
 	import flash.utils.getDefinitionByName;
+	import packpan.ABST_GameObject;
 	import packpan.nodes.*;
 	import packpan.mails.*;
 	import packpan.PP;
@@ -100,17 +101,49 @@
 			nodeArray = [];
 			mailArray = [];
 			
+			// ----------------------------------------------------------------------------------------
+			// TODO: remove this hack
+			var temp:Array = [];
+			temp.push(new NodeConveyorNormal(this, 
+				{"type": "NodeConveyorNormal", "x": 2, "y": 5, "dir": "right", "clickable": "true"}));
+			temp.push(new NodeConveyorNormal(this, 
+				{"type": "NodeConveyorNormal", "x": 3, "y": 5, "dir": "right", "clickable": "true"}));
+			temp.push(new NodeConveyorNormal(this, 
+				{"type": "NodeConveyorNormal", "x": 4, "y": 5, "dir": "left", "clickable": "true"}));
+			temp.push(new NodeBin(this, 	
+				{"type": "NodeBin", "x": 5, "y": 5}));
+				
+			var tempN:ABST_GameObject;
+			for (i = 0; i < temp.length; i++)
+			{
+				tempN = temp[i];
+				nodeGrid[tempN.position.x][tempN.position.y] = tempN;
+				nodeArray.push(tempN);
+			}
+			
+			mailArray.push(new MailNormal(this, { "type": "MailNormal", "x": 2, "y": 5 } ));
+			
+			// -- <time>
+			var timeRaw:String = "1:00";
+			timeLeft = int(timeRaw.substring(0, 1)) * 60000 + int(timeRaw.substring(2)) * 1000;
+			
+			// start the game
+			gameState = PP.GAME_IDLE;
+			
+			// end testing hack
+			// ----------------------------------------------------------------------------------------
+			
 			// start loading XML
-			loader = new URLLoader();
+			/*loader = new URLLoader();								// TODO: Change to JSON - disabled for testing!
 			loader.load(new URLRequest(levelXML));
-			loader.addEventListener(Event.COMPLETE, parseXML);
+			loader.addEventListener(Event.COMPLETE, parseXML);*/
 		}
 
 		/**
 		 * Create the level based off of XML.
 		 * @param	e		the captured Event, used to access XML data
 		 */
-		private function parseXML(e:Event):void
+		/*private function parseXML(e:Event):void
 		{
 			loader.removeEventListener(Event.COMPLETE, parseXML);
 			
@@ -230,7 +263,7 @@
 			
 			// start the game
 			gameState = PP.GAME_IDLE;
-		}
+		}*/
 		
 		/**
 		 * Creates a single Node
