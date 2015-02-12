@@ -41,9 +41,9 @@
 			for (var i:int = 0; i < levelButtons.length; i++)
 			{
 				levelButtons[i].hitbox.addEventListener(MouseEvent.CLICK, onLevel);
-				levelButtons[i].visible = eng.levelArray[page][i];				// hide button if level doesn't exist for this index
+				levelButtons[i].visible = eng.levels.hasLevel(page,i);	// hide the button if the level doesn't exist
 				if (levelButtons[i].visible)
-					levelButtons[i].tf_level.text = eng.levelArray[page][i][1];
+					levelButtons[i].tf_level.text = eng.levels.getLevel(page,i)["nameExternal"];
 			}
 		}
 		
@@ -96,8 +96,8 @@
 			// get the index of the button clicked (0-15)
 			var ind:int = int(MovieClip(e.target).parent.name.substring(6));		// name is in format of level_xx
 			
-			// get the name of the level XML file
-			eng.levelName = eng.levelArray[page][ind][0];
+			// set the level in the engine
+			eng.level = eng.levels.getLevel(page,ind);
 			
 			// flag this Container as completed for the Engine
 			completed = true;
