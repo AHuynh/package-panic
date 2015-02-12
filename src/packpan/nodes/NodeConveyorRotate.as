@@ -15,9 +15,7 @@ package packpan.nodes
 		
 		public function NodeConveyorRotate(_cg:ContainerGame, _json:Object)
 		{
-			//_type = "NodeConveyorNormal"
-			super(_cg, _json);
-			
+			super(_cg, _json);	
 		}
 		
 		override public function onClick(e:MouseEvent):void
@@ -41,7 +39,7 @@ package packpan.nodes
 					trace("WARNING: NodeConveyorNormal at " + position + " has an invalid facing!");
 			}
 			
-			mc_node.rotation = facing;		// rotate the graphic appropriately
+			mc_object.rotation = facing;		// rotate the graphic appropriately
 		}
 		
 	}

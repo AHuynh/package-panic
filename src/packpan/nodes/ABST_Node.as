@@ -1,6 +1,7 @@
 package packpan.nodes
 {
 	import cobaltric.ContainerGame;
+	import flash.display.Bitmap;
 	import flash.display.MovieClip;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
@@ -15,40 +16,34 @@ package packpan.nodes
 	public class ABST_Node extends ABST_GameObject
 	{				
 		/// If a mouse click manipulates this Node, clickable is true.
-		public var clickable:Boolean;	
-		
-		/// The node MovieClip (a SWC).
-		public var mc_node:MovieClip;
+		public var clickable:Boolean = false;
 
 		/**
 		 * Should only be called through super(), never instantiated.
 		 * @param	_cg			The active instance of ContainerGame.
 		 * @param	_json		Object created by parsing JSON.
+		 * @param	_bitmap		Optional: A Bitmap to use for graphics.
 		 */
-		public function ABST_Node(_cg:ContainerGame, _json:Object)
+		public function ABST_Node(_cg:ContainerGame, _json:Object, _bitmap:Bitmap = null)
 		{
-			super(_cg, _json);
+			mc_object = new Node();
+
+			super(_cg, _json, _bitmap);
 			
 			///////////////////////////////////////////////////////////////////////////////////////
 			//	now parse the "JSON" object for common properties all game objects could have
 			///////////////////////////////////////////////////////////////////////////////////////
 
-			mc_node = cg.addChildToGrid(new Node(), position);		// add the Node MovieClip to the game
-
-			/*try {
-				mc_node.gotoAndStop(type);
-			} catch (e:ArgumentError) {
-				trace("Sprite not found: " + type);
-			}*/
+			cg.addChildToGrid(mc_object, position);		// add the MovieClip to the stage
 
 			if (json["dir"])
-				facing = rotateToDir(json["dir"], mc_node);
+				facing = rotateToDir(json["dir"], mc_object);
 				
 			if (json["clickable"])
 				clickable = json["clickable"];
 			
 			if (clickable)		// attach a listener for clicks if this Node can be clicked
-				mc_node.addEventListener(MouseEvent.CLICK, onClick);
+				mc_object.addEventListener(MouseEvent.CLICK, onClick);
 		}
 		
 		/**
@@ -74,6 +69,7 @@ package packpan.nodes
 		
 		/**
 		 * Called by ContainerGame every frame to perform an action.
+		 * (OVERRIDE THIS FUNCTION TO PROVIDE CUSTOM FUNCTIONALITY)
 		 */
 		public function step():void
 		{
@@ -82,6 +78,7 @@ package packpan.nodes
 		
 		/**
 		 * Called by a Mail object to manipulate the Mail object.
+		 * (OVERRIDE THIS FUNCTION TO PROVIDE CUSTOM FUNCTIONALITY)
 		 * @param	mail	The Mail to be affected.
 		 */
 		public function affectMail(mail:ABST_Mail):void
@@ -91,6 +88,7 @@ package packpan.nodes
 		
 		/**
 		 * Called when this Node is clicked.
+		 * (OVERRIDE THIS FUNCTION TO PROVIDE CUSTOM FUNCTIONALITY)
 		 * @param	e		The captured MouseEvent, unused, can be null.
 		 */
 		public function onClick(e:MouseEvent):void
@@ -111,14 +109,14 @@ package packpan.nodes
 		}
 		
 		/**
-		 * Remove the eventListeners on this Node's mc_node.
+		 * Remove the eventListeners on this Node's mc_object.
 		 * Called internally and externally by NodeGroup.
 		 */
 		public function removeListeners():void
 		{
-			mc_node.clickable = false;
-			if (mc_node.hasEventListener(MouseEvent.CLICK))
-				mc_node.removeEventListener(MouseEvent.CLICK, onClick);
+			mc_object.clickable = false;
+			if (mc_object.hasEventListener(MouseEvent.CLICK))
+				mc_object.removeEventListener(MouseEvent.CLICK, onClick);
 		}
 		
 		/**
@@ -126,12 +124,12 @@ package packpan.nodes
 		 */
 		public function destroy():void
 		{
-			if (!mc_node)
+			if (!mc_object)
 				return;
 			if (cg)
-				cg.removeChildFromGrid(mc_node);
+				cg.removeChildFromGrid(mc_object);
 			removeListeners();
-			mc_node = null;
+			mc_object = null;
 			cg = null;
 		}
 	}

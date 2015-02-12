@@ -115,7 +115,7 @@
 			temp.push(new NodeConveyorNormal(this, 
 				{"type": "NodeConveyorNormal", "x": 4, "y": 5, "dir": "left", "clickable": "true"}));
 			temp.push(new NodeBin(this, 	
-				{"type": "NodeBin", "x": 5, "y": 5}));
+				{"type": "NodeBin", "x": 5, "y": 5, "color": "blue"}));
 				
 			var tempN:ABST_GameObject;
 			for (i = 0; i < temp.length; i++)
@@ -125,7 +125,7 @@
 				nodeArray.push(tempN);
 			}
 			
-			mailArray.push(new MailNormal(this, { "type": "MailNormal", "x": 2, "y": 5 } ));
+			mailArray.push(new MailColored(this, { "type": "MailColored", "x": 2, "y": 5, "color": "blue"} ));
 			
 			// -- <time>
 			var timeRaw:String = "1:00";

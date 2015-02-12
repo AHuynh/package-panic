@@ -1,7 +1,7 @@
 package packpan.iface 
 {
 	/**
-	 * Color-tinted Mail or Node will implement this interface
+	 * Color-tinted Mail or Node will implement this interface.
 	 * @author Alexander Huynh
 	 */
 	public interface IColorable 
@@ -22,9 +22,9 @@ package packpan.iface
 		
 		/**
 		 * Gives this Object a color.
-		 * @param	col		the color to set
+		 * @param	col		the color to set, a PP.COLOR_X constant
 		 */
-		function setColor(col:uint):void;
+		function setColor(col:String):void;
 		
 		/**
 		 * Gets this Object's color
