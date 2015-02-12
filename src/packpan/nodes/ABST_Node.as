@@ -34,9 +34,15 @@ package packpan.nodes
 			///////////////////////////////////////////////////////////////////////////////////////
 
 			mc_node = cg.addChildToGrid(new Node(), position);		// add the Node MovieClip to the game
-			
+
+			/*try {
+				mc_node.gotoAndStop(type);
+			} catch (e:ArgumentError) {
+				trace("Sprite not found: " + type);
+			}*/
+
 			if (json["dir"])
-				facing = rotateToDir(json["facing"], mc_node);
+				facing = rotateToDir(json["dir"], mc_node);
 				
 			if (json["clickable"])
 				clickable = json["clickable"];
@@ -51,10 +57,18 @@ package packpan.nodes
 		 * @param	mc		The MovieClip to rotate, ex: mc_mail.
 		 * @return			The new direction, a PP.DIR_X value.
 		 */
-		public function rotateToDir(dir:int, mc:MovieClip):int
+		public function rotateToDir(dir:String, mc:MovieClip):int
 		{
-			facing = dir;			
-			mc.rotation = facing;		// rotate the graphic appropriately
+			facing = PP.DIR_NONE;
+			switch (dir.toLowerCase())
+			{
+				case "right":	facing = PP.DIR_RIGHT;	break;
+				case "up":		facing = PP.DIR_UP;		break;
+				case "left":	facing = PP.DIR_LEFT;	break;
+				case "down":	facing = PP.DIR_DOWN;	break;
+			}
+			if (facing != PP.DIR_NONE)
+				mc.rotation = facing;		// rotate the graphic appropriately
 			return facing;
 		}
 		

@@ -106,8 +106,10 @@
 			// ----------------------------------------------------------------------------------------
 			// TODO: remove this hack
 			var temp:Array = [];
+			temp.push(new NodeBarrier(this, 
+				{"type": "NodeBarrier", "x": 1, "y": 5}));
 			temp.push(new NodeConveyorNormal(this, 
-				{"type": "NodeConveyorNormal", "x": 2, "y": 5, "dir": "right", "clickable": "true"}));
+				{"type": "NodeConveyorNormal", "x": 2, "y": 5, "dir": "left", "clickable": "true"}));
 			temp.push(new NodeConveyorNormal(this, 
 				{"type": "NodeConveyorNormal", "x": 3, "y": 5, "dir": "right", "clickable": "true"}));
 			temp.push(new NodeConveyorNormal(this, 
