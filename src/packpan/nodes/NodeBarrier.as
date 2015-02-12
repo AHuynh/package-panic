@@ -19,10 +19,9 @@ package packpan.nodes
 		private var relativePosition:Point;
 		private var blockedMail:Array;
 		
-		public function NodeBarrier(_cg:ContainerGame, _type:String, _position:Point,
-										   _facing:int, _clickable:Boolean, _color:uint) 
+		public function NodeBarrier(_cg:ContainerGame, _json:Object) 
 		{
-			super(_cg, _type, _position, _facing, _clickable, _color);
+			super(_cg, _json);
 			mc_node.gotoAndStop("none");
 			mc_node.addChild(img);
 			img.x -= img.width * .5;

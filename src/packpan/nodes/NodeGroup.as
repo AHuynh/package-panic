@@ -1,6 +1,7 @@
 package packpan.nodes 
 {
 	import flash.events.MouseEvent;
+	import packpan.PP;
 	/**
 	 * A group of Nodes that work as one object
 	 * 
@@ -67,6 +68,24 @@ package packpan.nodes
 				nodeArray[i].facing = facing;
 				nodeArray[i].mc_node.rotation = facing;
 			}
+		}
+		
+		/**
+		 * Returns a random Node from this group.
+		 * If nodeCalling is provided, it will return a random Node other than nodeCalling.
+		 * @param	nodeCalling		OPTIONAL: the Node to exclude
+		 * @return					a random Node from this group, or null if the group is empty
+		 */
+		public function getRandomNode(nodeCalling:ABST_Node = null):ABST_Node
+		{
+			if (nodeArray.length == 0) return null;
+			
+			var node:ABST_Node;
+			do
+			{
+				node = nodeArray[int(Math.random() * nodeArray.length)];
+			} while (node.isSameNode(nodeCalling))
+			return node;
 		}
 		
 		/**

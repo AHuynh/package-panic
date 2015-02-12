@@ -8,6 +8,7 @@
 	import flash.net.URLRequest;
 	import flash.ui.Mouse;
 	import flash.utils.getDefinitionByName;
+	import packpan.ABST_GameObject;
 	import packpan.nodes.*;
 	import packpan.mails.*;
 	import packpan.PP;
@@ -101,17 +102,51 @@
 			nodeArray = [];
 			mailArray = [];
 			
+			// ----------------------------------------------------------------------------------------
+			// TODO: remove this hack
+			var temp:Array = [];
+			temp.push(new NodeBarrier(this, 
+				{"type": "NodeBarrier", "x": 1, "y": 5}));
+			temp.push(new NodeConveyorNormal(this, 
+				{"type": "NodeConveyorNormal", "x": 2, "y": 5, "dir": "left", "clickable": "true"}));
+			temp.push(new NodeConveyorNormal(this, 
+				{"type": "NodeConveyorNormal", "x": 3, "y": 5, "dir": "right", "clickable": "true"}));
+			temp.push(new NodeConveyorNormal(this, 
+				{"type": "NodeConveyorNormal", "x": 4, "y": 5, "dir": "left", "clickable": "true"}));
+			temp.push(new NodeBin(this, 	
+				{"type": "NodeBin", "x": 5, "y": 5}));
+				
+			var tempN:ABST_GameObject;
+			for (i = 0; i < temp.length; i++)
+			{
+				tempN = temp[i];
+				nodeGrid[tempN.position.x][tempN.position.y] = tempN;
+				nodeArray.push(tempN);
+			}
+			
+			mailArray.push(new MailNormal(this, { "type": "MailNormal", "x": 2, "y": 5 } ));
+			
+			// -- <time>
+			var timeRaw:String = "1:00";
+			timeLeft = int(timeRaw.substring(0, 1)) * 60000 + int(timeRaw.substring(2)) * 1000;
+			
+			// start the game
+			gameState = PP.GAME_IDLE;
+			
+			// end testing hack
+			// ----------------------------------------------------------------------------------------
+			
 			// start loading XML
-			loader = new URLLoader();
+			/*loader = new URLLoader();								// TODO: Change to JSON - disabled for testing!
 			loader.load(new URLRequest(levelXML));
-			loader.addEventListener(Event.COMPLETE, parseXML);
+			loader.addEventListener(Event.COMPLETE, parseXML);*/
 		}
 
 		/**
 		 * Create the level based off of XML.
 		 * @param	e		the captured Event, used to access XML data
 		 */
-		private function parseXML(e:Event):void
+		/*private function parseXML(e:Event):void
 		{
 			loader.removeEventListener(Event.COMPLETE, parseXML);
 			
@@ -185,7 +220,7 @@
 							trace("Created " + type + " at " + posX + "," + posY);
 						break;
 						case "group":
-							addLineOfNodes(new Point(posX, posY), new Point(tailX, tailY), type, clickable, color).setDirection(dir);
+							addLineOfNodes(new Point(posX, posY), new Point(tailX, tailY), type, clickable).setDirection(dir);
 							trace("Created " + type + " from " + posX + "," + posY + " to " + tailX + "," + tailY);
 						break;
 					}
@@ -220,7 +255,7 @@
 					if (colorRawM)
 						colorM = uint(colorRawM);
 						
-					mailArray.push(new ClassM(this, "default", new Point(posXM, posYM), colorM));
+					mailArray.push(new ClassM(this, "default", new Point(posXM, posYM)));
 					trace("Created " + ClassM + " at " + posXM + "," + posYM);
 				}
 			else
@@ -232,7 +267,7 @@
 			
 			// start the game
 			gameState = PP.GAME_IDLE;
-		}
+		}*/
 		
 		/**
 		 * Creates a single Node
@@ -247,7 +282,7 @@
 		{
 			var NodeClass:Class = getDefinitionByName(type) as Class;
 			var node:ABST_Node = new NodeClass(this, type.substring(type.lastIndexOf('.') + 1),
-											   new Point(position.x, position.y), facing, clickable, color);
+											   new Point(position.x, position.y), facing, clickable);
 									
 			// error check
 			if (position.x < 0 || position.x > PP.DIM_X_MAX)
@@ -275,7 +310,7 @@
 		 * @param	color		OPTIONAL - the NodeGroup's color
 		 * @return				the NodeGroup created
 		 */
-		public function addLineOfNodes(start:Point, end:Point, type:String, clickable:Boolean = false, color:uint = 0x000001):NodeGroup
+		public function addLineOfNodes(start:Point, end:Point, type:String, clickable:Boolean = false):NodeGroup
 		{
 			var ng:NodeGroup = new NodeGroup();
 			
@@ -299,7 +334,7 @@
 			for (var i:int = start.x; i <= end.x; i++)
 				for (var j:int = start.y; j <= end.y; j++)
 				{
-					node = new NodeClass(this, type.substring(type.lastIndexOf('.') + 1), new Point(i, j), PP.DIR_NONE, clickable, color);
+					node = new NodeClass(this, type.substring(type.lastIndexOf('.') + 1), new Point(i, j), PP.DIR_NONE, clickable);
 					nodeGrid[i][j] = node;
 					nodeArray.push(node);
 					ng.addToGroup(node);
