@@ -13,18 +13,12 @@ package packpan.nodes
 	 */
 	public class NodeAirTable extends ABST_Node 
 	{
-		[Embed(source="../../../img/airTable.png")]				// image embed code, auto-generated
-		private var imgLayer:Class;									// needed to instantiate your image
-		private var img:Bitmap = new imgLayer();					// reference to your image
+		[Embed(source="../../../img/airTable.png")]	// embed code; change this path to change the image
+		private var CustomBitmap:Class;				// must be directly below the embed code
 		
 		public function NodeAirTable(_cg:ContainerGame, _json:Object) 
 		{
-			super(_cg, _json);
-			
-			mc_node.gotoAndStop("none");		// switch to an empty mail image
-			mc_node.addChild(img);				// add the new image
-			img.x -= img.width * .5;			// center the image
-			img.y -= img.height * .5;
+			super(_cg, _json, new CustomBitmap());
 		}
 	}
 }

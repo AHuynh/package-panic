@@ -16,12 +16,14 @@ package packpan.nodes
 	public class NodeConveyorNormal extends ABST_Node 
 	{
 		protected var speed:Number = 1;
-		protected var friction:Number = 10; //the strength of the friction
-		protected var spring: Number = 60; //the strength of the "spring" that centers the package
+		protected var friction:Number = 10;	//the strength of the friction
+		protected var spring: Number = 60;	//the strength of the "spring" that centers the package
 	
 		public function NodeConveyorNormal(_cg:ContainerGame, _json:Object)
 		{
 			super(_cg, _json);
+			
+			mc_object.gotoAndStop("NodeConveyorNormal");		// use SWC sprite
 		}
 		
 		/**
@@ -49,7 +51,7 @@ package packpan.nodes
 					trace("WARNING: NodeConveyorNormal at " + position + " has an invalid facing!");
 			}
 			
-			mc_node.rotation = facing;		// rotate the graphic appropriately
+			mc_object.rotation = facing;		// rotate the graphic appropriately
 		}
 		
 		/**

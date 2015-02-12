@@ -22,21 +22,20 @@ package packpan.nodes
 		private var spring:Number = 10;
 		
 		public var occupied:Boolean;			// if true, there is a package in this bin
-		public var color:uint = PP.COLOR_NONE;	// the color of this bin if it is colored
 		
-		[Embed(source="../../../img/binNormal.png")]
-		private var imgLayer:Class;
-		private var img:Bitmap = new imgLayer();	
+		[Embed(source="../../../img/binNormal.png")]	// embed code; change this path to change the image
+		private var CustomBitmap:Class;					// must be directly below the embed code
 		
 		public function NodeBin(_cg:ContainerGame, _json:Object) 
 		{
-			super(_cg, _json);
+			super(_cg, _json, new CustomBitmap());
+			
 			occupied = false;
 			
-			mc_node.gotoAndStop("none");		// switch to an empty mail image
-			mc_node.addChild(img);				// add the new image
-			img.x -= img.width * .5;			// center the image
-			img.y -= img.height * .5;
+			// the color of this mail if it is colored
+			properties[PP.PROP_COLOR] = PP.COLOR_NONE;	
+			if (json["color"])
+				setColor(json["color"]);
 		}
 		
 		/**
@@ -60,7 +59,7 @@ package packpan.nodes
 			if (Point.distance(position,mail.state.position) < 0.1)
 			{
 				mail.state = new PhysicalEntity(1, new Point(position.x, position.y));
-				mail.mc_mail.scaleX = mail.mc_mail.scaleY = .8;
+				mail.mc_object.scaleX = mail.mc_object.scaleY = .8;
 				occupied = true;
 				
 				// fail if mail and bin are colored and colors don't match.
@@ -81,28 +80,30 @@ package packpan.nodes
 		
 		public function isColored():Boolean
 		{
-			return color != PP.COLOR_NONE;
+			return getColor() != PP.COLOR_NONE;
 		}
 		
 		public function isSameColor(col:uint):Boolean
 		{
-			return !isColored() || color == col;
+			return !isColored() || getColor() == col;
 		}
 		
-		public function setColor(col:uint):void
+		public function setColor(color:String):void
 		{
+			var col:uint = convertColor(color);
+			
 			var ct:ColorTransform = new ColorTransform();
 			ct.redMultiplier = int(col / 0x10000) / 255;
 			ct.greenMultiplier = int(col % 0x10000 / 0x100) / 255;
 			ct.blueMultiplier = col % 0x100 / 255;
-			mc_node.transform.colorTransform = ct;
+			mc_object.transform.colorTransform = ct;
 			
-			color = col;
+			properties[PP.PROP_COLOR] = col;
 		}
 		
 		public function getColor():uint
 		{
-			return color;
+			return properties[PP.PROP_COLOR];
 		}
 	}
 }

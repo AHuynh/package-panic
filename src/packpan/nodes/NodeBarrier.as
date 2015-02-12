@@ -13,19 +13,15 @@ package packpan.nodes
 	 */
 	public class NodeBarrier extends ABST_Node
 	{
-		[Embed(source="../../../img/barrier.png")]
-		private var imgLayer:Class;
-		private var img:Bitmap = new imgLayer();
+		[Embed(source="../../../img/barrier.png")]	// embed code; change this path to change the image
+		private var CustomBitmap:Class;				// must be directly below the embed code
+
 		private var relativePosition:Point;
 		private var blockedMail:Array;
 		
 		public function NodeBarrier(_cg:ContainerGame, _json:Object) 
 		{
-			super(_cg, _json);
-			mc_node.gotoAndStop("none");
-			mc_node.addChild(img);
-			img.x -= img.width * .5;
-			img.y -= img.height * .5;
+			super(_cg, _json, new CustomBitmap());
 		}
 		
 		override public function step():void
