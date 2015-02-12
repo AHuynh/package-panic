@@ -3,7 +3,7 @@
     "format": "PP-level",
     "format-version": 1,
     "name-internal": "level1",
-    "name-external": "Level 1",
+    "name-external": "Level 1"
   },
   "nodes": [
     {"type": "NodeConveyorNormal", "x": 2, "y": 9, "dir": "right"},

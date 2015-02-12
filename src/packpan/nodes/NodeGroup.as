@@ -23,6 +23,7 @@ package packpan.nodes
 		 */
 		public function addToGroup(node:ABST_Node):void
 		{
+			node.nodeGroup = this;
 			nodeArray.push(node);
 		}
 		

@@ -17,6 +17,9 @@ package packpan.nodes
 	{				
 		/// If a mouse click manipulates this Node, clickable is true.
 		public var clickable:Boolean = false;
+		
+		/// A reference to this Node's NodeGroup, default is null.
+		public var nodeGroup:NodeGroup = null;
 
 		/**
 		 * Should only be called through super(), never instantiated.
@@ -41,10 +44,15 @@ package packpan.nodes
 				
 			if (json["clickable"])
 				clickable = json["clickable"];
-
 			
 			if (clickable)		// attach a listener for clicks if this Node can be clicked
 				mc_object.addEventListener(MouseEvent.CLICK, onClick);
+				
+			///////////////////////////////////////////////////////////////////////////////////////
+			//	add self to the game
+			///////////////////////////////////////////////////////////////////////////////////////
+			
+			cg.addNode(this);
 		}
 		
 		/**

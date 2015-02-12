@@ -22,9 +22,9 @@ package packpan.iface
 		
 		/**
 		 * Gives this Object a color.
-		 * @param	col		the color to set, a PP.COLOR_X constant
+		 * @param	colS	the color to set, a word from the JSON file (Ex: red)
 		 */
-		function setColor(col:String):void;
+		function setColor(colS:String):void;
 		
 		/**
 		 * Gets this Object's color

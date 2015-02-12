@@ -136,187 +136,73 @@
 			// end testing hack
 			// ----------------------------------------------------------------------------------------
 			
+			loader = new URLLoader();								// TODO: Change to JSON - disabled for testing!
+			loader.load(new URLRequest("../json/level1.json"));
+			loader.addEventListener(Event.COMPLETE, parseJSON);
+			
+			
 			// start loading XML
 			/*loader = new URLLoader();								// TODO: Change to JSON - disabled for testing!
 			loader.load(new URLRequest(levelXML));
 			loader.addEventListener(Event.COMPLETE, parseXML);*/
 		}
-
-		/**
-		 * Create the level based off of XML.
-		 * @param	e		the captured Event, used to access XML data
-		 */
-		/*private function parseXML(e:Event):void
-		{
-			loader.removeEventListener(Event.COMPLETE, parseXML);
-			
-			xml = new XML(e.target.data);
-			
-			var i:int;
-			
-			if (xml.node.length() > 0)
-				for (i = 0; i < xml.node.length(); i++)
-				{
-					// -- <type>
-					var typeRaw:String = xml.node[i].type;
-					var type:String;
-					switch (typeRaw.toLowerCase())
-					{
-						case "bin_normal":		type = PP.NODE_BIN_NORMAL;		break;
-						case "conveyor_normal":	type = PP.NODE_CONV_NORMAL;		break;
-						case "conveyor_rotate":	type = PP.NODE_CONV_ROTATE;		break;
-						case "barrier":			type = PP.NODE_BARRIER;			break;
-						case "air_table":		type = PP.NODE_AIRTABLE;		break;
-						default:				trace("WARNING: invalid type in XML! (" + typeRaw + ")");
-					}
-					// -- <facing>
-					var dirRaw:String = xml.node[i].facing;
-					var dir:int = PP.DIR_NONE;
-					if (dirRaw)
-						switch (dirRaw.toLowerCase())
-						{
-							case "up":		dir = PP.DIR_UP;	break;
-							case "left":	dir = PP.DIR_LEFT;	break;
-							case "right":	dir = PP.DIR_RIGHT;	break;
-							case "down":	dir = PP.DIR_DOWN;	break;
-							default:		trace("WARNING: invalid direction in XML! (" + dirRaw + ")");
-						}
-					// -- <position>
-					var posRaw:String = xml.node[i].position;
-					var posX:int = int(posRaw.substring(0, posRaw.indexOf(",")));
-					if (posX < 0 || posX > PP.DIM_X_MAX)
-						trace("WARNING: position of X is not within 0-" + PP.DIM_X_MAX + "! (" + posX + ")");
-					var posY:int = int(posRaw.substring(posRaw.indexOf(",") + 1));
-					if (posY < 0 || posY > PP.DIM_Y_MAX)
-						trace("WARNING: position of Y is not within 0-" + PP.DIM_Y_MAX + "! (" + posY + ")");
-					// -- <tail>
-					var tailRaw:String = xml.node[i].tail;
-					if (tailRaw)
-					{
-						var tailX:int = int(tailRaw.substring(0, tailRaw.indexOf(",")));
-						if (tailX < 0 || tailX > PP.DIM_X_MAX)
-							trace("WARNING: tail of X is not within 0-" + PP.DIM_X_MAX + "! (" + tailX + ")");
-						var tailY:int = int(tailRaw.substring(tailRaw.indexOf(",") + 1));
-						if (tailY < 0 || tailY > PP.DIM_Y_MAX)
-							trace("WARNING: tail of Y is not within 0-" + PP.DIM_Y_MAX + "! (" + tailY + ")");
-					}
-					// -- <clickable>
-					var clickableRaw:String = xml.node[i].clickable;
-					var clickable:Boolean;
-					if (!clickableRaw)
-						clickable = false;
-					else
-						clickable = (clickableRaw == "true");
-					// -- <color>
-					var colorRaw:String = xml.node[i].color;
-					var color:uint = 0x000001;
-					if (colorRaw)
-						color = uint(colorRaw);
-
-					switch (String(xml.node[i].@type))
-					{
-						case "single":
-							addNode(new Point(posX, posY), type, dir, clickable, color);
-							trace("Created " + type + " at " + posX + "," + posY);
-						break;
-						case "group":
-							addLineOfNodes(new Point(posX, posY), new Point(tailX, tailY), type, clickable).setDirection(dir);
-							trace("Created " + type + " from " + posX + "," + posY + " to " + tailX + "," + tailY);
-						break;
-					}
-				}
-			else
-				trace("WARNING: No nodes found in XML!");
-				
-				
-			if (xml.mail.length() > 0)
-				for (i = 0; i < xml.mail.length(); i++)
-				{
-					// -- <type>
-					var typeRawM:String = xml.mail[i].type;
-					var ClassM:Class;
-					switch (typeRawM.toLowerCase())
-					{
-						case "mail_normal":		ClassM = MailNormal;		break;
-						case "mail_png":		ClassM = MailPNG;			break;
-						default:				trace("WARNING: invalid type in XML! (" + typeRawM + ")");
-					}
-					// -- <position>
-					var posRawM:String = xml.mail[i].position;
-					var posXM:int = int(posRawM.substring(0, posRawM.indexOf(",")));
-					if (posXM < 0 || posXM > PP.DIM_X_MAX)
-						trace("WARNING: position of X is not within 0-" + PP.DIM_X_MAX + "! (" + posXM + ")");
-					var posYM:int = int(posRawM.substring(posRawM.indexOf(",") + 1));
-					if (posYM < 0 || posYM > PP.DIM_Y_MAX)
-						trace("WARNING: position of Y is not within 0-" + PP.DIM_Y_MAX + "! (" + posYM + ")");
-					// -- <color>
-					var colorRawM:String = xml.mail[i].color;
-					var colorM:uint = 0x000001;
-					if (colorRawM)
-						colorM = uint(colorRawM);
-						
-					mailArray.push(new ClassM(this, "default", new Point(posXM, posYM)));
-					trace("Created " + ClassM + " at " + posXM + "," + posYM);
-				}
-			else
-				trace("WARNING: No mail found in XML!");
-				
-			// -- <time>
-			var timeRaw:String = xml.time.value;
-			timeLeft = int(timeRaw.substring(0, 1)) * 60000 + int(timeRaw.substring(2)) * 1000;
-			
-			// start the game
-			gameState = PP.GAME_IDLE;
-		}*/
 		
 		/**
-		 * Creates a single Node
-		 * @param	position	the grid coordinates to place this Node
-		 * @param	type		the name of the ABST_Node class to use - must use fully-qualified name! (with package .'s) 
-		 * @param	facing		OPTIONAL - the direction to face this Node in
-		 * @param	clickable	OPTIONAL - if this Node can be clicked
-		 * @param	color		OPTIONAL - the Node's color
-		 * @return				the Node created
+		 * Create the level based off of JSON.
+		 * @param	e		the captured Event, used to access JSON data
 		 */
-		public function addNode(position:Point, type:String, facing:int = PP.DIR_NONE, clickable:Boolean = false, color:uint = 0x000001):ABST_Node
+		private function parseJSON(e:Event):void
 		{
-			var NodeClass:Class = getDefinitionByName(type) as Class;
-			var node:ABST_Node = new NodeClass(this, type.substring(type.lastIndexOf('.') + 1),
-											   new Point(position.x, position.y), facing, clickable);
-									
-			// error check
-			if (position.x < 0 || position.x > PP.DIM_X_MAX)
+			var json:Object = JSON.parse(e.target.data);
+			
+			// validate list of nodes
+			if (!json["nodes"])
 			{
-				trace("ERROR: in addNode, x = " + position.x + " is out of bounds!");
-				return null;
+				trace("ERROR: JSON file is missing \"nodes\"!");
+				completed = true;
+				return;
 			}
-			if (position.y < 0 || position.y > PP.DIM_Y_MAX)
+			// for each entry in "nodes", add the object
+			for each (var nodeRaw:Object in json["nodes"])
 			{
-				trace("ERROR: in addNode, y = " + position.y + " is out of bounds!");
-				return null;
+				try
+				{
+					if (nodeRaw["type"] == "NodeGroupRect")
+					{
+						var NodeClass:Class = getDefinitionByName(nodeRaw["subtype"]) as Class;
+						var node:ABST_Node = new NodeClass(this, nodeRaw);
+					}
+					else
+					{
+						var NodeClass:Class = getDefinitionByName(nodeRaw["type"]) as Class;
+						var node:ABST_Node = new NodeClass(this, nodeRaw);
+					}
+				} catch (e:Error)
+				{
+					trace("ERROR: Invalid node.\n" + e.getStackTrace());
+				}
 			}
-											   
-			nodeGrid[position.x][position.y] = node;
+		}
+
+		/**
+		 * Adds a single Node to the level.
+		 * @param	node	The Node to add to the level.
+		 */
+		public function addNode(node:ABST_Node):void
+		{
+			nodeGrid[node.position.x][node.position.y] = node;
 			nodeArray.push(node);
-			return node;
 		}
 		
 		/**
-		 * Creates a line of grouped Nodes
+		 * 
+		 * @param	nodeClass
+		 * @param	json
 		 * @param	start		the grid coordinates to begin from
 		 * @param	end			the grid coordinates to end at, inclusive
-		 * @param	type		the name of the ABST_Node class to use - must use fully-qualified name! (with package .'s)
-		 * @param	clickable	OPTIONAL - if this NodeGroup can be clicked
-		 * @param	color		OPTIONAL - the NodeGroup's color
-		 * @return				the NodeGroup created
 		 */
-		public function addLineOfNodes(start:Point, end:Point, type:String, clickable:Boolean = false):NodeGroup
+		public function addNodeGroupRect(nodeClass:Class, json:Object, start:Point, end:Point):void
 		{
-			var ng:NodeGroup = new NodeGroup();
-			
-			var NodeClass:Class = getDefinitionByName(type) as Class;
-			var node:ABST_Node;
-			
 			// ensure we go from low to high for the for loops to work
 			if (start.x > end.x)
 			{
@@ -331,17 +217,11 @@
 				end.y = ty;
 			}
 			
+			var ng:NodeGroup = new NodeGroup();
 			for (var i:int = start.x; i <= end.x; i++)
 				for (var j:int = start.y; j <= end.y; j++)
-				{
-					node = new NodeClass(this, type.substring(type.lastIndexOf('.') + 1), new Point(i, j), PP.DIR_NONE, clickable);
-					nodeGrid[i][j] = node;
-					nodeArray.push(node);
-					ng.addToGroup(node);
-				}
+					ng.addToGroup(new nodeClass(this, json));
 			ng.setupListeners();
-
-			return ng;
 		}
 		
 		/**
