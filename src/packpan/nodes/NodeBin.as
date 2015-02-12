@@ -56,7 +56,7 @@ package packpan.nodes
 			mail.state.addForce(PhysicsUtils.linearRestoreY(spring, mail.state, position.y));
 				
 			// once snapping animation is complete
-			if (Point.distance(position,mail.state.position) < 0.1)
+			if (Point.distance(position,mail.state.position) < 0.2)
 			{
 				mail.state = new PhysicalEntity(1, new Point(position.x, position.y));
 				mail.mc_mail.scaleX = mail.mc_mail.scaleY = .8;

@@ -4,6 +4,7 @@ package packpan.mails
 	import flash.display.MovieClip;
 	import flash.geom.Point;
 	import flash.geom.ColorTransform;
+	import flash.display.Bitmap;
 	import packpan.PP;
 	import packpan.PhysicalEntity;
 	import packpan.PhysicsUtils;
@@ -13,12 +14,21 @@ package packpan.mails
 	 */
 	public class ABST_Mail 
 	{
+		[Embed(source="../../../img/packagePlus.png")]				// image embed code, auto-generated
+		private var imgLayer:Class;									// needed to instantiate your image
+		private var plus:Bitmap = new imgLayer();					// reference to your image
+		
+		[Embed(source="../../../img/packageMinus.png")]				// image embed code, auto-generated
+		private var imgLayer2:Class;								// needed to instantiate your image
+		private var minus:Bitmap = new imgLayer2();					// reference to your image
+		
 		protected var cg:ContainerGame;		// the parent container
 		
 		public var type:String;						// the name of this Mail
 		public var position:Point;					// the current grid square of this Mail (0-indexed, origin top-left, L/R is x, U/D is y)
 		public var colored:Boolean;					// whether or not this Mail is colored
 		public var color:uint;						// the color of this Mail if applicable
+		public var polarity:int;					// the magnetic polarity (or lack thereof) of the mail
 
 		public var state:PhysicalEntity;	//The physical state of the mail
 		
@@ -30,13 +40,16 @@ package packpan.mails
 		 * @param	_cg			the parent container (ABST_ContainerGame)
 		 * @param	_type		the type of this mail (String)
 		 * @param	_position	the starting grid location of this mail (Point)
+		 * @param   _color		the color of the mail
+		 * @param	_polarity	the magnetic polarity of the mail
 		 */
-		public function ABST_Mail(_cg:ContainerGame, _type:String, _position:Point, _color:uint = 0x000001) 
+		public function ABST_Mail(_cg:ContainerGame, _type:String, _position:Point, _color:uint = 0x000001, _polarity:int = 0) 
 		{
 			cg = _cg;
 			type = _type;
 			position = _position;
 			color = _color;
+			polarity = _polarity;
 			
 			state = new PhysicalEntity(1,new Point(_position.x,_position.y));
 			
@@ -45,6 +58,18 @@ package packpan.mails
 			mc_mail.buttonMode = false;								// disable click captures
 			mc_mail.mouseEnabled = false;
 			mc_mail.mouseChildren = false;
+			
+			if (polarity > 0) {
+				mc_mail.gotoAndStop("none");
+				mc_mail.addChild(plus);
+				//plus.x -= plus.width * .5;
+				plus.y -= plus.height * .5;
+			} else if (polarity < 0) {
+				mc_mail.gotoAndStop("none");
+				mc_mail.addChild(minus);
+				//minus.x -= minus.width * .5;
+				minus.y -= minus.height * .5;
+			}
 			
 			if (color == 0x000001) {
 				colored = false;

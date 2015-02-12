@@ -17,9 +17,9 @@ package packpan.mails
 		private var imgLayer:Class;									// needed to instantiate your image
 		private var img:Bitmap = new imgLayer();					// reference to your image
 		
-		public function MailPNG(_cg:ContainerGame, _type:String, _position:Point, _color:uint = 0x000001) 
+		public function MailPNG(_cg:ContainerGame, _type:String, _position:Point, _color:uint = 0x000001, _polarity:int = 0) 
 		{
-			super(_cg, _type, _position, _color);
+			super(_cg, _type, _position, _color, _polarity);
 
 			mc_mail.gotoAndStop("none");		// switch to an empty mail image
 			mc_mail.addChild(img);				// add the new image

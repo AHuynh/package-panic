@@ -32,13 +32,14 @@
 		public var nodeArray:Array;		// a 1D array containing all ABST_Node objects
 		public static var mailArray:Array;		// a 1D array containing all ABST_Mail objects
 		
-		protected static var gameState:int;		// state of game using PP.as constants
+		protected var gameState:int;		// state of game using PP.as constants
 		
 		// allows getDefinitionByName to work
 		private var ncn:NodeConveyorNormal;
 		private var ncr:NodeConveyorRotate;
 		private var nbr:NodeBarrier;
 		private var at:NodeAirTable;
+		private var mg:NodeMagnet;
 		private var nb:NodeBin;
 		
 		// timer
@@ -132,6 +133,7 @@
 						case "conveyor_rotate":	type = PP.NODE_CONV_ROTATE;		break;
 						case "barrier":			type = PP.NODE_BARRIER;			break;
 						case "air_table":		type = PP.NODE_AIRTABLE;		break;
+						case "magnet":			type = PP.NODE_MAGNET;			break;
 						default:				trace("WARNING: invalid type in XML! (" + typeRaw + ")");
 					}
 					// -- <facing>
@@ -144,6 +146,10 @@
 							case "left":	dir = PP.DIR_LEFT;	break;
 							case "right":	dir = PP.DIR_RIGHT;	break;
 							case "down":	dir = PP.DIR_DOWN;	break;
+							case "upneg":	dir = PP.DIR_UPNEG;		break;
+							case "leftneg":	dir = PP.DIR_LEFTNEG;	break;
+							case "rightneg":dir = PP.DIR_RIGHTNEG;	break;
+							case "downneg":	dir = PP.DIR_DOWNNEG;	break;
 							default:		trace("WARNING: invalid direction in XML! (" + dirRaw + ")");
 						}
 					// -- <position>
@@ -219,8 +225,13 @@
 					var colorM:uint = 0x000001;
 					if (colorRawM)
 						colorM = uint(colorRawM);
+					// -- <polarity>
+					var polarityRawM:String = xml.mail[i].polarity;
+					var polarityM:int = 0;
+					if (polarityRawM)
+						polarityM = int(polarityRawM);
 						
-					mailArray.push(new ClassM(this, "default", new Point(posXM, posYM), colorM));
+					mailArray.push(new ClassM(this, "default", new Point(posXM, posYM), colorM, polarityM));
 					trace("Created " + ClassM + " at " + posXM + "," + posYM);
 				}
 			else
