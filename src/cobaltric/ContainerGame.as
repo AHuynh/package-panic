@@ -35,7 +35,7 @@
 		
 		protected var gameState:int;		// state of game using PP.as constants
 		
-		// allows getDefinitionByName to work
+		// allows getDefinitionByName to work; variable name is arbitary and is not ever used
 		private var GDN_01:NodeConveyorNormal;
 		private var GDN_02:NodeConveyorRotate;
 		private var GDN_03:NodeBarrier;
@@ -48,7 +48,7 @@
 		// timer
 		public var timerTick:Number = 1000 / 30;		// time to take off per frame
 		public const SECOND:int = 1000;
-		public var timeLeft:Number = 30 * SECOND;
+		public var timeLeft:Number = 90 * SECOND;
 		
 		// the JSON object defining this level
 		private var json:Object;
@@ -195,11 +195,11 @@
 			for (var i:int = start.x; i <= end.x; i++)
 				for (var j:int = start.y; j <= end.y; j++)
 				{
-					json["x"] = i; json["y"] = j;
+					json["x"] = i; json["y"] = j;		// set position
 					// NOTE: json["type"] is still addNodeGroupRect!
 					ng.addToGroup(addNode(new nodeClass(this, json)));
 				}
-			ng.setupListeners();
+			ng.initGroup();
 		}
 		
 		/**

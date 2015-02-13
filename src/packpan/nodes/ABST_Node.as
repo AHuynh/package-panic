@@ -59,6 +59,19 @@ package packpan.nodes
 		}
 		
 		/**
+		 * Called by a NodeGroup when adding this Node to the group.
+		 * Do not call from classes other than NodeGroup.
+		 * Override to do something after being added to a group. Ex: Update graphics.
+		 * @param	group		The NodeGroup that this Node is being added to.
+		 * @param	int			The index in NodeGroup's array that this Node is.
+		 */
+		public function addToGroup(group:NodeGroup, index:int):void
+		{
+			nodeGroup = group;		// keep this line
+			// -- OVERRIDE THIS FUNCTION as needed
+		}
+		
+		/**
 		 * Rotates this object's graphic (MovieClip) to the given facing.
 		 * @param	dir		A PP.DIR_X value to be rotated to, ex: PP.DIR_LEFT.
 		 * @param	mc		The MovieClip to rotate, ex: mc_mail.

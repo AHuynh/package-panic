@@ -18,12 +18,59 @@ package packpan.nodes
 		protected var speed:Number = 1;
 		protected var friction:Number = 10;	//the strength of the friction
 		protected var spring: Number = 60;	//the strength of the "spring" that centers the package
+		
+		protected var cap:int = 0; 
+		/*	keeps track of special graphics cases
+		 * 	0	No special case
+		 * 	1	Graphic is begin cap
+		 * 	-1	Graphic is end cap
+		 */
 	
 		public function NodeConveyorNormal(_cg:ContainerGame, _json:Object)
 		{
 			super(_cg, _json);
 			
-			mc_object.gotoAndStop("NodeConveyorNormal");		// use SWC sprite
+			// set up custom graphics
+			mc_object.gotoAndStop("NodeConveyorNormalSingle");
+		}
+		
+		/**
+		 * Called by a NodeGroup when adding this Node to the group.
+		 * Do not call from classes other than NodeGroup.
+		 * Override to do something after being added to a group. Ex: Update graphics.
+		 * @param	group		The NodeGroup that this Node is being added to.
+		 */
+		override public function addToGroup(group:NodeGroup, index:int):void
+		{
+			nodeGroup = group;		// keep this line
+			if (index == 0)
+			{
+				if (facing == PP.DIR_UP || facing == PP.DIR_LEFT)
+				{
+					cap = -1;
+					mc_object.gotoAndStop("NodeConveyorNormalEnd");
+				}
+				else
+				{
+					cap = 1;
+					mc_object.gotoAndStop("NodeConveyorNormalStart");
+				}
+			}
+			else if (index == nodeGroup.getNodes().length - 1)
+			{
+				if (facing == PP.DIR_UP || facing == PP.DIR_LEFT)
+				{
+					cap = 1;
+					mc_object.gotoAndStop("NodeConveyorNormalStart");
+				}
+				else
+				{
+					cap = -1;
+					mc_object.gotoAndStop("NodeConveyorNormalEnd");
+				}
+			}
+			else
+				mc_object.gotoAndStop("NodeConveyorNormal");
 		}
 		
 		/**
@@ -49,6 +96,15 @@ package packpan.nodes
 				break;
 				default:
 					trace("WARNING: NodeConveyorNormal at " + position + " has an invalid facing!");
+			}
+			
+			// handle end caps
+			if (cap != 0)
+			{
+				var oldFrame:int = mc_object.mc.currentFrame;
+				cap *= -1;
+				mc_object.gotoAndStop("NodeConveyorNormal" + (cap > 0 ? "Start" : "End"));
+				mc_object.mc.gotoAndPlay(oldFrame);
 			}
 			
 			mc_object.rotation = facing;		// rotate the graphic appropriately

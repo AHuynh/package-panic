@@ -18,12 +18,11 @@ package packpan.nodes
 		
 		/**
 		 * Adds the given Node to the NodeGroup.
-		 * Must call setupListeners() after all Nodes have been added.
+		 * Must call initGroup() after all Nodes have been added.
 		 * @param	node		the ABST_Node to add to the group
 		 */
 		public function addToGroup(node:ABST_Node):void
 		{
-			node.nodeGroup = this;
 			nodeArray.push(node);
 		}
 		
@@ -31,7 +30,7 @@ package packpan.nodes
 		 * Redirects individual Node listeners to this NodeGroup.
 		 * Must be called after adding all Nodes to the group.
 		 */
-		public function setupListeners():void
+		public function initGroup():void
 		{
 			if (nodeArray.length == 0) return;
 			
@@ -39,6 +38,7 @@ package packpan.nodes
 			for (var i:int = 0; i < nodeArray.length; i++)
 			{
 				node = nodeArray[i];
+				node.addToGroup(this, i);
 				node.removeListeners();
 				node.mc_object.addEventListener(MouseEvent.CLICK, onNodeGroup);
 			}
@@ -80,7 +80,9 @@ package packpan.nodes
 		public function getRandomNode(nodeCalling:ABST_Node = null):ABST_Node
 		{
 			if (nodeArray.length == 0) return null;
+			if (nodeArray.length == 1) return nodeArray[0];
 			
+			// could be improved by randomly picking from an array with all nodes other than nodeCalling
 			var node:ABST_Node;
 			do
 			{

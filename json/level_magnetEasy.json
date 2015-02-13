@@ -1,0 +1,33 @@
+{
+  "meta": {
+    "format": "PP-level",
+    "format-version": 1,
+    "name-internal": "levelmagnet",
+    "name-external": "MaE"
+  },
+  "nodes": [
+    {"type": "NodeBarrier", "x": 0, "y": 4},
+	{"type": "NodeBarrier", "x": 0, "y": 5},
+    {"type": "NodeMagnet", "x": 3, "y": 3, "dir": "down", "clickable": false, "polarity": 1},
+    {"type": "NodeMagnet", "x": 5, "y": 3, "dir": "down", "clickable": false, "polarity": -1},
+    {"type": "NodeMagnet", "x": 8, "y": 3, "dir": "down", "clickable": true, "polarity": 1},
+    {"type": "NodeMagnet", "x": 10, "y": 3, "dir": "up", "clickable": true, "polarity": -1},
+    {"type": "NodeMagnet", "x": 12, "y": 3, "dir": "down", "clickable": true, "polarity": -1},
+    {"type": "NodeGroupRect", "subtype": "NodeConveyorNormal", "x1": 1, "y1": 4, "x2": 13, "y2": 4, "dir": "left"},
+	{"type": "NodeGroupRect", "subtype": "NodeConveyorNormal", "x1": 1, "y1": 5, "x2": 13, "y2": 5, "dir": "left"},
+	{"type": "NodeGroupRect", "subtype": "NodeConveyorNormal", "x1": 2, "y1": 6, "x2": 13, "y2": 6, "dir": "left"},
+	{"type": "NodeGroupRect", "subtype": "NodeConveyorNormal", "x1": 2, "y1": 7, "x2": 13, "y2": 7, "dir": "left"},
+    {"type": "NodeConveyorNormal", "x": 1, "y": 6, "dir": "up"},
+	{"type": "NodeConveyorNormal", "x": 1, "y": 7, "dir": "up"},
+    {"type": "NodeBin", "x": 14, "y": 4},
+	{"type": "NodeBin", "x": 14, "y": 5}
+  ],
+  "mail": [
+    {"type": "MailMagnetic", "x": 1, "y": 4, "polarity": 1},
+	{"type": "MailNormal", "x": 1, "y": 5}
+  ],
+  "notes": [
+    {"author": "Alexander Huynh"}
+  ]
+}
+

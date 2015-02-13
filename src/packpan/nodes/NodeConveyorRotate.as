@@ -7,15 +7,16 @@ package packpan.nodes
 	import packpan.PP;
 	
 	/**
-	 * ...
-	 * @author ...
+	 * Similar to NodeConveyorNormal, but rotates in all 4 directions.
+	 * @author James Lee
 	 */
 	public class NodeConveyorRotate extends NodeConveyorNormal 
 	{
 		
 		public function NodeConveyorRotate(_cg:ContainerGame, _json:Object)
 		{
-			super(_cg, _json);	
+			super(_cg, _json);
+			mc_object.gotoAndStop("NodeConveyorRotate");
 		}
 		
 		override public function onClick(e:MouseEvent):void
