@@ -35,6 +35,13 @@ package packpan
 		public static const DIR_RIGHT:int = 0;
 		public static const DIR_DOWN:int = 90;
 		
+		public static const NODE_CONV_NORMAL:String = "packpan.nodes.NodeConveyorNormal";
+		public static const NODE_CONV_ROTATE:String = "packpan.nodes.NodeConveyorRotate";
+		public static const NODE_BARRIER:String = "packpan.nodes.NodeBarrier";
+		public static const NODE_AIRTABLE:String = "packpan.nodes.NodeAirTable";
+		public static const NODE_BIN_NORMAL:String = "packpan.nodes.NodeBin";
+		public static const NODE_MAGNET:String = "packpan.nodes.NodeMagnet";
+		
 		// color constants
 		public static const COLOR_NONE:uint = 0xFFFFFF;
 		public static const COLOR_RED:uint = 0xFF5555;

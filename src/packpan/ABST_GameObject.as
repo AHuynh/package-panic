@@ -28,13 +28,15 @@ package packpan
 		 * 	------------------------------------------------------------------------------------------
 		 * 	PROP_COLOR		+		uint		a hex color, 0xFFFFFF if not colored
 		 * 	fireproof		-		boolean		true if affected by fire
-		 * 	magnetic		-		int			1 if attractive, -1 if repulsive, 0 if not magnetic
+		 * 	polarity		+		int			1 if attractive, -1 if repulsive, 0 if not magnetic
 		 */
 		
 		/// The grid square of this Node. (0-indexed, origin top-left, L/R is x, U/D is y)
 		public var position:Point;
 		/// The rotation of this Node, a PP.DIR_X constant. (Ex: PP.DIR_LEFT)
 		public var facing:int = PP.DIR_NONE;
+		/// The magnetic polarity of this GameObject
+		public var polarity:int = 0;
 		
 		/// The 'JSON' object passed into this GameObject See comments in ABST_GameObject for more details.
 		protected var json:Object;

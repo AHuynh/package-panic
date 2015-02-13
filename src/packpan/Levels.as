@@ -15,6 +15,10 @@ package packpan
 		private var Level_Test1:Class;
 		[Embed(source="../../json/level_testT.json", mimeType="application/octet-stream")]
 		private var Level_TestT:Class;
+		[Embed(source="../../json/level_barrier.json", mimeType="application/octet-stream")]
+		private var Level_Barrier:Class;
+		[Embed(source="../../json/level_magnet.json", mimeType="application/octet-stream")]
+		private var Level_Magnet:Class;
 
 		//Each element of the array is a 15-length array of levels - some of which may be undefined
 		private var pages:Array;
@@ -26,6 +30,8 @@ package packpan
 			pages[0] = new Array(15);
 			pages[0][0] = JSON.parse(new Level_Test1());
 			pages[0][1] = JSON.parse(new Level_TestT());
+			pages[0][2] = JSON.parse(new Level_Barrier());
+			pages[0][3] = JSON.parse(new Level_Magnet());
 		}
 
 		/**

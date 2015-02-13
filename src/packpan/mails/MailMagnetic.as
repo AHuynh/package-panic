@@ -1,0 +1,48 @@
+package packpan.mails 
+{
+	import cobaltric.ContainerGame;
+	import flash.display.Bitmap;
+	import packpan.iface.IMagnetic;
+	
+	/**
+	 * ...
+	 * @author Cheng Hann Gan
+	 */
+	public class MailMagnetic extends ABST_Mail implements IMagnetic
+	{
+		
+		[Embed(source="../../../img/packagePlus.png")]
+		private var CustomBitmap1:Class
+		[Embed(source="../../../img/packageMinus.png")]
+		private var CustomBitmap2:Class
+		
+		public function MailMagnetic(_cg:ContainerGame, _json:Object) 
+		{
+			super(_cg, _json);
+			
+			if (json["polarity"])
+				setPolarity(json["polarity"]);
+				
+			var CustomBitmap:Class;
+			if (getPolarity() == 1) {
+				addImage(new CustomBitmap1());
+			} else {
+				addImage(new CustomBitmap2());
+			}
+		}
+		
+		public function getPolarity():int {
+			return polarity;
+		}
+		
+		public function setPolarity(newPolarity:int):void {
+			polarity = newPolarity;
+		}
+		
+		public function getInteraction(pol:int):int {
+			return polarity * pol;
+		}
+		
+	}
+
+}

@@ -42,6 +42,8 @@
 		private var GDN_04:NodeAirTable;
 		private var GDN_05:NodeBin;
 		private var GDN_06:MailNormal;
+		private var GDN_07:MailMagnetic;
+		private var GDN_08:NodeMagnet;
 		
 		// timer
 		public var timerTick:Number = 1000 / 30;		// time to take off per frame

@@ -15,7 +15,7 @@ package packpan.nodes
 	 * A goal bin.
 	 * @author Alexander Huynh
 	 */
-	public class NodeBin extends ABST_Node implements IColorable 
+	public class NodeBin extends ABST_Node implements IColorable
 	{
 		/// The color of this object, PP.COLOR_NONE if uncolored.
 		private var color:uint = PP.COLOR_NONE;
@@ -59,7 +59,7 @@ package packpan.nodes
 			mail.state.addForce(PhysicsUtils.linearRestoreY(spring, mail.state, position.y));
 				
 			// once snapping animation is complete
-			if (Point.distance(position,mail.state.position) < 0.1)
+			if (Point.distance(position,mail.state.position) < 0.2)
 			{
 				mail.state = new PhysicalEntity(1, new Point(position.x, position.y));
 				mail.mc_object.scaleX = mail.mc_object.scaleY = .8;
