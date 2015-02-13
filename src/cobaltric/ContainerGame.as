@@ -115,7 +115,9 @@
 			temp.push(new NodeConveyorNormal(this, 
 				{"type": "NodeConveyorNormal", "x": 4, "y": 5, "dir": "left", "clickable": "true"}));
 			temp.push(new NodeBin(this, 	
-				{"type": "NodeBin", "x": 5, "y": 5, "color": "blue"}));
+				{"type": "NodeBin", "x": 5, "y": 5, "color": "blue" } ));
+			temp.push(new NodeMagnet(this,
+				{"type": "NodeMagnet", "x": 4, "y": 6, "dir": "up", "clickable": "true", "polarity": 1}));
 				
 			var tempN:ABST_GameObject;
 			for (i = 0; i < temp.length; i++)
@@ -125,7 +127,7 @@
 				nodeArray.push(tempN);
 			}
 			
-			mailArray.push(new MailColored(this, { "type": "MailColored", "x": 2, "y": 5, "color": "blue"} ));
+			mailArray.push(new MailMagnetic(this, { "type": "MailMagnetic", "x": 2, "y": 5, "color": "blue", "polarity": 1} ));
 			
 			// -- <time>
 			var timeRaw:String = "1:00";

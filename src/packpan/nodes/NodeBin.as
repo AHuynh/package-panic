@@ -15,7 +15,7 @@ package packpan.nodes
 	 * A goal bin.
 	 * @author Alexander Huynh
 	 */
-	public class NodeBin extends ABST_Node implements IColorable 
+	public class NodeBin extends ABST_Node implements IColorable
 	{
 		//the strength of the forces that center the package
 		private var friction:Number = 5;

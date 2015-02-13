@@ -29,21 +29,19 @@ package packpan.nodes
 		private var imgLayer4:Class;
 		private var magnetElectroSouth:Bitmap = new imgLayer4();
 		
-		public var polarity:int;
 		private var sign:int;
 		
 		public const strength:Number = 27;
 		public const range:Number = .3;
 		
-		public function NodeMagnet(_cg:ContainerGame, _type:String, _position:Point, _facing:int, _clickable:Boolean, _color:uint=0x000001) 
+		public function NodeMagnet(_cg:ContainerGame, _json:Object) 
 		{
-			super(_cg, _type, _position, _facing, _clickable, _color);
+			super(_cg, _json);
 			if (facing != PP.DIR_NONE) {
-				mc_node.rotation = facing;
+				mc_object.rotation = facing;
 			}
 			
-			mc_node.gotoAndStop("none");
-			polarity = 1;
+			mc_object.gotoAndStop("none");
 			if (facing < 0) {
 				polarity = -1;
 				facing += 360;
@@ -59,7 +57,7 @@ package packpan.nodes
 				img = magnetElectroSouth;
 			}
 			
-			mc_node.addChild(img);
+			mc_object.addChild(img);
 			img.x -= img.width * .5;
 			img.y -= img.height * .5;
 		}
@@ -131,7 +129,7 @@ package packpan.nodes
 					break;
 					default: trace("WARNING: NodeConveyorNormal at " + position + " has an invalid facing!");
 				}
-				mc_node.rotation = facing;
+				mc_object.rotation = facing;
 			}
 		}
 		

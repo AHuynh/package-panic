@@ -34,12 +34,6 @@ package packpan
 		public static const DIR_UP:int = 270;
 		public static const DIR_RIGHT:int = 0;
 		public static const DIR_DOWN:int = 90;
-		public static const DIR_DOWNNEG:int = -270;			// negative polarity magnet directions
-		public static const DIR_LEFTNEG:int = -180;
-		public static const DIR_UPNEG:int = -90;
-		public static const DIR_RIGHTNEG:int = -360;
-		
-		
 		
 		public static const NODE_CONV_NORMAL:String = "packpan.nodes.NodeConveyorNormal";
 		public static const NODE_CONV_ROTATE:String = "packpan.nodes.NodeConveyorRotate";
