@@ -47,7 +47,7 @@ package packpan.mails
 		public function step():int
 		{
 			// -- OVERRIDE THIS FUNCTION TO PROVIDE CUSTOM FUNCTIONALITY
-			
+						
 			position = findGridSquare();		// find the current grid coordinates
 			
 			if (position)						// if we are in bounds

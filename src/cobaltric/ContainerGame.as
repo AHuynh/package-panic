@@ -31,32 +31,31 @@
 		
 		public var nodeGrid:Array;		// a 2D array containing either null or the node at a (x, y) grid location
 		public var nodeArray:Array;		// a 1D array containing all ABST_Node objects
-		public static var mailArray:Array;		// a 1D array containing all ABST_Mail objects
+		public var mailArray:Array;		// a 1D array containing all ABST_Mail objects
 		
-		protected static var gameState:int;		// state of game using PP.as constants
+		protected var gameState:int;		// state of game using PP.as constants
 		
 		// allows getDefinitionByName to work
-		private var ncn:NodeConveyorNormal;
-		private var ncr:NodeConveyorRotate;
-		private var nbr:NodeBarrier;
-		private var at:NodeAirTable;
-		private var nb:NodeBin;
+		private var GDN_01:NodeConveyorNormal;
+		private var GDN_02:NodeConveyorRotate;
+		private var GDN_03:NodeBarrier;
+		private var GDN_04:NodeAirTable;
+		private var GDN_05:NodeBin;
+		private var GDN_06:MailNormal;
 		
 		// timer
 		public var timerTick:Number = 1000 / 30;		// time to take off per frame
 		public const SECOND:int = 1000;
 		public var timeLeft:Number = 30 * SECOND;
 		
-		// XML
-		private var levelXML:String;
-		private var loader:URLLoader;
-		private var xml:XML;
+		// the JSON object defining this level
+		private var json:Object;
 		
-		public function ContainerGame(eng:Engine, _levelXML:String)
+		public function ContainerGame(eng:Engine, _json:Object)
 		{
 			super();
 			engine = eng;
-			levelXML = _levelXML;
+			json = _json;
 			addEventListener(Event.ADDED_TO_STAGE, init);		// set up after added to stage
 
 			gameState = PP.GAME_SETUP;
@@ -101,60 +100,7 @@
 			}
 			nodeArray = [];
 			mailArray = [];
-			
-			// ----------------------------------------------------------------------------------------
-			// TODO: remove this hack
-			var temp:Array = [];
-			temp.push(new NodeBarrier(this, 
-				{"type": "NodeBarrier", "x": 1, "y": 5}));
-			temp.push(new NodeConveyorNormal(this, 
-				{"type": "NodeConveyorNormal", "x": 2, "y": 5, "dir": "left", "clickable": "true"}));
-			temp.push(new NodeConveyorNormal(this, 
-				{"type": "NodeConveyorNormal", "x": 3, "y": 5, "dir": "right", "clickable": "true"}));
-			temp.push(new NodeConveyorNormal(this, 
-				{"type": "NodeConveyorNormal", "x": 4, "y": 5, "dir": "left", "clickable": "true"}));
-			temp.push(new NodeBin(this, 	
-				{"type": "NodeBin", "x": 5, "y": 5, "color": "blue"}));
-				
-			var tempN:ABST_GameObject;
-			for (i = 0; i < temp.length; i++)
-			{
-				tempN = temp[i];
-				nodeGrid[tempN.position.x][tempN.position.y] = tempN;
-				nodeArray.push(tempN);
-			}
-			
-			mailArray.push(new MailColored(this, { "type": "MailColored", "x": 2, "y": 5, "color": "blue"} ));
-			
-			// -- <time>
-			var timeRaw:String = "1:00";
-			timeLeft = int(timeRaw.substring(0, 1)) * 60000 + int(timeRaw.substring(2)) * 1000;
-			
-			// start the game
-			gameState = PP.GAME_IDLE;
-			
-			// end testing hack
-			// ----------------------------------------------------------------------------------------
-			
-			loader = new URLLoader();								// TODO: Change to JSON - disabled for testing!
-			loader.load(new URLRequest("../json/level1.json"));
-			loader.addEventListener(Event.COMPLETE, parseJSON);
-			
-			
-			// start loading XML
-			/*loader = new URLLoader();								// TODO: Change to JSON - disabled for testing!
-			loader.load(new URLRequest(levelXML));
-			loader.addEventListener(Event.COMPLETE, parseXML);*/
-		}
-		
-		/**
-		 * Create the level based off of JSON.
-		 * @param	e		the captured Event, used to access JSON data
-		 */
-		private function parseJSON(e:Event):void
-		{
-			var json:Object = JSON.parse(e.target.data);
-			
+
 			// validate list of nodes
 			if (!json["nodes"])
 			{
@@ -162,70 +108,101 @@
 				completed = true;
 				return;
 			}
+
+			var NodeClass:Class;
+			var MailClass:Class;
+			var node:ABST_Node;
+			
 			// for each entry in "nodes", add the object
-			for each (var nodeRaw:Object in json["nodes"])
+			for each (var nodeJSON:Object in json["nodes"])
 			{
 				try
 				{
-					if (nodeRaw["type"] == "NodeGroupRect")
+					if (nodeJSON["type"] == "NodeGroupRect")
 					{
-						var NodeClass:Class = getDefinitionByName(nodeRaw["subtype"]) as Class;
-						var node:ABST_Node = new NodeClass(this, nodeRaw);
+						NodeClass = getDefinitionByName("packpan.nodes." + nodeJSON["subtype"]) as Class;
+						addNodeGroupRect(NodeClass, nodeJSON);
 					}
 					else
 					{
-						var NodeClass:Class = getDefinitionByName(nodeRaw["type"]) as Class;
-						var node:ABST_Node = new NodeClass(this, nodeRaw);
+						NodeClass = getDefinitionByName("packpan.nodes." + nodeJSON["type"]) as Class;
+						addNode(new NodeClass(this, nodeJSON));
 					}
 				} catch (e:Error)
 				{
 					trace("ERROR: Invalid node.\n" + e.getStackTrace());
 				}
 			}
+			
+			// validate list of mail
+			if (!json["mail"])
+			{
+				trace("ERROR: JSON file is missing \"mail\"!");
+				completed = true;
+				return;
+			}
+			
+			// for each entry in "mail", add the object
+			for each (var mailJSON:Object in json["mail"])
+			{
+				try
+				{
+					MailClass = getDefinitionByName("packpan.mails." + mailJSON["type"]) as Class;
+					addMail(new MailClass(this, mailJSON));
+				} catch (e:Error)
+				{
+					trace("ERROR: Invalid mail.\n" + e.getStackTrace());
+				}
+			}
+			
+			gameState = PP.GAME_IDLE;
 		}
 
 		/**
 		 * Adds a single Node to the level.
 		 * @param	node	The Node to add to the level.
+		 * @return			The Node that was added (node).
 		 */
-		public function addNode(node:ABST_Node):void
+		public function addNode(node:ABST_Node):ABST_Node
 		{
 			nodeGrid[node.position.x][node.position.y] = node;
 			nodeArray.push(node);
+			return node;
 		}
 		
 		/**
-		 * 
-		 * @param	nodeClass
-		 * @param	json
-		 * @param	start		the grid coordinates to begin from
-		 * @param	end			the grid coordinates to end at, inclusive
+		 * Adds a single Mail to mailArray.
+		 * @param	mail	The Mail to add.
 		 */
-		public function addNodeGroupRect(nodeClass:Class, json:Object, start:Point, end:Point):void
+		public function addMail(mail:ABST_Mail):void
 		{
-			// ensure we go from low to high for the for loops to work
-			if (start.x > end.x)
-			{
-				var tx:int = start.x;
-				start.x = end.x;
-				end.x = tx;
-			}
-			if (start.y > end.y)
-			{
-				var ty:int = start.y;
-				start.y = end.y;
-				end.y = ty;
-			}
+			mailArray.push(mail);
+		}
+		
+		/**
+		 * Add a rectangle of grouped Nodes to the level.
+		 * @param	nodeClass	The name of the Node to create a rectangle out of.
+		 * @param	json		The JSON information for this NodeGroupRect.
+		 */
+		private function addNodeGroupRect(nodeClass:Class, json:Object):void
+		{
+			var start:Point = new Point(json["x1"], json["y1"]);
+			var end:Point = new Point(json["x2"], json["y2"]);
 			
 			var ng:NodeGroup = new NodeGroup();
 			for (var i:int = start.x; i <= end.x; i++)
 				for (var j:int = start.y; j <= end.y; j++)
-					ng.addToGroup(new nodeClass(this, json));
+				{
+					json["x"] = i; json["y"] = j;
+					// NOTE: json["type"] is still addNodeGroupRect!
+					ng.addToGroup(addNode(new nodeClass(this, json)));
+				}
 			ng.setupListeners();
 		}
 		
 		/**
 		 * Adds the given MovieClip to holder_main aligned to the grid based on position.
+		 * Usually called by ABST_Mail in its constructor.
 		 * @param	mc			the MovieClip to add
 		 * @param	position	the grid coordinate to use (0-based, top-left origin, U/D x, L/R y)
 		 * @return				mc
@@ -265,7 +242,7 @@
 				return completed;
 
 			// if the game state is idle, update everything and check for failure/success
-			if(gameState == PP.GAME_IDLE) {
+			if (gameState == PP.GAME_IDLE) {
 
 				// update the timer and check for time up
 				timeLeft = Math.max(timeLeft-timerTick,0);

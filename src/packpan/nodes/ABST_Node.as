@@ -16,7 +16,7 @@ package packpan.nodes
 	public class ABST_Node extends ABST_GameObject
 	{				
 		/// If a mouse click manipulates this Node, clickable is true.
-		public var clickable:Boolean = false;
+		public var clickable:Boolean = true;
 		
 		/// A reference to this Node's NodeGroup, default is null.
 		public var nodeGroup:NodeGroup = null;

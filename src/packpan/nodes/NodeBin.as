@@ -68,7 +68,6 @@ package packpan.nodes
 				// fail if mail and bin are colored and colors don't match.
 				if (mail is IColorable && !isSameColor(IColorable(mail).getColor()))
 				{
-					trace("Failing!");
 					mail.mailState = PP.MAIL_FAILURE;
 					return;
 				}

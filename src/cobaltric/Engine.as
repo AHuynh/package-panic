@@ -9,6 +9,7 @@
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import flash.utils.getDefinitionByName;
+	import packpan.Levels;
 	import packpan.PP;
 	
 	/** 

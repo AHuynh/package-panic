@@ -11,19 +11,21 @@ package packpan
 	public class Levels
 	{
 		//Embed each level as a json String here
-		[Embed(source = "../../json/level000.json", mimeType = 'application/octet-stream')] private static const Level000:Class;
-		[Embed(source = "../../json/level001.json", mimeType = 'application/octet-stream')] private static const Level001:Class;
+		[Embed(source="../../json/level_test1.json", mimeType="application/octet-stream")]
+		private var Level_Test1:Class;
+		[Embed(source="../../json/level_testT.json", mimeType="application/octet-stream")]
+		private var Level_TestT:Class;
 
 		//Each element of the array is a 15-length array of levels - some of which may be undefined
-		private var:Array pages;
+		private var pages:Array;
 
 		//Constructor called by the Engine on startup
 		public function Levels() 
 		{
 			pages = new Array(1);
-			pages[0] = new Array(15));
-			pages[0][0] = JSON.parse(new Level000() as String);
-			pages[0][1] = JSON.parse(new Level001() as String);
+			pages[0] = new Array(15);
+			pages[0][0] = JSON.parse(new Level_Test1());
+			pages[0][1] = JSON.parse(new Level_TestT());
 		}
 
 		/**
@@ -41,7 +43,7 @@ package packpan
 		 *	@param	index	The index of the level on its page, 0-14
 		 *	@returns	true if a level exists on that page at that index
 		 */
-		public function hasLevel(page:int, index:int):String
+		public function hasLevel(page:int, index:int):Boolean
 		{
 			return pages[page][index] != undefined;
 		}
@@ -52,7 +54,7 @@ package packpan
 		 *	@param	index	The index of the level on its page, 0-14
 		 *	@returns	The level on that page at that index
 		 */
-		public function getLevel(page:int, index:int):String
+		public function getLevel(page:int, index:int):Object
 		{
 			return pages[page][index];
 		}

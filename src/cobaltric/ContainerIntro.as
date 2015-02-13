@@ -36,14 +36,19 @@
 							swc.mc_levels.level_6, swc.mc_levels.level_7, swc.mc_levels.level_8,
 							swc.mc_levels.level_9, swc.mc_levels.level_10, swc.mc_levels.level_11,
 							swc.mc_levels.level_12, swc.mc_levels.level_13, swc.mc_levels.level_14];
+
 							
 			// attach listeners to each level button's hitbox and set text fields
 			for (var i:int = 0; i < levelButtons.length; i++)
 			{
 				levelButtons[i].hitbox.addEventListener(MouseEvent.CLICK, onLevel);
-				levelButtons[i].visible = eng.levels.hasLevel(page,i);	// hide the button if the level doesn't exist
+				levelButtons[i].visible = eng.levels.hasLevel(page, i);	// hide the button if the level doesn't exist
+				
 				if (levelButtons[i].visible)
-					levelButtons[i].tf_level.text = eng.levels.getLevel(page,i)["nameExternal"];
+				{
+					var obj:Object = eng.levels.getLevel(page, i);
+					levelButtons[i].tf_level.text = (eng.levels.getLevel(page, i))["meta"]["name-external"];
+				}
 			}
 		}
 		

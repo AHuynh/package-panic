@@ -26,7 +26,7 @@ package packpan.nodes
 		
 		override public function step():void
 		{
-			blockedMail = PhysicsUtils.cullRectangle(ContainerGame.mailArray, new Point(position.x - .92, position.y - .82), new Point(position.x + .92, position.y + .82));
+			blockedMail = PhysicsUtils.cullRectangle(cg.mailArray, new Point(position.x - .92, position.y - .82), new Point(position.x + .92, position.y + .82));
 			for each (var mail:ABST_Mail in blockedMail) {
 				relativePosition = new Point(position.x - mail.state.position.x, position.y - mail.state.position.y);
 				if (relativePosition.x > 0 && mail.state.velocity.x > 0 || 
