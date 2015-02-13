@@ -94,22 +94,6 @@ package packpan
 		}
 		
 		/**
-		 * Given a color read from a JSON level file, return the equivalent PP constant.
-		 * @param	col		The JSON color value.
-		 * @return			The PP.COLOR_X constant corresponding to the given color.
-		 */
-		public function convertColor(col:String):int
-		{
-			switch (col.toLowerCase())
-			{
-				case "red":		return PP.COLOR_RED;	break;
-				case "green":	return PP.COLOR_GREEN;	break;
-				case "blue":	return PP.COLOR_BLUE;	break;
-				default:		return PP.COLOR_NONE;
-			}
-		}
-		
-		/**
 		 * Returns a random Number between min and max, inclusive.
 		 * @param	min		The lower bound
 		 * @param	max		The upper bound

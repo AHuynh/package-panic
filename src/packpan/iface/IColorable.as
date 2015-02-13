@@ -7,12 +7,6 @@ package packpan.iface
 	public interface IColorable 
 	{
 		/**
-		 * Object is considered "colored" if its color is not PP.COLOR_NONE.
-		 * @return		true if this object is colored
-		 */
-		function isColored():Boolean;
-		
-		/**
 		 * Compares a color against the color of this Object.
 		 * If this Object is not colored, returns true.
 		 * @param	col		the color to compare against
@@ -22,9 +16,9 @@ package packpan.iface
 		
 		/**
 		 * Gives this Object a color.
-		 * @param	colS	the color to set, a word from the JSON file (Ex: red)
+		 * @param	coli	the color to set, an int, 0-15
 		 */
-		function setColor(colS:String):void;
+		function setColor(coli:int):void;
 		
 		/**
 		 * Gets this Object's color

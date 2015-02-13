@@ -17,8 +17,8 @@ package packpan.nodes
 	 */
 	public class NodeBin extends ABST_Node implements IColorable
 	{
-		/// The color of this object, PP.COLOR_NONE if uncolored.
-		private var color:uint = PP.COLOR_NONE;
+		/// The color of this object
+		private var color:uint = 15;
 		
 		//the strength of the forces that center the package
 		private var friction:Number = 5;
@@ -36,7 +36,7 @@ package packpan.nodes
 			occupied = false;
 			
 			// the color of this mail if it is colored
-			color = PP.COLOR_NONE;	
+			color = 15;	
 			if (json["color"])
 				setColor(json["color"]);
 		}
@@ -80,19 +80,14 @@ package packpan.nodes
 		// IColorable
 		///////////////////////////////////////////////////////////////////////////////////////////
 		
-		public function isColored():Boolean
-		{
-			return getColor() != PP.COLOR_NONE;
-		}
-		
 		public function isSameColor(col:uint):Boolean
 		{
-			return !isColored() || getColor() == col;
+			return getColor() == col;
 		}
 		
-		public function setColor(colS:String):void
+		public function setColor(coli:int):void
 		{
-			var col:uint = convertColor(colS);
+			var col:uint = PP.COLORS[coli];
 			
 			var ct:ColorTransform = new ColorTransform();
 			ct.redMultiplier = int(col / 0x10000) / 255;
