@@ -16,7 +16,7 @@ package packpan.nodes
 	 */
 	public class NodeUnknown extends ABST_Node
 	{
-		[Embed(source="../../../img/binUnknown.png")]
+		[Embed(source="../../../img/nodeUnknown.png")]
 		private var CustomBitmap:Class;	
 		
 		public function NodeUnknown(_cg:ContainerGame, _json:Object) 

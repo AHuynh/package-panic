@@ -44,21 +44,21 @@ package packpan
 
 		//color constants for matching objects. based on http://en.wikipedia.org/wiki/Web_colors#HTML_color_names
 		public static const COLORS:Array = [
-			0x000000	//black
-			0x000080	//navy
-			0x008000	//green
-			0x008080	//cyan
-			0x800000	//red
-			0x800080	//purple
-			0x808000	//olive
-			0xC0C0C0	//silver
-			0x808080	//gray
-			0x0000FF	//blue
-			0x00FF00	//lime
-			0x00FFFF	//aqua
-			0xFF0000	//red
-			0xFF00FF	//fuchsia
-			0xFF0000	//yellow
+			0x000000,	//black
+			0x000080,	//navy
+			0x008000,	//green
+			0x008080,	//cyan
+			0x800000,	//red
+			0x800080,	//purple
+			0x808000,	//olive
+			0xC0C0C0,	//silver
+			0x808080,	//gray
+			0x0000FF,	//blue
+			0x00FF00,	//lime
+			0x00FFFF,	//aqua
+			0xFF0000,	//red
+			0xFF00FF,	//fuchsia
+			0xFF0000,	//yellow
 			0xFFFFFF	//white
 		];
 		

@@ -218,7 +218,7 @@
 		private function addNodeGroupList(nodeClass:Class, json:Object):void
 		{
 			var ng:NodeGroup = new NodeGroup();
-			for each(coord:Object in json["list"])
+			for each (var coord:Object in json["list"])
 			{
 				json["x"] = coord["x"]; json["y"] = coord["y"];	// set position
 				// NOTE: json["type"] is still NodeGroupList!

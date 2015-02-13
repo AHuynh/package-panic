@@ -14,9 +14,12 @@ package packpan.mails
 		/// The color of this object
 		private var color:uint = 15;
 		
-		public function MailNormal(_cg:ContainerGame, _json:Object) 
+		[Embed(source="../../../img/packageNormal.png")]	// embed code; change this path to change the image
+		private var CustomBitmap:Class	// must be directly below the embed code
+		
+		public function MailNormal(_cg:ContainerGame, _json:Object)
 		{
-			super(_cg, _json);
+			super(_cg, _json, new CustomBitmap());
 			
 			// the color of this mail if it is colored	
 			if (json["color"])
