@@ -11,12 +11,24 @@ package packpan.mails
 	public class MailMagnetic extends ABST_Mail implements IMagnetic
 	{
 		
-		public function MailMagnetic(_cg:ContainerGame, _json:Object, _bitmap:Bitmap=null) 
+		[Embed(source="../../../img/packagePlus.png")]
+		private var CustomBitmap1:Class
+		[Embed(source="../../../img/packageMinus.png")]
+		private var CustomBitmap2:Class
+		
+		public function MailMagnetic(_cg:ContainerGame, _json:Object) 
 		{
 			super(_cg, _json);
 			
 			if (json["polarity"])
 				setPolarity(json["polarity"]);
+				
+			var CustomBitmap:Class;
+			if (getPolarity() == 1) {
+				addImage(new CustomBitmap1());
+			} else {
+				addImage(new CustomBitmap2());
+			}
 		}
 		
 		public function getPolarity():int {

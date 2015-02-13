@@ -42,7 +42,7 @@ package packpan.nodes
 			if (json["dir"])
 				facing = rotateToDir(json["dir"], mc_object);
 				
-			if (json["clickable"])
+			if (json["clickable"] != undefined)
 				clickable = json["clickable"];
 			
 			if (clickable)		// attach a listener for clicks if this Node can be clicked

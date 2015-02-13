@@ -2,19 +2,19 @@
   "meta": {
     "format": "PP-level",
     "format-version": 1,
-    "name-internal": "level5",
-    "name-external": "Level 5",
+    "name-internal": "levelmagnet",
+    "name-external": "Mag"
   },
   "nodes": [
     {"type": "NodeMagnet", "x": 4, "y": 1, "dir": "down", "clickable": false, "polarity": 1},
-    {"type": "NodeMagnet", "x": 6, "y": 1, "dir": "downneg", "clickable": false, "polarity": -1},
-    {"type": "NodeMagnet", "x": 10, "y": 4, "dir": "upneg", "clickable": false, "polarity": -1},
+    {"type": "NodeMagnet", "x": 6, "y": 1, "dir": "down", "clickable": false, "polarity": -1},
+    {"type": "NodeMagnet", "x": 10, "y": 4, "dir": "up", "clickable": false, "polarity": -1},
     {"type": "NodeMagnet", "x": 11, "y": 4, "dir": "up", "clickable": false, "polarity": 1},
-    {"type": "NodeMagnet", "x": 8, "y": 4, "dir": "up", "clickable": true, "polarity": 1},
+    {"type": "NodeMagnet", "x": 8, "y": 4, "dir": "up", "clickable": true, "polarity": -1},
     {"type": "NodeMagnet", "x": 14, "y": 6, "dir": "left", "clickable": false, "polarity": 1},
     {"type": "NodeMagnet", "x": 11, "y": 6, "dir": "right", "clickable": false, "polarity": 1},
-    {"type": "NodeMagnet", "x": 11, "y": 8, "dir": "rightneg", "clickable": false, "polarity": -1},
-    {"type": "NodeMagnet", "x": 14, "y": 7, "dir": "leftneg", "clickable": false, "polarity": -1},
+    {"type": "NodeMagnet", "x": 11, "y": 8, "dir": "right", "clickable": false, "polarity": -1},
+    {"type": "NodeMagnet", "x": 14, "y": 7, "dir": "left", "clickable": false, "polarity": -1},
     {"type": "NodeMagnet", "x": 8, "y": 9, "dir": "left", "clickable": true, "polarity": 1},
     {"type": "NodeGroupRect", "subtype": "NodeConveyorNormal", "x1": 1, "y1": 2, "x2": 12, "y2": 2, "dir": "right"},
 	{"type": "NodeGroupRect", "subtype": "NodeConveyorNormal", "x1": 1, "y1": 3, "x2": 11, "y2": 3, "dir": "left"},
@@ -22,12 +22,15 @@
 	{"type": "NodeGroupRect", "subtype": "NodeConveyorNormal", "x1": 12, "y1": 3, "x2": 12, "y2": 9, "dir": "up"},
     {"type": "NodeBin", "x": 0, "y": 2},
 	{"type": "NodeBin", "x": 11, "y": 9},
-	{"type": "NodeBin", "x": 14, "y": 9},
+	{"type": "NodeBin", "x": 14, "y": 9}
   ],
   "mail": [
-    {"type": "MailNormal", "x": 1, "y": 2, "polarity": 1}
-	{"type": "MailNormal", "x": 3, "y": 2, "polarity": -1}
+    {"type": "MailMagnetic", "x": 1, "y": 2, "polarity": 1},
+	{"type": "MailMagnetic", "x": 3, "y": 2, "polarity": -1},
 	{"type": "MailNormal", "x": 12, "y": 9}
+  ],
+  "notes": [
+    {"author": "Cheng Hann Gan"}
   ]
 }
 

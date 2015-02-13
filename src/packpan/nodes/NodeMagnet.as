@@ -17,53 +17,40 @@ package packpan.nodes
 		private var img:Bitmap;
 		
 		[Embed(source="../../../img/magnetNorth.png")]
-		private var imgLayer:Class;
-		private var magnetNorth:Bitmap = new imgLayer();
+		private var CustomBitmap1:Class
 		[Embed(source="../../../img/magnetSouth.png")]
-		private var imgLayer2:Class;
-		private var magnetSouth:Bitmap = new imgLayer2();
+		private var CustomBitmap2:Class
 		[Embed(source="../../../img/magnetElectroNorth.png")]
-		private var imgLayer3:Class;
-		private var magnetElectroNorth:Bitmap = new imgLayer3();
+		private var CustomBitmap3:Class
 		[Embed(source="../../../img/magnetElectroSouth.png")]
-		private var imgLayer4:Class;
-		private var magnetElectroSouth:Bitmap = new imgLayer4();
+		private var CustomBitmap4:Class
 		
 		private var sign:int;
 		
-		public const strength:Number = 27;
+		public const strength:Number = 14;
 		public const range:Number = .3;
 		
 		public function NodeMagnet(_cg:ContainerGame, _json:Object) 
 		{
+			
 			super(_cg, _json);
+			
 			if (facing != PP.DIR_NONE) {
 				mc_object.rotation = facing;
 			}
-			
-			mc_object.gotoAndStop("none");
-			if (facing < 0) {
-				polarity = -1;
-				facing += 360;
-			}
-			
 			if (polarity == 1 && !clickable) {
-				img = magnetNorth;
+				addImage(new CustomBitmap1());
 			} else if (polarity == -1 && !clickable) {
-				img = magnetSouth;
+				addImage(new CustomBitmap2());
 			} else if (polarity == 1 && clickable) {
-				img = magnetElectroNorth
+				addImage(new CustomBitmap3());
 			} else {
-				img = magnetElectroSouth;
+				addImage(new CustomBitmap4());
 			}
-			
-			mc_object.addChild(img);
-			img.x -= img.width * .5;
-			img.y -= img.height * .5;
 		}
 		
 		override public function step():void {
-			for each (var mail:ABST_Mail in ContainerGame.mailArray) {
+			for each (var mail:ABST_Mail in cg.mailArray) {
 				sign = polarity * mail.polarity;
 				if (sign == 0 || mail.mailState == PP.MAIL_SUCCESS) {
 					continue;

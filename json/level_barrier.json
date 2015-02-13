@@ -1,0 +1,29 @@
+{
+  "meta": {
+    "format": "PP-level",
+    "format-version": 1,
+    "name-internal": "levelbarrier",
+    "name-external": "Bar"
+  },
+  "nodes": [
+    {"type": "NodeBarrier", "x": 7, "y": 4},
+    {"type": "NodeGroupRect", "subtype": "NodeConveyorNormal", "x1": 7, "y1": 1, "x2": 7, "y2": 3, "dir": "down"},
+	{"type": "NodeGroupRect", "subtype": "NodeConveyorNormal", "x1": 7, "y1": 5, "x2": 7, "y2": 7, "dir": "up"},
+	{"type": "NodeGroupRect", "subtype": "NodeConveyorNormal", "x1": 4, "y1": 4, "x2": 6, "y2": 4, "dir": "right"},
+	{"type": "NodeGroupRect", "subtype": "NodeConveyorNormal", "x1": 8, "y1": 4, "x2": 10, "y2": 4, "dir": "left"},
+    {"type": "NodeBin", "x": 7, "y": 0},
+	{"type": "NodeBin", "x": 7, "y": 8},
+	{"type": "NodeBin", "x": 3, "y": 4},
+	{"type": "NodeBin", "x": 11, "y": 4}
+  ],
+  "mail": [
+    {"type": "MailNormal", "x": 7, "y": 2},
+	{"type": "MailNormal", "x": 7, "y": 6},
+	{"type": "MailNormal", "x": 5, "y": 4},
+	{"type": "MailNormal", "x": 9, "y": 4}
+  ],
+  "notes": [
+    {"author": "Cheng Hann Gan"}
+  ]
+}
+

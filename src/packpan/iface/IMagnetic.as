@@ -1,7 +1,7 @@
 package packpan.iface 
 {
 	/**
-	 * Magnetic polarity of an object
+	 * Magnetic polarity of mail
 	 * @author Cheng Hann Gan
 	 */
 	public interface IMagnetic 
