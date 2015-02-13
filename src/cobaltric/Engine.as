@@ -9,6 +9,7 @@
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import flash.utils.getDefinitionByName;
+	import packpan.Levels;
 	import packpan.PP;
 	
 	/** 
@@ -20,16 +21,14 @@
 	{
 		private var gameState:int;				// 0:Intro, 1:Game, 2:Outro
 		private var container:ABST_Container;	// the currently active container
-		
-		public var levelName:String;			// the name of the level XML to load next
-		
+
 		// save data
 		public const SAVE_DATA:String = "PACK_PAN";
 		public var saveData:SharedObject = SharedObject.getLocal(SAVE_DATA, "/");
-		
-		// XML
-		private var loader:URLLoader;
-		private var xml:XML;
+
+		// Levels
+		public var levels:Levels;
+		public var level:Object;	//dictionary read from json
 		
 		// A 2D array of arrays corresponding to levels
 		// first index is page (0+)
@@ -56,37 +55,9 @@
 			gameState = 0;
 			
 			//SoundPlayer.playBGM(true);
-			
-			// start loading XML
-			loader = new URLLoader();
-			loader.load(new URLRequest("../xml/master_level_list.xml"));
-			loader.addEventListener(Event.COMPLETE, parseXML);
-		}
 
-		/**
-		 * Create the level based off of XML.
-		 * @param	e		the captured Event, used to access XML data
-		 */
-		private function parseXML(e:Event):void
-		{
-			loader.removeEventListener(Event.COMPLETE, parseXML);
-			
-			xml = new XML(e.target.data);
-			levelArray = [];
-			for (var i:int = 0; i < xml.puzzle.length(); i++)
-			{
-				trace(xml.puzzle[i]);
-				var file:String = xml.puzzle[i].id;
-				var title:String = xml.puzzle[i].name;
-				var page:int = xml.puzzle[i].page - 1;
-				var slot:int = xml.puzzle[i].slot - 1;
-				if (slot < 0 || slot > PP.DIM_LEVEL_MAX)
-					trace("ERROR: Slot for " + int(title + 1) + " is out of bounds! (0-" + PP.DIM_LEVEL_MAX);
-				while (levelArray.length <= page)
-					levelArray.push([null, null, null, null, null, null, null, null,
-									 null, null, null, null, null, null, null]);
-				levelArray[page][slot] = [file, title];
-			}
+			// parse the embedded levels
+			levels = new Levels();
 			
 			// finish setup
 			addEventListener(Event.ENTER_FRAME, step);
@@ -110,8 +81,6 @@
 		 * Primary game loop event firer. Steps the current container, and advances
 		 * to the next one if the current container is complete.
 		 * 
-		 * Begins after XML is parsed.
-		 * 
 		 * @param	e	the captured Event, unused
 		 */
 		public function step(e:Event):void
@@ -124,7 +93,7 @@
 			switch (gameState)			// determine which new container to go to next
 			{
 				case 0:
-					container = new ContainerGame(this, "../xml/" + levelName + ".xml");
+					container = new ContainerGame(this, level);
 					gameState = 1;
 					//SoundPlayer.stopBGM();
 				break;
