@@ -10,13 +10,16 @@ package packpan.mails
 	 * @author Alexander Huynh
 	 */
 	public class MailColored extends ABST_Mail implements IColorable
-	{		
+	{
+		/// The color of this object, PP.COLOR_NONE if uncolored.
+		private var color:uint = PP.COLOR_NONE;
+		
 		public function MailColored(_cg:ContainerGame, _json:Object) 
 		{
 			super(_cg, _json);
 			
 			// the color of this mail if it is colored
-			properties[PP.PROP_COLOR] = PP.COLOR_NONE;	
+			color = PP.COLOR_NONE;	
 			if (json["color"])
 				setColor(json["color"]);
 		}
@@ -35,9 +38,9 @@ package packpan.mails
 			return !isColored() || getColor() == col;
 		}
 		
-		public function setColor(color:String):void
+		public function setColor(colS:String):void
 		{
-			var col:uint = convertColor(color);
+			var col:uint = convertColor(colS);
 			
 			var ct:ColorTransform = new ColorTransform();
 			ct.redMultiplier = int(col / 0x10000) / 255;
@@ -45,12 +48,12 @@ package packpan.mails
 			ct.blueMultiplier = col % 0x100 / 255;
 			mc_object.transform.colorTransform = ct;
 			
-			properties[PP.PROP_COLOR] = col;
+			color = col;
 		}
 		
 		public function getColor():uint
 		{
-			return properties[PP.PROP_COLOR];
+			return color;
 		}
 	}
 }

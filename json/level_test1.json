@@ -1,0 +1,25 @@
+{
+  "meta": {
+    "format": "PP-level",
+    "format-version": 1,
+    "name-internal": "level1",
+    "name-external": "Level 1"
+  },
+  "nodes": [
+    {"type": "NodeConveyorNormal", "x": 9, "y": 2, "dir": "up"},
+    {"type": "NodeConveyorNormal", "x": 9, "y": 3, "dir": "down"},
+    {"type": "NodeConveyorNormal", "x": 3, "y": 4, "dir": "down"},
+    {"type": "NodeGroupRect", "subtype": "NodeConveyorNormal", "x1": 0, "y1": 2, "x2": 8, "y2": 2, "dir": "right"},
+    {"type": "NodeGroupRect", "subtype": "NodeConveyorNormal", "x1": 4, "y1": 4, "x2": 9, "y2": 4, "dir": "right"},
+    {"type": "NodeGroupRect", "subtype": "NodeConveyorNormal", "x1": 10, "y1": 4, "x2": 10, "y2": 8, "dir": "down"},
+    {"type": "NodeBin", "x": 3, "y": 3}
+  ],
+  "mail": [
+    {"type": "MailNormal", "x": 0, "y": 2}
+  ],
+  "notes": [
+    {"author": "Mr. Foo", "date": "2015-01-17T19:38-05", "note": "We should add xyz."},
+    {"author": "Mr. Bar", "date": "2015-01-18T13:30-05", "note": "We should NOT add xyz."}
+  ]
+}
+

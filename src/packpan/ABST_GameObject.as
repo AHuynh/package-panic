@@ -67,6 +67,12 @@ package packpan
 			// grid position, guaranteed to exist
 			position = new Point(json["x"], json["y"]);
 			
+			// error check
+			if (position.x < 0 || position.x > PP.DIM_X_MAX)
+				trace("ERROR: in " + this + ", x = " + position.x + " is out of bounds!");
+			if (position.y < 0 || position.y > PP.DIM_Y_MAX)
+				trace("ERROR: in " + this + ", y = " + position.y + " is out of bounds!");
+			
 			///////////////////////////////////////////////////////////////////////////////////////
 			//	handle imported image, if applicable
 			///////////////////////////////////////////////////////////////////////////////////////

@@ -31,33 +31,31 @@
 		
 		public var nodeGrid:Array;		// a 2D array containing either null or the node at a (x, y) grid location
 		public var nodeArray:Array;		// a 1D array containing all ABST_Node objects
-		public static var mailArray:Array;		// a 1D array containing all ABST_Mail objects
+		public var mailArray:Array;		// a 1D array containing all ABST_Mail objects
 		
 		protected var gameState:int;		// state of game using PP.as constants
 		
 		// allows getDefinitionByName to work
-		private var ncn:NodeConveyorNormal;
-		private var ncr:NodeConveyorRotate;
-		private var nbr:NodeBarrier;
-		private var at:NodeAirTable;
-		private var mg:NodeMagnet;
-		private var nb:NodeBin;
+		private var GDN_01:NodeConveyorNormal;
+		private var GDN_02:NodeConveyorRotate;
+		private var GDN_03:NodeBarrier;
+		private var GDN_04:NodeAirTable;
+		private var GDN_05:NodeBin;
+		private var GDN_06:MailNormal;
 		
 		// timer
 		public var timerTick:Number = 1000 / 30;		// time to take off per frame
 		public const SECOND:int = 1000;
 		public var timeLeft:Number = 30 * SECOND;
 		
-		// XML
-		private var levelXML:String;
-		private var loader:URLLoader;
-		private var xml:XML;
+		// the JSON object defining this level
+		private var json:Object;
 		
-		public function ContainerGame(eng:Engine, _levelXML:String)
+		public function ContainerGame(eng:Engine, _json:Object)
 		{
 			super();
 			engine = eng;
-			levelXML = _levelXML;
+			json = _json;
 			addEventListener(Event.ADDED_TO_STAGE, init);		// set up after added to stage
 
 			gameState = PP.GAME_SETUP;
@@ -102,267 +100,109 @@
 			}
 			nodeArray = [];
 			mailArray = [];
-			
-			// ----------------------------------------------------------------------------------------
-			// TODO: remove this hack
-			var temp:Array = [];
-			temp.push(new NodeBarrier(this, 
-				{"type": "NodeBarrier", "x": 1, "y": 5}));
-			temp.push(new NodeConveyorNormal(this, 
-				{"type": "NodeConveyorNormal", "x": 2, "y": 5, "dir": "left", "clickable": "true"}));
-			temp.push(new NodeConveyorNormal(this, 
-				{"type": "NodeConveyorNormal", "x": 3, "y": 5, "dir": "right", "clickable": "true"}));
-			temp.push(new NodeConveyorNormal(this, 
-				{"type": "NodeConveyorNormal", "x": 4, "y": 5, "dir": "left", "clickable": "true"}));
-			temp.push(new NodeBin(this, 	
-				{"type": "NodeBin", "x": 5, "y": 5, "color": "blue" } ));
-			temp.push(new NodeMagnet(this,
-				{"type": "NodeMagnet", "x": 4, "y": 6, "dir": "up", "clickable": "true", "polarity": 1}));
-				
-			var tempN:ABST_GameObject;
-			for (i = 0; i < temp.length; i++)
+
+			// validate list of nodes
+			if (!json["nodes"])
 			{
-				tempN = temp[i];
-				nodeGrid[tempN.position.x][tempN.position.y] = tempN;
-				nodeArray.push(tempN);
+				trace("ERROR: JSON file is missing \"nodes\"!");
+				completed = true;
+				return;
+			}
+
+			var NodeClass:Class;
+			var MailClass:Class;
+			var node:ABST_Node;
+			
+			// for each entry in "nodes", add the object
+			for each (var nodeJSON:Object in json["nodes"])
+			{
+				try
+				{
+					if (nodeJSON["type"] == "NodeGroupRect")
+					{
+						NodeClass = getDefinitionByName("packpan.nodes." + nodeJSON["subtype"]) as Class;
+						addNodeGroupRect(NodeClass, nodeJSON);
+					}
+					else
+					{
+						NodeClass = getDefinitionByName("packpan.nodes." + nodeJSON["type"]) as Class;
+						addNode(new NodeClass(this, nodeJSON));
+					}
+				} catch (e:Error)
+				{
+					trace("ERROR: Invalid node.\n" + e.getStackTrace());
+				}
 			}
 			
-			mailArray.push(new MailMagnetic(this, { "type": "MailMagnetic", "x": 2, "y": 5, "color": "blue", "polarity": 1} ));
+			// validate list of mail
+			if (!json["mail"])
+			{
+				trace("ERROR: JSON file is missing \"mail\"!");
+				completed = true;
+				return;
+			}
 			
-			// -- <time>
-			var timeRaw:String = "1:00";
-			timeLeft = int(timeRaw.substring(0, 1)) * 60000 + int(timeRaw.substring(2)) * 1000;
+			// for each entry in "mail", add the object
+			for each (var mailJSON:Object in json["mail"])
+			{
+				try
+				{
+					MailClass = getDefinitionByName("packpan.mails." + mailJSON["type"]) as Class;
+					addMail(new MailClass(this, mailJSON));
+				} catch (e:Error)
+				{
+					trace("ERROR: Invalid mail.\n" + e.getStackTrace());
+				}
+			}
 			
-			// start the game
 			gameState = PP.GAME_IDLE;
-			
-			// end testing hack
-			// ----------------------------------------------------------------------------------------
-			
-			// start loading XML
-			/*loader = new URLLoader();								// TODO: Change to JSON - disabled for testing!
-			loader.load(new URLRequest(levelXML));
-			loader.addEventListener(Event.COMPLETE, parseXML);*/
 		}
 
 		/**
-		 * Create the level based off of XML.
-		 * @param	e		the captured Event, used to access XML data
+		 * Adds a single Node to the level.
+		 * @param	node	The Node to add to the level.
+		 * @return			The Node that was added (node).
 		 */
-		/*private function parseXML(e:Event):void
+		public function addNode(node:ABST_Node):ABST_Node
 		{
-			loader.removeEventListener(Event.COMPLETE, parseXML);
-			
-			xml = new XML(e.target.data);
-			
-			var i:int;
-			
-			if (xml.node.length() > 0)
-				for (i = 0; i < xml.node.length(); i++)
-				{
-					// -- <type>
-					var typeRaw:String = xml.node[i].type;
-					var type:String;
-					switch (typeRaw.toLowerCase())
-					{
-						case "bin_normal":		type = PP.NODE_BIN_NORMAL;		break;
-						case "conveyor_normal":	type = PP.NODE_CONV_NORMAL;		break;
-						case "conveyor_rotate":	type = PP.NODE_CONV_ROTATE;		break;
-						case "barrier":			type = PP.NODE_BARRIER;			break;
-						case "air_table":		type = PP.NODE_AIRTABLE;		break;
-						case "magnet":			type = PP.NODE_MAGNET;			break;
-						default:				trace("WARNING: invalid type in XML! (" + typeRaw + ")");
-					}
-					// -- <facing>
-					var dirRaw:String = xml.node[i].facing;
-					var dir:int = PP.DIR_NONE;
-					if (dirRaw)
-						switch (dirRaw.toLowerCase())
-						{
-							case "up":		dir = PP.DIR_UP;	break;
-							case "left":	dir = PP.DIR_LEFT;	break;
-							case "right":	dir = PP.DIR_RIGHT;	break;
-							case "down":	dir = PP.DIR_DOWN;	break;
-							case "upneg":	dir = PP.DIR_UPNEG;		break;
-							case "leftneg":	dir = PP.DIR_LEFTNEG;	break;
-							case "rightneg":dir = PP.DIR_RIGHTNEG;	break;
-							case "downneg":	dir = PP.DIR_DOWNNEG;	break;
-							default:		trace("WARNING: invalid direction in XML! (" + dirRaw + ")");
-						}
-					// -- <position>
-					var posRaw:String = xml.node[i].position;
-					var posX:int = int(posRaw.substring(0, posRaw.indexOf(",")));
-					if (posX < 0 || posX > PP.DIM_X_MAX)
-						trace("WARNING: position of X is not within 0-" + PP.DIM_X_MAX + "! (" + posX + ")");
-					var posY:int = int(posRaw.substring(posRaw.indexOf(",") + 1));
-					if (posY < 0 || posY > PP.DIM_Y_MAX)
-						trace("WARNING: position of Y is not within 0-" + PP.DIM_Y_MAX + "! (" + posY + ")");
-					// -- <tail>
-					var tailRaw:String = xml.node[i].tail;
-					if (tailRaw)
-					{
-						var tailX:int = int(tailRaw.substring(0, tailRaw.indexOf(",")));
-						if (tailX < 0 || tailX > PP.DIM_X_MAX)
-							trace("WARNING: tail of X is not within 0-" + PP.DIM_X_MAX + "! (" + tailX + ")");
-						var tailY:int = int(tailRaw.substring(tailRaw.indexOf(",") + 1));
-						if (tailY < 0 || tailY > PP.DIM_Y_MAX)
-							trace("WARNING: tail of Y is not within 0-" + PP.DIM_Y_MAX + "! (" + tailY + ")");
-					}
-					// -- <clickable>
-					var clickableRaw:String = xml.node[i].clickable;
-					var clickable:Boolean;
-					if (!clickableRaw)
-						clickable = false;
-					else
-						clickable = (clickableRaw == "true");
-					// -- <color>
-					var colorRaw:String = xml.node[i].color;
-					var color:uint = 0x000001;
-					if (colorRaw)
-						color = uint(colorRaw);
-
-					switch (String(xml.node[i].@type))
-					{
-						case "single":
-							addNode(new Point(posX, posY), type, dir, clickable, color);
-							trace("Created " + type + " at " + posX + "," + posY);
-						break;
-						case "group":
-							addLineOfNodes(new Point(posX, posY), new Point(tailX, tailY), type, clickable).setDirection(dir);
-							trace("Created " + type + " from " + posX + "," + posY + " to " + tailX + "," + tailY);
-						break;
-					}
-				}
-			else
-				trace("WARNING: No nodes found in XML!");
-				
-				
-			if (xml.mail.length() > 0)
-				for (i = 0; i < xml.mail.length(); i++)
-				{
-					// -- <type>
-					var typeRawM:String = xml.mail[i].type;
-					var ClassM:Class;
-					switch (typeRawM.toLowerCase())
-					{
-						case "mail_normal":		ClassM = MailNormal;		break;
-						case "mail_png":		ClassM = MailPNG;			break;
-						default:				trace("WARNING: invalid type in XML! (" + typeRawM + ")");
-					}
-					// -- <position>
-					var posRawM:String = xml.mail[i].position;
-					var posXM:int = int(posRawM.substring(0, posRawM.indexOf(",")));
-					if (posXM < 0 || posXM > PP.DIM_X_MAX)
-						trace("WARNING: position of X is not within 0-" + PP.DIM_X_MAX + "! (" + posXM + ")");
-					var posYM:int = int(posRawM.substring(posRawM.indexOf(",") + 1));
-					if (posYM < 0 || posYM > PP.DIM_Y_MAX)
-						trace("WARNING: position of Y is not within 0-" + PP.DIM_Y_MAX + "! (" + posYM + ")");
-					// -- <color>
-					var colorRawM:String = xml.mail[i].color;
-					var colorM:uint = 0x000001;
-					if (colorRawM)
-						colorM = uint(colorRawM);
-					// -- <polarity>
-					var polarityRawM:String = xml.mail[i].polarity;
-					var polarityM:int = 0;
-					if (polarityRawM)
-						polarityM = int(polarityRawM);
-						
-<<<<<<< HEAD
-					mailArray.push(new ClassM(this, "default", new Point(posXM, posYM), colorM, polarityM));
-=======
-					mailArray.push(new ClassM(this, "default", new Point(posXM, posYM)));
->>>>>>> upstream/master
-					trace("Created " + ClassM + " at " + posXM + "," + posYM);
-				}
-			else
-				trace("WARNING: No mail found in XML!");
-				
-			// -- <time>
-			var timeRaw:String = xml.time.value;
-			timeLeft = int(timeRaw.substring(0, 1)) * 60000 + int(timeRaw.substring(2)) * 1000;
-			
-			// start the game
-			gameState = PP.GAME_IDLE;
-		}*/
-		
-		/**
-		 * Creates a single Node
-		 * @param	position	the grid coordinates to place this Node
-		 * @param	type		the name of the ABST_Node class to use - must use fully-qualified name! (with package .'s) 
-		 * @param	facing		OPTIONAL - the direction to face this Node in
-		 * @param	clickable	OPTIONAL - if this Node can be clicked
-		 * @param	color		OPTIONAL - the Node's color
-		 * @return				the Node created
-		 */
-		public function addNode(position:Point, type:String, facing:int = PP.DIR_NONE, clickable:Boolean = false, color:uint = 0x000001):ABST_Node
-		{
-			var NodeClass:Class = getDefinitionByName(type) as Class;
-			var node:ABST_Node = new NodeClass(this, type.substring(type.lastIndexOf('.') + 1),
-											   new Point(position.x, position.y), facing, clickable);
-									
-			// error check
-			if (position.x < 0 || position.x > PP.DIM_X_MAX)
-			{
-				trace("ERROR: in addNode, x = " + position.x + " is out of bounds!");
-				return null;
-			}
-			if (position.y < 0 || position.y > PP.DIM_Y_MAX)
-			{
-				trace("ERROR: in addNode, y = " + position.y + " is out of bounds!");
-				return null;
-			}
-											   
-			nodeGrid[position.x][position.y] = node;
+			nodeGrid[node.position.x][node.position.y] = node;
 			nodeArray.push(node);
 			return node;
 		}
 		
 		/**
-		 * Creates a line of grouped Nodes
-		 * @param	start		the grid coordinates to begin from
-		 * @param	end			the grid coordinates to end at, inclusive
-		 * @param	type		the name of the ABST_Node class to use - must use fully-qualified name! (with package .'s)
-		 * @param	clickable	OPTIONAL - if this NodeGroup can be clicked
-		 * @param	color		OPTIONAL - the NodeGroup's color
-		 * @return				the NodeGroup created
+		 * Adds a single Mail to mailArray.
+		 * @param	mail	The Mail to add.
 		 */
-		public function addLineOfNodes(start:Point, end:Point, type:String, clickable:Boolean = false):NodeGroup
+		public function addMail(mail:ABST_Mail):void
 		{
+			mailArray.push(mail);
+		}
+		
+		/**
+		 * Add a rectangle of grouped Nodes to the level.
+		 * @param	nodeClass	The name of the Node to create a rectangle out of.
+		 * @param	json		The JSON information for this NodeGroupRect.
+		 */
+		private function addNodeGroupRect(nodeClass:Class, json:Object):void
+		{
+			var start:Point = new Point(json["x1"], json["y1"]);
+			var end:Point = new Point(json["x2"], json["y2"]);
+			
 			var ng:NodeGroup = new NodeGroup();
-			
-			var NodeClass:Class = getDefinitionByName(type) as Class;
-			var node:ABST_Node;
-			
-			// ensure we go from low to high for the for loops to work
-			if (start.x > end.x)
-			{
-				var tx:int = start.x;
-				start.x = end.x;
-				end.x = tx;
-			}
-			if (start.y > end.y)
-			{
-				var ty:int = start.y;
-				start.y = end.y;
-				end.y = ty;
-			}
-			
 			for (var i:int = start.x; i <= end.x; i++)
 				for (var j:int = start.y; j <= end.y; j++)
 				{
-					node = new NodeClass(this, type.substring(type.lastIndexOf('.') + 1), new Point(i, j), PP.DIR_NONE, clickable);
-					nodeGrid[i][j] = node;
-					nodeArray.push(node);
-					ng.addToGroup(node);
+					json["x"] = i; json["y"] = j;
+					// NOTE: json["type"] is still addNodeGroupRect!
+					ng.addToGroup(addNode(new nodeClass(this, json)));
 				}
 			ng.setupListeners();
-
-			return ng;
 		}
 		
 		/**
 		 * Adds the given MovieClip to holder_main aligned to the grid based on position.
+		 * Usually called by ABST_Mail in its constructor.
 		 * @param	mc			the MovieClip to add
 		 * @param	position	the grid coordinate to use (0-based, top-left origin, U/D x, L/R y)
 		 * @return				mc
@@ -402,7 +242,7 @@
 				return completed;
 
 			// if the game state is idle, update everything and check for failure/success
-			if(gameState == PP.GAME_IDLE) {
+			if (gameState == PP.GAME_IDLE) {
 
 				// update the timer and check for time up
 				timeLeft = Math.max(timeLeft-timerTick,0);
