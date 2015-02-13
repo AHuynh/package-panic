@@ -125,6 +125,11 @@
 						NodeClass = getDefinitionByName("packpan.nodes." + nodeJSON["subtype"]) as Class;
 						addNodeGroupRect(NodeClass, nodeJSON);
 					}
+					else if (nodeJSON["type"] == "NodeGroupList")
+					{
+						NodeClass = getDefinitionByName("packpan.nodes." + nodeJSON["subtype"]) as Class;
+						addNodeGroupList(NodeClass, nodeJSON);
+					}
 					else
 					{
 						NodeClass = getDefinitionByName("packpan.nodes." + nodeJSON["type"]) as Class;
@@ -196,9 +201,26 @@
 				for (var j:int = start.y; j <= end.y; j++)
 				{
 					json["x"] = i; json["y"] = j;		// set position
-					// NOTE: json["type"] is still addNodeGroupRect!
+					// NOTE: json["type"] is still NodeGroupRect!
 					ng.addToGroup(addNode(new nodeClass(this, json)));
 				}
+			ng.initGroup();
+		}
+
+		/**
+		 * Add a group of arbitrarily located Nodes to the level.
+		 * @param	nodeClass	The name of the Node to create a group out of.
+		 * @param	json		The JSON information for this NodeGroupList.
+		 */
+		private function addNodeGroupList(nodeClass:Class, json:Object):void
+		{
+			var ng:NodeGroup = new NodeGroup();
+			for each(coord:Object in json["list"])
+			{
+				json["x"] = coord["x"]; json["y"] = coord["y"];	// set position
+				// NOTE: json["type"] is still NodeGroupList!
+				ng.addToGroup(addNode(new nodeClass(this, json)));
+			}
 			ng.initGroup();
 		}
 		
