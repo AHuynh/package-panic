@@ -16,7 +16,6 @@
 	
 	/**
 	 * Primary game container and controller.
-	 * Reads the given XML file to create a level.
 	 * 
 	 * Note:	All coordinates use x positive right and y positive down. GRID_ORIGIN is the top left corner.
 	 * 
@@ -44,6 +43,8 @@
 		private var GDN_06:MailNormal;
 		private var GDN_07:MailMagnetic;
 		private var GDN_08:NodeMagnet;
+		private var GDN_09:NodeUnknown;
+		private var GDN_10:MailUnknown;
 		
 		// timer
 		public var timerTick:Number = 1000 / 30;		// time to take off per frame
@@ -137,6 +138,7 @@
 					}
 				} catch (e:Error)
 				{
+					addNode(new NodeUnknown(this, nodeJSON));
 					trace("ERROR: Invalid node.\n" + e.getStackTrace());
 				}
 			}
@@ -158,6 +160,7 @@
 					addMail(new MailClass(this, mailJSON));
 				} catch (e:Error)
 				{
+					addMail(new MailUnknown(this, mailJSON));
 					trace("ERROR: Invalid mail.\n" + e.getStackTrace());
 				}
 			}
