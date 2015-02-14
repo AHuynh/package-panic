@@ -45,11 +45,18 @@ package packpan.nodes
 			if (json["clickable"] != undefined)
 				clickable = json["clickable"];
 			
-			if (clickable)		// attach a listener for clicks if this Node can be clicked
+			if (clickable)		// attach a listener for clicks if this Node can be clicked				
 				mc_object.addEventListener(MouseEvent.CLICK, onClick);
-				
-			if (json["polarity"])
-				polarity = json["polarity"];
+			else
+			{
+				// TODO: remove this temporary testing code
+				var col:uint = 0xDD9999;
+				var ct:ColorTransform = new ColorTransform();
+				ct.redMultiplier = int(col / 0x10000) / 255;
+				ct.greenMultiplier = int(col % 0x10000 / 0x100) / 255;
+				ct.blueMultiplier = col % 0x100 / 255;
+				mc_object.transform.colorTransform = ct;
+			}
 				
 			///////////////////////////////////////////////////////////////////////////////////////
 			//	add self to the game

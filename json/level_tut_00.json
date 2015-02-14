@@ -1,0 +1,43 @@
+{
+   "nodes":[
+      {
+         "subtype":"NodeConveyorNormal",
+         "clickable":true,
+         "y1":4,
+         "x1":4,
+         "y2":4,
+         "x2":10,
+         "dir":"left",
+         "type":"NodeGroupRect"
+      },
+      {
+         "color":15,
+         "clickable":false,
+         "x":11,
+         "y":4,
+         "type":"NodeBin"
+      },
+      {
+         "type":"NodeBarrier",
+         "x":3,
+         "y":4
+      }
+   ],
+   "notes":[
+
+   ],
+   "mail":[
+      {
+         "color":15,
+         "x":4,
+         "y":4,
+         "type":"MailNormal"
+      }
+   ],
+   "meta":{
+      "name-internal":"level_tut_00",
+      "format":"PP-level",
+      "format-version":1,
+      "name-external":"New Guy"
+   }
+}
