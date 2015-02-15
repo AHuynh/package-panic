@@ -41,6 +41,7 @@
 		private var nbr:NodeBarrier;
 		private var at:NodeAirTable;
 		private var nb:NodeBin;
+		private var nc:NodeChute;
 		
 		// timer
 		public var timerTick:Number = 1000 / 30;		// time to take off per frame
