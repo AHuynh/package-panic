@@ -8,15 +8,14 @@ package packpan.nodes
 	
 	/**
 	 * A chute that sends mail from this chute to a matching chute
+	 * 
 	 * @author Jesse Chen
 	 */
 	public class NodeChute extends ABST_Node 
 	{
 		[Embed(source = "../../../img/chute.png")]
 		private var CustomBitmap:Class;
-		
-		private var relativePosition:Point;
-		private var movedMail:Array;
+		private var chuteGroup:NodeGroup;
 		
 		public function NodeChute(_cg:ContainerGame, _json:Object) 
 		{
@@ -25,18 +24,32 @@ package packpan.nodes
 		
 		override public function step():void
 		{
-			blockedMail = PhysicsUtils.cullRectangle(ContainerGame.mailArray, new Point(position.x - .92, position.y - .82), new Point(position.x + .92, position.y + .82));
+			var targetMail:Array = PhysicsUtils.cullRectangle(ContainerGame.mailArray, new Point(position.x - .5, position.y - .5), new Point(position.x + .5, position.y + .5));
 			
-			for each (var mail:ABST_Mail in movedMail) {
-				relativePosition = new Point(position.x - mail.state.position.x, position.y - mail.state.position.y);
-				if (relativePosition.x > 0 && mail.state.velocity.x > 0 || 
-					relativePosition.x < 0 && mail.state.velocity.x < 0) {
-					mail.state.velocity.x *= -1;
+			for each (var mail:ABST_Mail in targetMail) {
+				var tragetChute:NodeChute = chuteGroup.getRandomNode(this);
+				var mailVel:Point = mail.state.velocity;
+				var newPos:Point = new Point(targetChute.position.x, targetChute.position.y);
+				
+				if (mailVel.x < 0)
+				{
+					newPos.x -= 0.51;
 				}
-				if (relativePosition.y > 0 && mail.state.velocity.y > 0 || 
-					relativePosition.y < 0 && mail.state.velocity.y < 0) {
-					mail.state.velocity.y *= -1;
+				else if (mailVel.x > 0)
+				{
+					newPos.x += 0.51;
 				}
+				
+				if (mailVel.y < 0)
+				{
+					newPos.y -= 0.51;
+				}
+				else if (mailVel.y > 0)
+				{
+					newPos.y += 0.51;
+				}
+				
+				mail.state.position = newPos;
 			}
 		}
 	}

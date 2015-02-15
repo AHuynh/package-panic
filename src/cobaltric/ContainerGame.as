@@ -45,6 +45,7 @@
 		private var GDN_08:NodeMagnet;
 		private var GDN_09:NodeUnknown;
 		private var GDN_10:MailUnknown;
+		private var GDN_11:NodeChute;
 		
 		// timer
 		public var timerTick:Number = 1000 / 30;		// time to take off per frame
