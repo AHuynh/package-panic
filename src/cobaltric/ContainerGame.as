@@ -34,6 +34,7 @@
 		
 		protected var gameState:int;		// state of game using PP.as constants
 		
+<<<<<<< HEAD
 		// allows getDefinitionByName to work; variable name is arbitary and is not ever used
 		private var GDN_01:NodeConveyorNormal;
 		private var GDN_02:NodeConveyorRotate;
