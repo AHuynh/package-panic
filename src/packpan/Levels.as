@@ -21,6 +21,10 @@ package packpan
 		private var Level_Magnet:Class;
 		[Embed(source="../../json/level_magnetEasy.json", mimeType="application/octet-stream")]
 		private var Level_MagnetEasy:Class;
+		[Embed(source="../../json/level_chute.json", mimeType="application/octet-stream")]
+		private var Level_Chute:Class;
+		[Embed(source="../../json/level_chute1.json", mimeType="application/octet-stream")]
+		private var Level_Chute1:Class;
 
 		//Each element of the array is a 15-length array of levels - some of which may be undefined
 		private var pages:Array;
@@ -35,6 +39,8 @@ package packpan
 			pages[0][2] = JSON.parse(new Level_Barrier());
 			pages[0][3] = JSON.parse(new Level_MagnetEasy());
 			pages[0][4] = JSON.parse(new Level_Magnet());
+			pages[0][0] = JSON.parse(new Level_Chute());
+			pages[0][1] = JSON.parse(new Level_Chute1());
 		}
 
 		/**

@@ -15,7 +15,6 @@ package packpan.nodes
 	{
 		[Embed(source = "../../../img/chute.png")]
 		private var CustomBitmap:Class;
-		private var chuteGroup:NodeGroup;
 		
 		public function NodeChute(_cg:ContainerGame, _json:Object) 
 		{
@@ -24,10 +23,10 @@ package packpan.nodes
 		
 		override public function step():void
 		{
-			var targetMail:Array = PhysicsUtils.cullRectangle(ContainerGame.mailArray, new Point(position.x - .5, position.y - .5), new Point(position.x + .5, position.y + .5));
+			var targetMail:Array = PhysicsUtils.cullRectangle(cg.mailArray, new Point(position.x - .5, position.y - .5), new Point(position.x + .5, position.y + .5));
 			
 			for each (var mail:ABST_Mail in targetMail) {
-				var tragetChute:NodeChute = chuteGroup.getRandomNode(this);
+				var targetChute:NodeChute = nodeGroup.getRandomNode(this) as NodeChute;
 				var mailVel:Point = mail.state.velocity;
 				var newPos:Point = new Point(targetChute.position.x, targetChute.position.y);
 				
