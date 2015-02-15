@@ -69,6 +69,8 @@
 			// center the container
 			container.x = 0;
 			container.y = 0;
+			
+			trace("Engine init");
 		}
 		
 		/*public function newGame():void

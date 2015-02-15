@@ -8,7 +8,6 @@
   "nodes": [
     {"type": "NodeBarrier", "x": 0, "y": 4},
 	{"type": "NodeBarrier", "x": 0, "y": 5},
-	{"type": "BLARGH", "x": 0, "y": 0},
     {"type": "NodeMagnet", "x": 3, "y": 3, "dir": "down", "clickable": false, "polarity": 1},
     {"type": "NodeMagnet", "x": 5, "y": 3, "dir": "down", "clickable": false, "polarity": -1},
     {"type": "NodeMagnet", "x": 8, "y": 3, "dir": "down", "clickable": true, "polarity": 1},
@@ -25,7 +24,6 @@
   ],
   "mail": [
     {"type": "MailMagnetic", "x": 1, "y": 4, "polarity": 1},
-	{"type": "BLARGH", "x": 6, "y": 5},
 	{"type": "MailNormal", "x": 1, "y": 5}
   ],
   "notes": [

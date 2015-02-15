@@ -94,7 +94,7 @@
 			game.mc_gui.addChild(cursor);
 			cursor.visible = false;*/
 			
-			// setup node and mail arrays
+			// setup node and mail arrays			
 			nodeGrid = [];
 			for (var i:int = 0; i <= PP.DIM_X_MAX; i++)		// going from left to right
 			{
@@ -104,11 +104,13 @@
 			}
 			nodeArray = [];
 			mailArray = [];
+			
+			// -- start reading JSON ---------------------------------------------------
 
 			// validate list of nodes
 			if (!json["nodes"])
 			{
-				trace("ERROR: JSON file is missing \"nodes\"!");
+				trace("ERROR: When setting up level, JSON file is missing \"nodes\"!");
 				completed = true;
 				return;
 			}
@@ -125,29 +127,32 @@
 					if (nodeJSON["type"] == "NodeGroupRect")
 					{
 						NodeClass = getDefinitionByName("packpan.nodes." + nodeJSON["subtype"]) as Class;
+						trace("Level setup: Adding rectangle group of: " + NodeClass);
 						addNodeGroupRect(NodeClass, nodeJSON);
 					}
 					else if (nodeJSON["type"] == "NodeGroupList")
 					{
 						NodeClass = getDefinitionByName("packpan.nodes." + nodeJSON["subtype"]) as Class;
+						trace("Level setup: Adding list group of: " + NodeClass);
 						addNodeGroupList(NodeClass, nodeJSON);
 					}
 					else
 					{
 						NodeClass = getDefinitionByName("packpan.nodes." + nodeJSON["type"]) as Class;
+						trace("Level setup: Adding one of: " + NodeClass);
 						addNode(new NodeClass(this, nodeJSON));
 					}
 				} catch (e:Error)
 				{
 					addNode(new NodeUnknown(this, nodeJSON));
-					trace("ERROR: Invalid node.\n" + e.getStackTrace());
+					trace("ERROR: When setting up level, invalid node.\n" + e.getStackTrace());
 				}
 			}
 			
 			// validate list of mail
 			if (!json["mail"])
 			{
-				trace("ERROR: JSON file is missing \"mail\"!");
+				trace("ERROR: When setting up level, JSON file is missing \"mail\"!");
 				completed = true;
 				return;
 			}
@@ -162,11 +167,15 @@
 				} catch (e:Error)
 				{
 					addMail(new MailUnknown(this, mailJSON));
-					trace("ERROR: Invalid mail.\n" + e.getStackTrace());
+					trace("ERROR: When setting up level, invalid mail.\n" + e.getStackTrace());
 				}
 			}
 			
+			if (mailArray.length == 0)
+				trace("WARNING: When setting up level, no mail was added!");
+			
 			gameState = PP.GAME_IDLE;
+			trace("Done. We have nodes x:" + nodeArray.length);
 		}
 
 		/**

@@ -4,6 +4,7 @@ package packpan.nodes
 	import flash.geom.Point;
 	import flash.display.Bitmap;
 	import flash.events.MouseEvent;
+	import packpan.iface.IMagnetic;
 	import packpan.mails.ABST_Mail;
 	import packpan.PP;
 	import packpan.PhysicsUtils;
@@ -25,15 +26,17 @@ package packpan.nodes
 		[Embed(source="../../../img/magnetElectroSouth.png")]
 		private var CustomBitmap4:Class
 		
-		private var sign:int;
+		/// The magnetic polarity of this Magnet
+		public var polarity:int = 0;
 		
-		public const strength:Number = 14;
+		public const strength:Number = 27;
 		public const range:Number = .3;
 		
 		public function NodeMagnet(_cg:ContainerGame, _json:Object) 
 		{
-			
 			super(_cg, _json);
+			
+			polarity = json["polarity"];
 			
 			if (facing != PP.DIR_NONE) {
 				mc_object.rotation = facing;
@@ -50,11 +53,12 @@ package packpan.nodes
 		}
 		
 		override public function step():void {
+			var sign:int;
 			for each (var mail:ABST_Mail in cg.mailArray) {
-				sign = polarity * mail.polarity;
-				if (sign == 0 || mail.mailState == PP.MAIL_SUCCESS) {
+				if (!(mail is IMagnetic) || mail.mailState == PP.MAIL_SUCCESS) {
 					continue;
 				}
+				sign = IMagnetic(mail).getPolarity() * polarity;
 				if (sign == -1) {
 					if (facing == PP.DIR_DOWN) {
 						if (Math.abs(mail.state.position.x - position.x) <= range && mail.state.position.y - position.y <= .82) {
@@ -114,7 +118,7 @@ package packpan.nodes
 					case PP.DIR_DOWN:
 						facing = PP.DIR_UP;
 					break;
-					default: trace("WARNING: NodeConveyorNormal at " + position + " has an invalid facing!");
+					default: trace("WARNING: NodeMagnet at " + position + " has an invalid facing!");
 				}
 				mc_object.rotation = facing;
 			}

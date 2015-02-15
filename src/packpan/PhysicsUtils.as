@@ -111,18 +111,18 @@ package packpan
 		public static function cullCircle(mails:Array, center:Point, radius:Number):Array
 		{
 			var result:Array = [];
-                        for each(var mail:ABST_Mail in mails)
-                        {
-                                if(mail.state.position.subtract(center).length <= radius)
-                                {
-                                        result[result.length] = mail;
-                                }
-                        }
-                        return result;
+			for each(var mail:ABST_Mail in mails)
+			{
+				if(mail.state.position.subtract(center).length <= radius)
+				{
+						result[result.length] = mail;
+				}
+			}
+			return result;
 		}
 
 		/**
-		 *      Converts a position from the grid frame to the screen frame.
+		 *  Converts a position from the grid frame to the screen frame.
 		 *	@param	position	a point in the grid frame
 		 *	@returns	that point in the screen frame
 		 */

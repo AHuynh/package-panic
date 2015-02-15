@@ -21,12 +21,6 @@
          "type":"NodeGroupRect"
       },
       {  
-         "clickable":false,
-         "x":4,
-         "y":3,
-         "type":"NodeChute"
-      },
-      {  
          "subtype":"NodeChute",
          "clickable":false,
          "type":"NodeGroupList",

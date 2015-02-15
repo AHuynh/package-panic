@@ -15,8 +15,8 @@ package packpan
 		public static const GRID_ORIGIN:Point = new Point(-350, -260);		// actual x, y coordinate of upper-left grid
 		public static const GRID_SIZE:int = 50;								// grid square size
 
-		public static const DIM_X_MAX:int = 14;			// max x (U/D) index of grid
-		public static const DIM_Y_MAX:int = 9;			// max y (L/R) index of grid
+		public static const DIM_X_MAX:int = 14;			// max x (L/R) index of grid
+		public static const DIM_Y_MAX:int = 9;			// max y (U/D) index of grid
 		
 		public static const DIM_LEVEL_MAX:int = 14;		// max index on level page
 		
@@ -35,31 +35,31 @@ package packpan
 		public static const DIR_RIGHT:int = 0;
 		public static const DIR_DOWN:int = 90;
 		
-		public static const NODE_CONV_NORMAL:String = "packpan.nodes.NodeConveyorNormal";
+		/*public static const NODE_CONV_NORMAL:String = "packpan.nodes.NodeConveyorNormal";
 		public static const NODE_CONV_ROTATE:String = "packpan.nodes.NodeConveyorRotate";
 		public static const NODE_BARRIER:String = "packpan.nodes.NodeBarrier";
 		public static const NODE_AIRTABLE:String = "packpan.nodes.NodeAirTable";
 		public static const NODE_BIN_NORMAL:String = "packpan.nodes.NodeBin";
-		public static const NODE_MAGNET:String = "packpan.nodes.NodeMagnet";
+		public static const NODE_MAGNET:String = "packpan.nodes.NodeMagnet";*/
 
 		//color constants for matching objects. based on http://en.wikipedia.org/wiki/Web_colors#HTML_color_names
 		public static const COLORS:Array = [
-			0x000000,	//black
-			0x000080,	//navy
-			0x008000,	//green
-			0x008080,	//cyan
-			0x800000,	//red
-			0x800080,	//purple
-			0x808000,	//olive
-			0xC0C0C0,	//silver
-			0x808080,	//gray
-			0x0000FF,	//blue
-			0x00FF00,	//lime
-			0x00FFFF,	//aqua
-			0xFF0000,	//red
-			0xFF00FF,	//fuchsia
-			0xFF0000,	//yellow
-			0xFFFFFF	//white
+			0x000000,	//black		00
+			0x000080,	//navy		01
+			0x008000,	//green		02
+			0x008080,	//cyan		03
+			0x800000,	//red		04
+			0x800080,	//purple	05
+			0x808000,	//olive		06
+			0xC0C0C0,	//silver	07
+			0x808080,	//gray		08
+			0x0000FF,	//blue		09
+			0x00FF00,	//lime		10
+			0x00FFFF,	//aqua		11
+			0xFF0000,	//red		12
+			0xFF00FF,	//fuchsia	13
+			0xFF0000,	//yellow	14
+			0xFFFFFF	//white		15
 		];
 		
 		// arbitary non-negative integer constants for indexing into GameObject.properties

@@ -6,7 +6,7 @@ package packpan.mails
 	import packpan.PP;
 	
 	/**
-	 * MailNormal that implements IColorable.
+	 * A colorable but otherwise vanilla mail object.
 	 * @author Alexander Huynh
 	 */
 	public class MailNormal extends ABST_Mail implements IColorable
@@ -15,7 +15,7 @@ package packpan.mails
 		private var color:uint = 15;
 		
 		[Embed(source="../../../img/packageNormal.png")]	// embed code; change this path to change the image
-		private var CustomBitmap:Class	// must be directly below the embed code
+		private var CustomBitmap:Class	// must be directly after the embed code
 		
 		public function MailNormal(_cg:ContainerGame, _json:Object)
 		{

@@ -18,7 +18,7 @@ package packpan.nodes
 	public class NodeBin extends ABST_Node implements IColorable
 	{
 		/// The color of this object
-		private var color:uint = 15;
+		private var color:uint;
 		
 		//the strength of the forces that center the package
 		private var friction:Number = 5;

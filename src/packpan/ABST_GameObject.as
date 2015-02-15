@@ -16,27 +16,11 @@ package packpan
 		
 		/// The MovieClip associated with this object. (The actual graphic on the stage.)
 		public var mc_object:MovieClip;
-
-		/// Maps a String key to a property. See comments in ABST_GameObject for a list of valid keys.
-		public var properties:Object;
-		/*	Valid key list
-		 * 
-		 * 	Keys are always a String.
-		 * 	If (+) is in valid?, this key is implemented in the game. Otherwise (-), it is not.
-		 * 
-		 * 	key				valid?	type		representation
-		 * 	------------------------------------------------------------------------------------------
-		 * 	PROP_COLOR		+		uint		a hex color, 0xFFFFFF if not colored
-		 * 	fireproof		-		boolean		true if affected by fire
-		 * 	polarity		+		int			1 if attractive, -1 if repulsive, 0 if not magnetic
-		 */
 		
 		/// The grid square of this Node. (0-indexed, origin top-left, L/R is x, U/D is y)
 		public var position:Point;
 		/// The rotation of this Node, a PP.DIR_X constant. (Ex: PP.DIR_LEFT)
 		public var facing:int = PP.DIR_NONE;
-		/// The magnetic polarity of this GameObject
-		public var polarity:int = 0;
 		
 		/// The 'JSON' object passed into this GameObject See comments in ABST_GameObject for more details.
 		protected var json:Object;
@@ -57,8 +41,6 @@ package packpan
 		{
 			cg = _cg;
 			json = _json;
-			
-			properties = new Object();
 			
 			///////////////////////////////////////////////////////////////////////////////////////
 			//	now parse the "JSON" object for common properties all game objects could have
