@@ -25,7 +25,15 @@ package packpan
 		private var Level_Chute:Class;
 		[Embed(source="../../json/level_chuteHard.json", mimeType="application/octet-stream")]
 		private var Level_ChuteHard:Class;
-
+		[Embed(source="../../json/level_h.json", mimeType="application/octet-stream")]
+		private var Level_H:Class;
+		[Embed(source="../../json/level_circular.json", mimeType="application/octet-stream")]
+		private var Level_Circular:Class;
+		[Embed(source="../../json/level_random.json", mimeType="application/octet-stream")]
+		private var Level_Random:Class;
+		[Embed(source="../../json/level_swap.json", mimeType="application/octet-stream")]
+		private var Level_Swap:Class;
+		
 		[Embed(source="../../json/level_tut_00.json", mimeType="application/octet-stream")]
 		private var Level_Tut00:Class;
 		[Embed(source="../../json/level_tut_01.json", mimeType="application/octet-stream")]
@@ -48,11 +56,15 @@ package packpan
 			pages[0][1] = JSON.parse(new Level_Tut01());
 			pages[0][2] = JSON.parse(new Level_Tut02());
 			pages[0][3] = JSON.parse(new Level_Tut03());
+			pages[0][4] = JSON.parse(new Level_Swap());
 			pages[0][5] = JSON.parse(new Level_Test1());
-			pages[0][6] = JSON.parse(new Level_TestT());
+			pages[0][6] = JSON.parse(new Level_TestT())
 			pages[0][7] = JSON.parse(new Level_Barrier());
 			pages[0][8] = JSON.parse(new Level_MagnetEasy());
 			pages[0][9] = JSON.parse(new Level_Magnet());
+			pages[0][10] = JSON.parse(new Level_Random());
+			pages[0][11] = JSON.parse(new Level_H());
+			pages[0][12] = JSON.parse(new Level_Circular());
 			pages[0][13] = JSON.parse(new Level_Chute());
 			pages[0][14] = JSON.parse(new Level_ChuteHard());
 
