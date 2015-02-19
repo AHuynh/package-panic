@@ -58,7 +58,7 @@ package packpan
 			0x00FFFF,	//aqua		11
 			0xFF0000,	//red		12
 			0xFF00FF,	//fuchsia	13
-			0xFF0000,	//yellow	14
+			0xFFFF00,	//yellow	14
 			0xFFFFFF	//white		15
 		];
 		
