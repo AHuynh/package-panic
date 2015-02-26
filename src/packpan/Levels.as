@@ -33,6 +33,12 @@ package packpan
 		private var Level_Random:Class;
 		[Embed(source="../../json/level_swap.json", mimeType="application/octet-stream")]
 		private var Level_Swap:Class;
+		[Embed(source="../../json/level_air.json", mimeType="application/octet-stream")]
+		private var Level_Air:Class;
+		[Embed(source="../../json/level_grid.json", mimeType="application/octet-stream")]
+		private var Level_Grid:Class;
+		[Embed(source="../../json/level_islands.json", mimeType="application/octet-stream")]
+		private var Level_Islands:Class;
 		
 		[Embed(source="../../json/level_tut_00.json", mimeType="application/octet-stream")]
 		private var Level_Tut00:Class;
@@ -67,6 +73,9 @@ package packpan
 			pages[0][12] = JSON.parse(new Level_Circular());
 			pages[0][13] = JSON.parse(new Level_Chute());
 			pages[0][14] = JSON.parse(new Level_ChuteHard());
+			//pages[0][0] = JSON.parse(new Level_Air());
+			//pages[0][1] = JSON.parse(new Level_Grid());
+			//pages[0][2] = JSON.parse(new Level_Islands());
 
 		}
 

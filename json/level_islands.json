@@ -1,0 +1,308 @@
+{  
+   "nodes":[
+      {  
+         "subtype":"NodeConveyorNormal",
+         "clickable":true,
+         "y1":4,
+         "x1":6,
+         "y2":4,
+         "x2":8,
+         "dir":"right",
+         "type":"NodeGroupRect"
+      },
+      {
+         "clickable":true,
+         "y":2,
+         "x":2,
+         "dir":"right",
+         "type":"NodeConveyorRotate"
+      },
+	  {
+         "clickable":true,
+         "y":2,
+         "x":12,
+         "dir":"down",
+         "type":"NodeConveyorRotate"
+      },
+	  {
+         "clickable":true,
+         "y":7,
+         "x":12,
+         "dir":"left",
+         "type":"NodeConveyorRotate"
+      },
+	  {
+         "clickable":true,
+         "y":7,
+         "x":2,
+         "dir":"up",
+         "type":"NodeConveyorRotate"
+      },
+     
+      {  
+         "subtype":"NodeChute",
+         "clickable":false,
+         "type":"NodeGroupList",
+		 "color":11,
+         "list":[  
+            {  
+               "x":1,
+               "y":2
+            },
+            {  
+               "x":13,
+               "y":7
+            },
+			{
+				"x":7,
+				"y":5
+			}
+         ]
+      },
+	  {  
+         "subtype":"NodeChute",
+         "clickable":false,
+         "type":"NodeGroupList",
+		 "color":8,
+         "list":[  
+            {  
+               "x":2,
+               "y":1
+            },
+            {  
+               "x":2,
+               "y":8
+            }
+         ]
+      },
+	  {  
+         "subtype":"NodeChute",
+         "clickable":false,
+         "type":"NodeGroupList",
+		 "color":14,
+         "list":[  
+            {  
+               "x":12,
+               "y":1
+            },
+            {  
+               "x":12,
+               "y":3
+            }
+         ]
+      },
+	  {  
+         "subtype":"NodeChute",
+         "clickable":false,
+         "type":"NodeGroupList",
+		 "color":2,
+         "list":[  
+            {  
+               "x":3,
+               "y":2
+            },
+            {  
+               "x":11,
+               "y":7
+            }
+         ]
+      },
+	  {  
+         "subtype":"NodeChute",
+         "clickable":false,
+         "type":"NodeGroupList",
+		 "color":4,
+         "list":[  
+            {  
+               "x":11,
+               "y":2
+            },
+            {  
+               "x":3,
+               "y":7
+            }
+         ]
+      },
+	  {  
+         "subtype":"NodeChute",
+         "clickable":false,
+         "type":"NodeGroupList",
+		 "color":1,
+         "list":[  
+            {  
+               "x":13,
+               "y":2
+            },
+            {  
+               "x":5,
+               "y":4
+            }
+         ]
+      },
+	  {  
+         "subtype":"NodeChute",
+         "clickable":false,
+         "type":"NodeGroupList",
+		 "color":12,
+         "list":[  
+            {  
+               "x":2,
+               "y":6
+            },
+            {  
+               "x":12,
+               "y":8
+            }
+         ]
+      },
+	  {  
+         "subtype":"NodeChute",
+         "clickable":false,
+         "type":"NodeGroupList",
+		 "color":3,
+         "list":[  
+            {  
+               "x":9,
+               "y":4
+            },
+            {  
+               "x":1,
+               "y":7
+            }
+         ]
+      },
+	  {  
+         "subtype":"NodeChute",
+         "clickable":false,
+         "type":"NodeGroupList",
+		 "color":13,
+         "list":[  
+            {  
+               "x":2,
+               "y":3
+            },
+            {  
+               "x":12,
+               "y":6
+            }
+         ]
+      },
+      {  
+         "color":9,
+         "clickable":false,
+         "x":6,
+         "y":5,
+         "type":"NodeBin"
+      },
+	  {  
+         "color":10,
+         "clickable":false,
+         "x":8,
+         "y":5,
+         "type":"NodeBin"
+      },
+	  {
+		  "type":"NodeBarrier",
+		  "x": 1,
+		  "y": 1
+      },
+	  {
+		  "type":"NodeBarrier",
+		  "x": 1,
+		  "y": 3
+      },
+	  {
+		  "type":"NodeBarrier",
+		  "x": 3,
+		  "y": 1
+      },
+	  {
+		  "type":"NodeBarrier",
+		  "x": 3,
+		  "y": 3
+      },
+	  {
+		  "type":"NodeBarrier",
+		  "x": 11,
+		  "y": 1
+      },
+	  {
+		  "type":"NodeBarrier",
+		  "x": 11,
+		  "y": 3
+      },
+	  {
+		  "type":"NodeBarrier",
+		  "x": 13,
+		  "y": 1
+      },
+	  {
+		  "type":"NodeBarrier",
+		  "x": 13,
+		  "y": 3
+      },
+	  {
+		  "type":"NodeBarrier",
+		  "x": 1,
+		  "y": 6
+      },
+	  {
+		  "type":"NodeBarrier",
+		  "x": 1,
+		  "y": 8
+      },
+	  {
+		  "type":"NodeBarrier",
+		  "x": 3,
+		  "y": 6
+      },
+	  {
+		  "type":"NodeBarrier",
+		  "x": 3,
+		  "y": 8
+      },
+	  {
+		  "type":"NodeBarrier",
+		  "x": 11,
+		  "y": 6
+      },
+	  {
+		  "type":"NodeBarrier",
+		  "x": 11,
+		  "y": 8
+      },
+	  {
+		  "type":"NodeBarrier",
+		  "x": 13,
+		  "y": 6
+      },
+	  {
+		  "type":"NodeBarrier",
+		  "x": 13,
+		  "y": 8
+      }
+   ],
+   "notes":[  
+
+   ],
+   "mail":[  
+      {  
+         "color":9,
+         "x":6,
+         "y":4,
+         "type":"MailNormal"
+      },
+	  {  
+         "color":10,
+         "x":8,
+         "y":4,
+         "type":"MailNormal"
+      }
+   ],
+   "meta":{  
+      "name-internal":"level_islands",
+      "format":"PP-level",
+      "format-version":1,
+      "name-external":"Islands"
+   }
+}
