@@ -3,6 +3,8 @@ package packpan.mails
 	import cobaltric.ContainerGame;
 	import flash.geom.ColorTransform;
 	import packpan.iface.IColorable;
+	import packpan.iface.IDestroyable;
+	import packpan.iface.IProcessable;
 	import packpan.PP;
 	
 	/**

@@ -66,7 +66,8 @@ package packpan.nodes
 				occupied = true;
 				
 				// fail if mail and bin are colored and colors don't match.
-				if (mail is IColorable && !isSameColor(IColorable(mail).getColor()))
+				// also fail if the mail should have been destroyed
+				if (mail.ShouldDestroy() || (mail is IColorable && !isSameColor(IColorable(mail).getColor())))
 				{
 					mail.mailState = PP.MAIL_FAILURE;
 					return;

@@ -16,7 +16,7 @@
     </define>
     <define append="true">
       <name>CONFIG::timeStamp</name>
-      <value>'2/16/2015'</value>
+      <value>'2/25/2015'</value>
     </define>
     <define append="true">
       <name>CONFIG::air</name>
@@ -32,19 +32,19 @@
     </define>
     <verbose-stacktraces>true</verbose-stacktraces>
     <source-path append="true">
-      <path-element>C:\Users\Someone\Documents\GitHub\package-panic\src</path-element>
+      <path-element>D:\Documents\GitHub\package-panic\src</path-element>
       <path-element>C:\Program Files (x86)\FlashDevelop\Library\AS3\classes</path-element>
     </source-path>
     <library-path append="true">
-      <path-element>C:\Users\Someone\Documents\GitHub\package-panic\swc\SWC_ContainerMenu.swc</path-element>
-      <path-element>C:\Users\Someone\Documents\GitHub\package-panic\swc\SWC_GameCursor.swc</path-element>
-      <path-element>C:\Users\Someone\Documents\GitHub\package-panic\swc\SWC_ContainerGame.swc</path-element>
-      <path-element>C:\Users\Someone\Documents\GitHub\package-panic\swc\Node.swc</path-element>
-      <path-element>C:\Users\Someone\Documents\GitHub\package-panic\swc\Mail.swc</path-element>
+      <path-element>D:\Documents\GitHub\package-panic\swc\SWC_ContainerMenu.swc</path-element>
+      <path-element>D:\Documents\GitHub\package-panic\swc\SWC_GameCursor.swc</path-element>
+      <path-element>D:\Documents\GitHub\package-panic\swc\SWC_ContainerGame.swc</path-element>
+      <path-element>D:\Documents\GitHub\package-panic\swc\Node.swc</path-element>
+      <path-element>D:\Documents\GitHub\package-panic\swc\Mail.swc</path-element>
     </library-path>
   </compiler>
   <file-specs>
-    <path-element>C:\Users\Someone\Documents\GitHub\package-panic\src\packpan\Main.as</path-element>
+    <path-element>D:\Documents\GitHub\package-panic\src\packpan\Main.as</path-element>
   </file-specs>
   <default-background-color>#C0C0C0</default-background-color>
   <default-frame-rate>30</default-frame-rate>
