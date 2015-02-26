@@ -7,7 +7,7 @@ package packpan.mails
 	 */
 	public class MailContraband extends ABST_Mail
 	{
-		[Embed(source="../../../img/packageNormal.png")]	// embed code; change this path to change the image
+		[Embed(source="../../../img/packageContraband.png")]	// embed code; change this path to change the image
 		private var CustomBitmap:Class	// must be directly after the embed code
 		public var is_contraband:Boolean = false;
 		

@@ -3,7 +3,7 @@
     "format": "PP-level",
     "format-version": 1,
     "name-internal": "level1",
-    "name-external": "Level 1"
+    "name-external": "INC"
   },
   "nodes": [
     {"type": "NodeConveyorNormal", "x": 9, "y": 2, "dir": "up"},
@@ -12,6 +12,7 @@
     {"type": "NodeGroupRect", "subtype": "NodeConveyorNormal", "x1": 0, "y1": 2, "x2": 8, "y2": 2, "dir": "right"},
     {"type": "NodeGroupRect", "subtype": "NodeConveyorNormal", "x1": 4, "y1": 4, "x2": 9, "y2": 4, "dir": "right"},
     {"type": "NodeGroupRect", "subtype": "NodeConveyorNormal", "x1": 10, "y1": 4, "x2": 10, "y2": 8, "dir": "down"},
+    {"type": "NodeIncinerator", "x": 10, "y": 3},
     {"type": "NodeBin", "x": 3, "y": 3}
   ],
   "mail": [
