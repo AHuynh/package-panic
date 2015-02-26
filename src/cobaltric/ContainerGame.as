@@ -46,6 +46,10 @@
 		private var GDN_09:NodeUnknown;
 		private var GDN_10:MailUnknown;
 		private var GDN_11:NodeChute;
+		private var GDN_12:MailGarbage;
+		private var GDN_13:MailContraband;
+		private var GDN_14:NodeIncinerator;
+		
 		
 		// timer
 		public var timerTick:Number = 1000 / 30;		// time to take off per frame
@@ -296,7 +300,9 @@
 				var mailFailure:Boolean = false;		// check if any Mail is in failure state
 				for each (var mail:ABST_Mail in mailArray)
 				{
-					var mailState:int = mail.step();
+					var mailState:int = mail.mailState;
+					if (!mail.destroyed)
+						mailState = mail.step();
 					if (mailState != PP.MAIL_SUCCESS)
 						allSuccess = false;
 					if (mailState == PP.MAIL_FAILURE)

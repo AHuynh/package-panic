@@ -15,6 +15,8 @@ package packpan
 		private var Level_Test1:Class;
 		[Embed(source="../../json/level_testT.json", mimeType="application/octet-stream")]
 		private var Level_TestT:Class;
+		[Embed(source="../../json/level_testJ.json", mimeType="application/octet-stream")]
+		private var Level_TestJ:Class;
 		[Embed(source="../../json/level_barrier.json", mimeType="application/octet-stream")]
 		private var Level_Barrier:Class;
 		[Embed(source="../../json/level_magnet.json", mimeType="application/octet-stream")]
@@ -64,7 +66,7 @@ package packpan
 			pages[0][3] = JSON.parse(new Level_Tut03());
 			pages[0][4] = JSON.parse(new Level_Swap());
 			pages[0][5] = JSON.parse(new Level_Test1());
-			pages[0][6] = JSON.parse(new Level_TestT())
+			pages[0][6] = JSON.parse(new Level_TestJ())
 			pages[0][7] = JSON.parse(new Level_Barrier());
 			pages[0][8] = JSON.parse(new Level_MagnetEasy());
 			pages[0][9] = JSON.parse(new Level_Magnet());

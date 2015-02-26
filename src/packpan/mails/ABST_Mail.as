@@ -3,9 +3,12 @@ package packpan.mails
 	import cobaltric.ContainerGame;
 	import flash.display.Bitmap;
 	import flash.display.MovieClip;
+	import flash.errors.IllegalOperationError;
 	import flash.geom.Point;
 	import flash.geom.ColorTransform;
 	import packpan.ABST_GameObject;
+	import packpan.iface.IDestroyable;
+	import packpan.iface.IProcessable;
 	import packpan.PP;
 	import packpan.PhysicalEntity;
 	import packpan.PhysicsUtils;
@@ -13,10 +16,11 @@ package packpan.mails
 	 * An abstract Mail object, extended to become items that are manipulated by nodes.
 	 * @author Alexander Huynh
 	 */
-	public class ABST_Mail extends ABST_GameObject
+	public class ABST_Mail extends ABST_GameObject implements IDestroyable, IProcessable
 	{		
 		public var state:PhysicalEntity;			// the physical state of the mail
 		public var mailState:int = PP.MAIL_IDLE;	// is this mail in a idle, success, or failure state
+		public var destroyed:Boolean = false;
 		
 		/**
 		 * Should only be called through super(), never instantiated.
@@ -47,7 +51,7 @@ package packpan.mails
 		public function step():int
 		{
 			// -- OVERRIDE THIS FUNCTION TO PROVIDE CUSTOM FUNCTIONALITY
-						
+			
 			position = findGridSquare();		// find the current grid coordinates
 			
 			if (position)						// if we are in bounds
@@ -67,6 +71,46 @@ package packpan.mails
 			mc_object.y = mc_pos.y;
 
 			return mailState;
+		}
+		
+		/* INTERFACE packpan.iface.IDestroyable */
+		
+		public function DestroyedBy(destructor : Object):Boolean 
+		{
+			return true;
+		}
+		
+		public final function Destroy():void 
+		{
+			mc_object.visible = false;
+			if (ShouldDestroy()) {
+				mailState = PP.MAIL_SUCCESS;
+			} else {
+				mailState = PP.MAIL_FAILURE;
+			}
+			destroyed = true;
+		}
+		
+		public function ShouldDestroy():Boolean 
+		{
+			return false;
+		}
+		
+		/* INTERFACE packpan.iface.IProcessable */
+		
+		public function ProcessedBy(processor : Object):Boolean 
+		{
+			return false;
+		}
+		
+		public function Process(processor : Object):void 
+		{
+			//Doesn't need processing, thus won't use it
+		}
+		
+		public function ShouldProcess():Boolean 
+		{
+			return false;
 		}
 		
 		/**
