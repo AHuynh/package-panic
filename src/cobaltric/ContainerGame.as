@@ -385,7 +385,7 @@
 		protected function onRetry(e:MouseEvent):void
 		{
 			completed = true;
-			// TODO retry logic
+			engine.retryFlag = true;
 			destroy(null);
 		}
 		

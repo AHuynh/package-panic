@@ -29,6 +29,8 @@
 		// Levels
 		public var levels:Levels;
 		public var level:Object;	//dictionary read from json
+		public var page:int = 1;	// remember the page
+		public var retryFlag:Boolean;
 		
 		// A 2D array of arrays corresponding to levels
 		// first index is page (0+)
@@ -63,7 +65,7 @@
 			addEventListener(Event.ENTER_FRAME, step);
 			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			
-			container = new ContainerIntro(this, false);
+			container = new ContainerIntro(this, false, page);
 			addChild(container);
 
 			// center the container
@@ -100,8 +102,16 @@
 					//SoundPlayer.stopBGM();
 				break;
 				case 1:
-					container = new ContainerIntro(this, true);
-					gameState = 0;
+					if (retryFlag)
+					{
+						container = new ContainerGame(this, level);
+					}
+					else
+					{
+						container = new ContainerIntro(this, true, page);
+						gameState = 0;
+					}
+					retryFlag = false;
 				break;
 			}
 			
