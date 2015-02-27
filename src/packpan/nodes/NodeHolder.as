@@ -3,6 +3,7 @@ package packpan.nodes
 	import cobaltric.ContainerGame;
 	import flash.display.Bitmap;
 	import flash.display.ColorCorrection;
+	import flash.events.MouseEvent;
 	import flash.geom.ColorTransform;
 	import packpan.iface.IColorable;
 	import packpan.mails.ABST_Mail;
@@ -32,7 +33,7 @@ package packpan.nodes
 		private var remaining:int;				//Remaining capacity of Holder
 		private var isFull:Boolean = false;		//Whether Holder is full
 		
-		public function NodeHolder(_cg:ContainerGame, _json:Object, _bitmap:Bitmap=null, _capacity:int) 
+		public function NodeHolder(_capacity:int, _cg:ContainerGame, _json:Object, _bitmap:Bitmap=null) 
 		{
 			super(_cg, _json, _bitmap);
 			capacity = _capacity;
@@ -66,7 +67,7 @@ package packpan.nodes
 			}
 			
 			//Decrement remaining and check if full
-			remaining--;;
+			remaining--;
 			if (remaining <= 0)
 			{
 				isFull = true;
@@ -76,22 +77,26 @@ package packpan.nodes
 		override public function onClick(e:MouseEvent):void
 		{
 			//Pops package from Holder stack
+			var mail:ABST_Mail = packages.pop();
+			mail.mc_object.scaleX = mail.mc_object.scaleY = 1;
+			
+			//Pop mail out in whatever direction Holder is facing
 			switch (facing)
 			{
 				case PP.DIR_RIGHT:
-					Mail.state.velocity = new Point(0, 0);
+					mail.state.velocity = new Point(1, 0);
 				break;
 				case PP.DIR_UP:
-					Mail.state.velocity = new Point(0, 0);
+					mail.state.velocity = new Point(0, 1);
 				break;
 				case PP.DIR_LEFT:
-					Mail.state.velocity = new Point(0, 0);
+					mail.state.velocity = new Point(-1, 0);
 				break;
 				case PP.DIR_DOWN:
-					Mail.state.velocity = new Point(0, 0);
+					mail.state.velocity = new Point(0, -1);
 				break;
 				default:
-					trace("WARNING: NodeConveyorNormal at " + position + " has an invalid facing!");
+					trace("WARNING: NodeHolder at " + position + " has an invalid facing!");
 			}
 		}
 		
