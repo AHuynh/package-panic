@@ -109,6 +109,7 @@ package packpan
 			pages[1][1] = JSON.parse(new Level_Grid());
 			pages[1][2] = JSON.parse(new Level_Islands());
 			pages[1][3] = JSON.parse(new Level_Slide());
+			pages[1][4] = JSON.parse(new Level_TestJ());
 
 			//pages[0][0] = JSON.parse(new Level_Air());
 			//pages[0][1] = JSON.parse(new Level_Grid());
