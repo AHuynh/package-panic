@@ -2,8 +2,8 @@
   "meta": {
     "format": "PP-level",
     "format-version": 1,
-    "name-internal": "levelmagnet",
-    "name-external": "Mag"
+    "name-internal": "level_magnet",
+    "name-external": "Magnet Mayhem"
   },
   "nodes": [
     {"type": "NodeMagnet", "x": 4, "y": 1, "dir": "down", "clickable": false, "polarity": 1},
