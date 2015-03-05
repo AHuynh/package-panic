@@ -51,6 +51,10 @@ package packpan
 		[Embed(source="../../json/level_tut_03.json", mimeType="application/octet-stream")]
 		private var Level_Tut03:Class;
 		
+		
+		[Embed(source="../../json/level_slide.json", mimeType="application/octet-stream")]
+		private var Level_Slide:Class;
+		
 		//Each element of the array is a 15-length array of levels - some of which may be undefined
 		private var pages:Array;
 
@@ -80,6 +84,7 @@ package packpan
 			pages[1][0] = JSON.parse(new Level_Air());
 			pages[1][1] = JSON.parse(new Level_Grid());
 			pages[1][2] = JSON.parse(new Level_Islands());
+			pages[1][3] = JSON.parse(new Level_Slide());
 
 		}
 

@@ -16,6 +16,8 @@
 		private var levelButtons:Array;		// list of level buttons
 		private var page:int = 0;			// current page of 15 levels; also the first index into eng.levelArray
 		
+		private var selectedLevel:int = -1;
+		
 		public function ContainerIntro(_eng:Engine, _showLevels:Boolean, _page:int)
 		{
 			trace("_showLevels = " + _showLevels);
@@ -28,6 +30,8 @@
 			swc = new SWC_ContainerMenu();
 			addChild(swc);
 			
+			swc.mc_levels.tf_levelname.text = "Pick a level!";
+			
 			// attach listeners for each factory
 			swc.mc_main.bg.btn_factory0.addEventListener(MouseEvent.CLICK, onFactory);
 			swc.mc_main.bg.btn_factory1.addEventListener(MouseEvent.CLICK, onFactory);
@@ -37,7 +41,7 @@
 			swc.mc_levels.gotoAndStop(1);
 			swc.mc_levels.visible = _showLevels;		// hide/show level select screen
 			
-			//swc.mc_main.btn_start.addEventListener(MouseEvent.CLICK, onStart);
+			swc.mc_levels.btn_start.addEventListener(MouseEvent.CLICK, onStart);
 			//swc.mc_levels.btn_quit.addEventListener(MouseEvent.CLICK, onQuit);
 			
 			// set up level buttons
@@ -101,9 +105,19 @@
 		 * 
 		 * @param	e		the captured MouseEvent, unused
 		 */
-		private function onStart(e:MouseEvent):void
-		{
-			swc.mc_levels.visible = true;
+		private function onLevel(e:MouseEvent):void
+		{			
+			for (var i:int = 0; i < levelButtons.length; i++)
+				levelButtons[i].gotoAndStop(1);
+			e.target.parent.gotoAndStop(2);
+
+			// get the index of the button clicked (0-15)
+			selectedLevel = int(MovieClip(e.target).parent.name.substring(6));		// name is in format of level_xx
+			
+			// set the level in the engine
+			eng.level = eng.levels.getLevel(page, selectedLevel);
+			
+			swc.mc_levels.tf_levelname.text = (eng.levels.getLevel(page, selectedLevel))["meta"]["name-external"];
 		}
 		
 		/**
@@ -115,13 +129,16 @@
 		private function onQuit(e:MouseEvent):void
 		{
 			swc.mc_levels.visible = false;
+			for (var i:int = 0; i < levelButtons.length; i++)
+				levelButtons[i].gotoAndStop(1);
+			swc.mc_levels.tf_levelname.text = "Pick a level!";
 		}
 		
 		/**
 		 * Called when a level button is clicked, from the level menu
 		 * @param	e		the captured MouseEvent, used to find out which button was pressed
 		 */
-		private function onLevel(e:MouseEvent):void
+		private function onStart(e:MouseEvent):void
 		{
 			// clean up resources
 			swc.removeEventListener(MouseEvent.CLICK, onStart);
@@ -130,13 +147,7 @@
 			for (var i:int = 0; i < levelButtons.length; i++)
 				levelButtons[i].hitbox.removeEventListener(MouseEvent.CLICK, onLevel);
 			levelButtons = null;
-			
-			// get the index of the button clicked (0-15)
-			var ind:int = int(MovieClip(e.target).parent.name.substring(6));		// name is in format of level_xx
-			
-			// set the level in the engine
-			eng.level = eng.levels.getLevel(page, ind);
-			
+
 			// flag this Container as completed for the Engine
 			completed = true;
 			
