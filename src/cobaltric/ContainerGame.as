@@ -49,6 +49,7 @@
 		private var GDN_12:MailGarbage;
 		private var GDN_13:MailContraband;
 		private var GDN_14:NodeIncinerator;
+		private var GDN_15:NodeXRay;
 		
 		
 		// timer
