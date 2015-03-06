@@ -1,10 +1,12 @@
 package packpan.nodes 
 {
 	import cobaltric.ContainerGame;
+	import flash.display.MovieClip;
 	import packpan.mails.ABST_Mail;
 	import packpan.mails.MailContraband;
 	/**
-	 * ...
+	 * When mail passes through this Node, detects if there is contraband.
+	 * If there is more than 1 mail on this Node with conflicting statuses, XRay will become confused.
 	 * @author James Liu
 	 */
 	public class NodeXRay extends ABST_Node
@@ -17,9 +19,15 @@ package packpan.nodes
 		
 		public function NodeXRay(_cg:ContainerGame, _json:Object)
 		{
+			_json["layer"] = "above";			// place this Node'd graphic on elevated layer
+			
 			super(_cg, _json);
 			
-			mc_object.gotoAndStop("NodeXray");
+			mc_object.gotoAndStop("NodeXray");	// use SWC image
+			
+			var base:MovieClip = new Node();	// place base graphic on default layer
+			base.gotoAndStop("NodeXrayBase");
+			cg.addChildToGrid(base, position);
 			
 			currentList = new Array();
 			foundMail = false;
@@ -49,7 +57,7 @@ package packpan.nodes
 		{
 			var temp : Boolean = false;
 			if (mail is MailContraband) {
-				temp = temp || (mail as MailContraband).ShouldDestroy();
+				temp = (mail as MailContraband).ShouldDestroy();
 			}
 			if (!foundMail) {
 				foundContraband = temp;

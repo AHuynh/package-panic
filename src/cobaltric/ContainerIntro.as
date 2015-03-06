@@ -41,7 +41,8 @@
 			swc.mc_levels.gotoAndStop(1);
 			swc.mc_levels.visible = _showLevels;		// hide/show level select screen
 			
-			swc.mc_levels.btn_start.addEventListener(MouseEvent.CLICK, onStart);
+			swc.mc_levels.btn_start.visible = false;
+			//swc.mc_levels.btn_start.addEventListener(MouseEvent.CLICK, onStart);
 			//swc.mc_levels.btn_quit.addEventListener(MouseEvent.CLICK, onQuit);
 			
 			// set up level buttons
@@ -75,6 +76,8 @@
 			// attach listeners to each level button's hitbox and set text fields
 			for (var i:int = 0; i < levelButtons.length; i++)
 			{
+				levelButtons[i].hitbox.addEventListener(MouseEvent.MOUSE_OVER, overLevel);
+				levelButtons[i].hitbox.addEventListener(MouseEvent.MOUSE_OUT, outLevel);
 				levelButtons[i].hitbox.addEventListener(MouseEvent.CLICK, onLevel);
 				levelButtons[i].visible = eng.levels.hasLevel(page, i);	// hide the button if the level doesn't exist
 				
@@ -105,11 +108,11 @@
 		 * 
 		 * @param	e		the captured MouseEvent, unused
 		 */
-		private function onLevel(e:MouseEvent):void
+		private function overLevel(e:MouseEvent):void
 		{			
 			for (var i:int = 0; i < levelButtons.length; i++)
 				levelButtons[i].gotoAndStop(1);
-			e.target.parent.gotoAndStop(2);
+			e.target.parent.gotoAndStop(3);
 
 			// get the index of the button clicked (0-15)
 			selectedLevel = int(MovieClip(e.target).parent.name.substring(6));		// name is in format of level_xx
@@ -126,26 +129,41 @@
 		 * 
 		 * @param	e		the captured MouseEvent, unused
 		 */
-		private function onQuit(e:MouseEvent):void
+		private function outLevel(e:MouseEvent):void
 		{
-			swc.mc_levels.visible = false;
 			for (var i:int = 0; i < levelButtons.length; i++)
 				levelButtons[i].gotoAndStop(1);
 			swc.mc_levels.tf_levelname.text = "Pick a level!";
 		}
 		
 		/**
+		 * Called when the Quit button is clicked, from the level menu
+		 * Hides the level screen
+		 * 
+		 * @param	e		the captured MouseEvent, unused
+		 */
+		private function onQuit(e:MouseEvent):void
+		{
+			swc.mc_levels.visible = false;
+			outLevel(e);
+		}
+		
+		/**
 		 * Called when a level button is clicked, from the level menu
 		 * @param	e		the captured MouseEvent, used to find out which button was pressed
 		 */
-		private function onStart(e:MouseEvent):void
+		private function onLevel(e:MouseEvent):void
 		{
 			// clean up resources
-			swc.removeEventListener(MouseEvent.CLICK, onStart);
+			//swc.removeEventListener(MouseEvent.CLICK, onStart);
 			removeChild(swc);
 			swc = null;
 			for (var i:int = 0; i < levelButtons.length; i++)
+			{
+				levelButtons[i].hitbox.removeEventListener(MouseEvent.MOUSE_OVER, overLevel);
+				levelButtons[i].hitbox.removeEventListener(MouseEvent.MOUSE_OUT, outLevel);
 				levelButtons[i].hitbox.removeEventListener(MouseEvent.CLICK, onLevel);
+			}
 			levelButtons = null;
 
 			// flag this Container as completed for the Engine
