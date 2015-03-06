@@ -49,7 +49,8 @@
 		private var GDN_12:MailGarbage;
 		private var GDN_13:MailContraband;
 		private var GDN_14:NodeIncinerator;
-		private var GDN_15:NodeHolder
+		private var GDN_15:NodeXRay;
+		private var GDN_16:NodeHolder
 		
 		// timer
 		public var timerTick:Number = 1000 / 30;		// time to take off per frame
@@ -385,7 +386,7 @@
 		protected function onRetry(e:MouseEvent):void
 		{
 			completed = true;
-			// TODO retry logic
+			engine.retryFlag = true;
 			destroy(null);
 		}
 		

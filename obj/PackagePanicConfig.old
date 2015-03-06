@@ -32,6 +32,7 @@
     </define>
     <verbose-stacktraces>true</verbose-stacktraces>
     <source-path append="true">
+<<<<<<< HEAD
       <path-element>D:\Users\Jesse\Documents\VGDev\package-panic\src</path-element>
       <path-element>C:\Program Files (x86)\FlashDevelop\Library\AS3\classes</path-element>
     </source-path>
@@ -45,6 +46,21 @@
   </compiler>
   <file-specs>
     <path-element>D:\Users\Jesse\Documents\VGDev\package-panic\src\packpan\Main.as</path-element>
+=======
+      <path-element>C:\Users\James\Documents\Github\package-panic\src</path-element>
+      <path-element>C:\Program Files (x86)\FlashDevelop\Library\AS3\classes</path-element>
+    </source-path>
+    <library-path append="true">
+      <path-element>C:\Users\James\Documents\Github\package-panic\swc\SWC_ContainerMenu.swc</path-element>
+      <path-element>C:\Users\James\Documents\Github\package-panic\swc\SWC_GameCursor.swc</path-element>
+      <path-element>C:\Users\James\Documents\Github\package-panic\swc\SWC_ContainerGame.swc</path-element>
+      <path-element>C:\Users\James\Documents\Github\package-panic\swc\Node.swc</path-element>
+      <path-element>C:\Users\James\Documents\Github\package-panic\swc\Mail.swc</path-element>
+    </library-path>
+  </compiler>
+  <file-specs>
+    <path-element>C:\Users\James\Documents\Github\package-panic\src\packpan\Main.as</path-element>
+>>>>>>> d25d9894a304c3cf340294f88c504b480b89ee7a
   </file-specs>
   <default-background-color>#C0C0C0</default-background-color>
   <default-frame-rate>30</default-frame-rate>
