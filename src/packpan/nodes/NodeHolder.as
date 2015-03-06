@@ -19,7 +19,8 @@ package packpan.nodes
 	 */
 	public class NodeHolder extends ABST_Node implements IColorable 
 	{
-		//Embed image
+		[Embed(source="../../../img/nodeUnknown.png")]
+		private var CustomBitmap:Class;	
 		
 		//The color of this chute
 		private var color:uint;
@@ -28,21 +29,25 @@ package packpan.nodes
 		private var friction:Number = 5;
 		private var spring:Number = 10;
 		
-		private var packages:Array;				//Stack of packages in Holder
+		private var packages:Array = [];		//Stack of packages in Holder
 		private var capacity:int;				//Max capacity of Holder
 		private var remaining:int;				//Remaining capacity of Holder
 		private var isFull:Boolean = false;		//Whether Holder is full
 		
-		public function NodeHolder(_capacity:int, _cg:ContainerGame, _json:Object, _bitmap:Bitmap=null) 
+		private const RANGE:Number = 0.25;		// the range of cullRectangle
+		
+		public function NodeHolder(_cg:ContainerGame, _json:Object) 
 		{
-			super(_cg, _json, _bitmap);
-			capacity = _capacity;
-			remaining = capacity;
+			super(_cg, _json, new CustomBitmap());
 			
 			//The color of this chute if it is colored
 			color = 15;	
 			if (json["color"])
 				setColor(json["color"]);
+			if (json["capacity"])
+				capacity = json["capacity"];
+				
+			remaining = capacity;
 		}
 		
 		override public function affectMail(mail:ABST_Mail):void
@@ -54,50 +59,70 @@ package packpan.nodes
 				return;
 			}
 			
-			mail.state.addForce(PhysicsUtils.linearDamping(friction, mail.state, new Point(0, 0)));
-			mail.state.addForce(PhysicsUtils.linearRestoreX(spring, mail.state, position.x));
-			mail.state.addForce(PhysicsUtils.linearRestoreY(spring, mail.state, position.y));
-			
-			//Once snapping animation is complete, push package onto Holder stack
-			if (Point.distance(position, mail.state.position) < 0.2)
+			/*var targetMail:Array = PhysicsUtils.cullRectangle(cg.mailArray, new Point(position.x - RANGE, position.y - RANGE),
+																			new Point(position.x + RANGE, position.y + RANGE));
+			for each (var _mail in targetMail)
 			{
+				_mail.state.velocity = new Point(0, 0);
+				_mail.state.position = position;
+			}*/
+																			
+			//Once snapping animation is complete, push package onto Holder stack
+			if (Point.distance(position, mail.state.position) < 0.2 && packages.indexOf(mail) == -1)
+			{
+				mail.state.velocity = new Point(0, 0);
+				mail.state.position = position;
+				
 				mail.state = new PhysicalEntity(1, new Point(position.x, position.y));
 				mail.mc_object.scaleX = mail.mc_object.scaleY = .8;
 				packages.push(mail);
-			}
-			
-			//Decrement remaining and check if full
-			remaining--;
-			if (remaining <= 0)
-			{
-				isFull = true;
+				
+				//Decrement remaining and check if full
+				remaining--;
+				if (remaining < 0)
+				{
+					isFull = true;
+				}
 			}
 		}
 		
 		override public function onClick(e:MouseEvent):void
 		{
+			if (packages.pop() == null || packages.length == 0)
+			{
+				return;
+			}
+			
 			//Pops package from Holder stack
 			var mail:ABST_Mail = packages.pop();
 			mail.mc_object.scaleX = mail.mc_object.scaleY = 1;
+			remaining++;
 			
 			//Pop mail out in whatever direction Holder is facing
 			switch (facing)
 			{
 				case PP.DIR_RIGHT:
+					mail.state.position.x += (RANGE + 0.01);
 					mail.state.velocity = new Point(1, 0);
 				break;
 				case PP.DIR_UP:
-					mail.state.velocity = new Point(0, 1);
+					mail.state.position.y -= (RANGE + 0.01);
+					mail.state.velocity = new Point(0, -1);
 				break;
 				case PP.DIR_LEFT:
+					mail.state.position.x -= (RANGE + 0.01);
 					mail.state.velocity = new Point(-1, 0);
 				break;
 				case PP.DIR_DOWN:
-					mail.state.velocity = new Point(0, -1);
+					mail.state.position.y += (RANGE + 0.01);
+					mail.state.velocity = new Point(0, 1);
 				break;
 				default:
 					trace("WARNING: NodeHolder at " + position + " has an invalid facing!");
 			}
+			
+			trace("position: " + mail.state.position);
+			trace("velocity: " + mail.state.velocity);
 		}
 		
 		/* INTERFACE packpan.iface.IColorable */
