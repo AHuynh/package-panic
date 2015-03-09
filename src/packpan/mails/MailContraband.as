@@ -1,6 +1,7 @@
 package packpan.mails 
 {
 	import cobaltric.ContainerGame;
+	import packpan.nodes.NodeXRay;
 	/**
 	 * ...
 	 * @author James LIu

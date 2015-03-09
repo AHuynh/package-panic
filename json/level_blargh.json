@@ -1,0 +1,1 @@
+{"nodes":[{"subtype":"NodeConveyorNormal","clickable":true,"y1":1,"x1":3,"y2":1,"x2":6,"dir":"right","type":"NodeGroupRect"},{"color":15,"clickable":false,"x":7,"y":1,"type":"NodeBin"}],"notes":[],"mail":[{"color":15,"x":3,"y":1,"type":"MailNormal"}],"meta":{"name-internal":"BLARGH","format":"PP-level","format-version":1,"name-external":"BLARGH"}}

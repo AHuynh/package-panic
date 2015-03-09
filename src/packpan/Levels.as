@@ -74,14 +74,19 @@ package packpan
 		private var Level_Knot:Class;
 		
 		
+		
+		[Embed(source="../../json/level_slide.json", mimeType="application/octet-stream")]
+		private var Level_Slide:Class;
+		
 		//Each element of the array is a 15-length array of levels - some of which may be undefined
 		private var pages:Array;
 
 		//Constructor called by the Engine on startup
 		public function Levels() 
 		{
-			pages = new Array(1);
+			pages = new Array(2);
 			pages[0] = new Array(15);
+			pages[1] = new Array(15);
 
 			pages[0][0] = JSON.parse(new Level_Tut00());
 			pages[0][1] = JSON.parse(new Level_Tut01());
@@ -98,17 +103,26 @@ package packpan
 			pages[0][12] = JSON.parse(new Level_Circular());
 			pages[0][13] = JSON.parse(new Level_Chute());
 			pages[0][14] = JSON.parse(new Level_ChuteHard());
+
+			
+			pages[1][0] = JSON.parse(new Level_Air());
+			pages[1][1] = JSON.parse(new Level_Grid());
+			pages[1][2] = JSON.parse(new Level_Islands());
+			pages[1][3] = JSON.parse(new Level_Slide());
+			pages[1][4] = JSON.parse(new Level_TestJ());
+
 			//pages[0][0] = JSON.parse(new Level_Air());
 			//pages[0][1] = JSON.parse(new Level_Grid());
 			//pages[0][2] = JSON.parse(new Level_Islands());
 			//pages[0][3] = JSON.parse(new Level_Garbage());
 			//pages[0][4] = JSON.parse(new Level_TestT());
 			//pages[0][5] = JSON.parse(new Level_AirTut());
-			//pages[0][6] = JSON.parse(new Level_Rotate());
-			//pages[0][7] = JSON.parse(new Level_Color());
-			//pages[0][8] = JSON.parse(new Level_Sort());
-			//pages[0][9] = JSON.parse(new Level_Propel());
-			pages[0][10] = JSON.parse(new Level_Knot());
+			pages[1][6] = JSON.parse(new Level_Rotate());
+			pages[1][7] = JSON.parse(new Level_Color());
+			pages[1][8] = JSON.parse(new Level_Sort());
+			pages[1][9] = JSON.parse(new Level_Propel());
+			pages[1][10] = JSON.parse(new Level_Knot());
+
 
 		}
 

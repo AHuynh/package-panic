@@ -37,7 +37,11 @@ package packpan.nodes
 			//	now parse the "JSON" object for common properties all game objects could have
 			///////////////////////////////////////////////////////////////////////////////////////
 
-			cg.addChildToGrid(mc_object, position);		// add the MovieClip to the stage
+			// add the MovieClip to the stage
+			if (json["layer"])
+				cg.addChildToGrid(mc_object, position, json["layer"]);		
+			else
+				cg.addChildToGrid(mc_object, position);
 
 			if (json["dir"])
 				facing = rotateToDir(json["dir"], mc_object);

@@ -49,6 +49,7 @@
 		private var GDN_12:MailGarbage;
 		private var GDN_13:MailContraband;
 		private var GDN_14:NodeIncinerator;
+		private var GDN_15:NodeXRay;
 		
 		
 		// timer
@@ -87,6 +88,10 @@
 			game = new SWC_ContainerGame();
 			game.x = 400; game.y = 300;
 			addChild(game);
+			
+			game.holder_above.buttonMode = game.holder_above.mouseEnabled = game.holder_above.mouseChildren = false;
+			//game.holder_above.x += 3;		// offset to make it appear above
+			game.holder_above.y -= 3;
 			
 			game.btn_retry.addEventListener(MouseEvent.CLICK, onRetry);
 			game.btn_quit.addEventListener(MouseEvent.CLICK, onQuit);
@@ -246,14 +251,19 @@
 		 * Usually called by ABST_Mail in its constructor.
 		 * @param	mc			the MovieClip to add
 		 * @param	position	the grid coordinate to use (0-based, top-left origin, U/D x, L/R y)
+		 * @param	layer		the layer to add this child to: "main" or "above"
 		 * @return				mc
 		 */
-		public function addChildToGrid(mc:MovieClip, position:Point):MovieClip
+		public function addChildToGrid(mc:MovieClip, position:Point, layer:String = "main"):MovieClip
 		{
 			var positionOnScreen:Point = PhysicsUtils.gridToScreen(position);
 			mc.x = positionOnScreen.x;
 			mc.y = positionOnScreen.y;
-			game.holder_main.addChild(mc);
+			switch (layer)
+			{
+				case "main":	game.holder_main.addChild(mc);		break;
+				case "above":	game.holder_above.addChild(mc);		break;
+			}
 			return mc;
 		}
 		
@@ -266,6 +276,8 @@
 		{
 			if (game.holder_main.contains(mc))
 				game.holder_main.removeChild(mc);
+			else if (game.holder_above.contains(mc))
+				game.holder_above.removeChild(mc);
 			return mc;
 		}
 		
@@ -385,7 +397,7 @@
 		protected function onRetry(e:MouseEvent):void
 		{
 			completed = true;
-			// TODO retry logic
+			engine.retryFlag = true;
 			destroy(null);
 		}
 		
