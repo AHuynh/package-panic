@@ -187,7 +187,6 @@
 				trace("WARNING: When setting up level, no mail was added!");
 			
 			gameState = PP.GAME_IDLE;
-<<<<<<< HEAD
 			trace("Done. We have nodes x:" + nodeArray.length);
 			
 			// validate star completion times
@@ -211,9 +210,7 @@
 				}
 			}*/
 			timesArray = [1000,2000]
-=======
 			//trace("Done. We have nodes x:" + nodeArray.length);
->>>>>>> d9ce808a275778e58f21fe81e2662a827b6cea2c
 		}
 
 		/**
