@@ -4,7 +4,7 @@ package packpan.mails
 	import packpan.nodes.NodeXRay;
 	/**
 	 * ...
-	 * @author James LIu
+	 * @author James Liu
 	 */
 	public class MailContraband extends ABST_Mail
 	{

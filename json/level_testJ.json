@@ -3,7 +3,7 @@
     "format": "PP-level",
     "format-version": 1,
     "name-internal": "level test j",
-    "name-external": "INC"
+    "name-external": "Choose your Fate"
   },
   "nodes": [
     {"type": "NodeConveyorNormal", "x": 9, "y": 2, "dir": "up"},
