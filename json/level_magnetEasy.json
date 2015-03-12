@@ -3,7 +3,7 @@
     "format": "PP-level",
     "format-version": 1,
     "name-internal": "levelmagnet",
-    "name-external": "MaE"
+    "name-external": "Magnets"
   },
   "nodes": [
     {"type": "NodeBarrier", "x": 0, "y": 4},

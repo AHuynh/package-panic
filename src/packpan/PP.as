@@ -48,7 +48,7 @@ package packpan
 			0x000080,	//navy		01
 			0x008000,	//green		02
 			0x008080,	//cyan		03
-			0x800000,	//red		04
+			0xFFA500,	//orange	04
 			0x800080,	//purple	05
 			0x808000,	//olive		06
 			0xC0C0C0,	//silver	07

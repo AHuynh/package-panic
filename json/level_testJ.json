@@ -3,7 +3,7 @@
     "format": "PP-level",
     "format-version": 1,
     "name-internal": "level test j",
-    "name-external": "INC"
+    "name-external": "Choose your Fate"
   },
   "nodes": [
     {"type": "NodeConveyorNormal", "x": 9, "y": 2, "dir": "up"},
@@ -18,8 +18,9 @@
     {"type": "NodeBin", "x": 3, "y": 3}
   ],
   "mail": [
-    {"type": "MailContraband", "x": 0, "y": 2, "is_contraband": false },
-    {"type": "MailContraband", "x": 0, "y": 2, "is_contraband": true }
+    {"type": "MailContraband", "x": 1, "y": 2, "is_contraband": true },
+    {"type": "MailGarbage", "x": 2, "y": 2 },
+    {"type": "MailContraband", "x": 0, "y": 2, "is_contraband": false }
   ],
   "notes": [
     {"author": "Mr. Foo", "date": "2015-01-17T19:38-05", "note": "We should add xyz."},

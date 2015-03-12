@@ -3,7 +3,7 @@
     "format": "PP-level",
     "format-version": 1,
     "name-internal": "levelbarrier",
-    "name-external": "Bar"
+    "name-external": "Cross"
   },
   "nodes": [
     {"type": "NodeBarrier", "x": 7, "y": 4},
