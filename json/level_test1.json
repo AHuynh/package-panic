@@ -3,7 +3,7 @@
     "format": "PP-level",
     "format-version": 1,
     "name-internal": "level1",
-    "name-external": "Level 1"
+    "name-external": "Bare Bones"
   },
   "nodes": [
     {"type": "NodeConveyorNormal", "x": 9, "y": 2, "dir": "up"},

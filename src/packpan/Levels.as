@@ -21,14 +21,18 @@ package packpan
 		private var Level_Rotate:Class; //Rotatable conveyor
 		[Embed(source="../../json/level_color.json", mimeType="application/octet-stream")]
 		private var Level_Color:Class; //Colored mail, colored bins
-		[Embed(source="../../json/level_airTut.json", mimeType="application/octet-stream")]
-		private var Level_AirTut:Class; //Air Table
+		[Embed(source="../../json/level_slide.json", mimeType="application/octet-stream")]
+		private var Level_Slide:Class; //Air Table
 		[Embed(source="../../json/level_magnetEasy.json", mimeType="application/octet-stream")]
 		private var Level_MagnetEasy:Class; //Magnet, eletromagnetic, magnetic mail
 		[Embed(source="../../json/level_chute.json", mimeType="application/octet-stream")]
 		private var Level_Chute:Class; //Chute
 		[Embed(source="../../json/level_garbage.json", mimeType="application/octet-stream")]
 		private var Level_Garbage:Class; //Garbage, incinerator
+		[Embed(source="../../json/level_multibin.json", mimeType="application/octet-stream")]
+		private var Level_Multibin:Class; //Multibin
+		[Embed(source="../../json/level_contraband.json", mimeType="application/octet-stream")]
+		private var Level_Contraband:Class; //Contraband, x-ray machine
 		
 		
 		//Other easy levels
@@ -46,6 +50,8 @@ package packpan
 		private var Level_Barrier:Class;
 		[Embed(source="../../json/level_h.json", mimeType="application/octet-stream")]
 		private var Level_H:Class;
+		[Embed(source="../../json/level_airTut.json", mimeType="application/octet-stream")]
+		private var Level_AirTut:Class;
 		
 		//Intermediate levels
 		[Embed(source="../../json/level_chuteHard.json", mimeType="application/octet-stream")]
@@ -60,6 +66,10 @@ package packpan
 		private var Level_Sort:Class;
 		[Embed(source="../../json/level_propel.json", mimeType="application/octet-stream")]
 		private var Level_Propel:Class;
+		[Embed(source="../../json/level_needle.json", mimeType="application/octet-stream")]
+		private var Level_Needle:Class;
+		[Embed(source="../../json/level_rainbow.json", mimeType="application/octet-stream")]
+		private var Level_Rainbow:Class;
 		
 		//Hard levels
 		[Embed(source="../../json/level_magnet.json", mimeType="application/octet-stream")]
@@ -72,11 +82,8 @@ package packpan
 		private var Level_Grid:Class;
 		[Embed(source="../../json/level_knot.json", mimeType="application/octet-stream")]
 		private var Level_Knot:Class;
-		
-		
-		
-		[Embed(source="../../json/level_slide.json", mimeType="application/octet-stream")]
-		private var Level_Slide:Class;
+		[Embed(source="../../json/level_mines.json", mimeType="application/octet-stream")]
+		private var Level_Mines:Class;
 		
 		//Each element of the array is a 15-length array of levels - some of which may be undefined
 		private var pages:Array;
@@ -90,38 +97,36 @@ package packpan
 
 			pages[0][0] = JSON.parse(new Level_Tut00());
 			pages[0][1] = JSON.parse(new Level_Tut01());
-			pages[0][2] = JSON.parse(new Level_Tut02());
-			pages[0][3] = JSON.parse(new Level_Tut03());
-			pages[0][4] = JSON.parse(new Level_Swap());
-			pages[0][5] = JSON.parse(new Level_Test1());
-			pages[0][6] = JSON.parse(new Level_TestJ());
-			pages[0][7] = JSON.parse(new Level_Barrier());
-			pages[0][8] = JSON.parse(new Level_MagnetEasy());
-			pages[0][9] = JSON.parse(new Level_Magnet());
-			pages[0][10] = JSON.parse(new Level_Random());
-			pages[0][11] = JSON.parse(new Level_H());
-			pages[0][12] = JSON.parse(new Level_Circular());
-			pages[0][13] = JSON.parse(new Level_Chute());
-			pages[0][14] = JSON.parse(new Level_ChuteHard());
-
+			pages[0][2] = JSON.parse(new Level_Test1());
+			pages[0][3] = JSON.parse(new Level_Tut02());
+			pages[0][4] = JSON.parse(new Level_Barrier());
+			pages[0][5] = JSON.parse(new Level_Rotate());
+			pages[0][6] = JSON.parse(new Level_H());
+			pages[0][7] = JSON.parse(new Level_Slide());
+			pages[0][8] = JSON.parse(new Level_Chute());
+			pages[0][9] = JSON.parse(new Level_Color());
+			pages[0][10] = JSON.parse(new Level_TestT());
+			pages[0][11] = JSON.parse(new Level_Garbage());
+			pages[0][12] = JSON.parse(new Level_MagnetEasy());
+			pages[0][13] = JSON.parse(new Level_Multibin());
+			pages[0][14] = JSON.parse(new Level_Contraband());
 			
-			pages[1][0] = JSON.parse(new Level_Air());
-			pages[1][1] = JSON.parse(new Level_Grid());
-			pages[1][2] = JSON.parse(new Level_Islands());
-			pages[1][3] = JSON.parse(new Level_Slide());
+			pages[1][0] = JSON.parse(new Level_Random());
+			pages[1][1] = JSON.parse(new Level_Sort());
+			pages[1][2] = JSON.parse(new Level_Tut03());
+			pages[1][3] = JSON.parse(new Level_AirTut());
 			pages[1][4] = JSON.parse(new Level_TestJ());
-
-			//pages[0][0] = JSON.parse(new Level_Air());
-			//pages[0][1] = JSON.parse(new Level_Grid());
-			//pages[0][2] = JSON.parse(new Level_Islands());
-			//pages[0][3] = JSON.parse(new Level_Garbage());
-			//pages[0][4] = JSON.parse(new Level_TestT());
-			//pages[0][5] = JSON.parse(new Level_AirTut());
-			pages[1][6] = JSON.parse(new Level_Rotate());
-			pages[1][7] = JSON.parse(new Level_Color());
-			pages[1][8] = JSON.parse(new Level_Sort());
-			pages[1][9] = JSON.parse(new Level_Propel());
+			pages[1][5] = JSON.parse(new Level_ChuteHard());
+			pages[1][6] = JSON.parse(new Level_Propel());
+			pages[1][7] = JSON.parse(new Level_Swap());
+			pages[1][8] = JSON.parse(new Level_Islands());
+			pages[1][9] = JSON.parse(new Level_Circular());
 			pages[1][10] = JSON.parse(new Level_Knot());
+			pages[1][11] = JSON.parse(new Level_Air());
+			pages[1][12] = JSON.parse(new Level_Magnet());
+			pages[1][13] = JSON.parse(new Level_Needle());
+			pages[1][14] = JSON.parse(new Level_Mines());
+			pages[1][0] = JSON.parse(new Level_Rainbow());
 
 
 		}
