@@ -53,8 +53,11 @@
 		// timer
 		public var timerTick:Number = 1000 / 30;		// time to take off per frame
 		public const SECOND:int = 1000;
-		public var timeLeft:Number = 90 * SECOND;
+		public var timePassed:int = 0;
 		
+		public var timesArray:Array;                // completion times for star rewards, fastest times at lowest indices
+		public var stars:int = 3;
+				
 		// the JSON object defining this level
 		private var json:Object;
 		
@@ -76,6 +79,7 @@
 		 */
 		private function init(e:Event):void
 		{
+			trace("startup");
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			addEventListener(Event.REMOVED_FROM_STAGE, destroy);
 			
@@ -111,6 +115,7 @@
 			}
 			nodeArray = [];
 			mailArray = [];
+			timesArray = [];
 			
 			// -- start reading JSON ---------------------------------------------------
 
@@ -182,6 +187,29 @@
 				trace("WARNING: When setting up level, no mail was added!");
 			
 			gameState = PP.GAME_IDLE;
+			trace("Done. We have nodes x:" + nodeArray.length);
+			
+			// validate star completion times
+			/*if (!json["times"])
+			{
+				trace("ERROR: When setting up level, JSON file is missing \"times\"!");
+				completed = true;
+				return;
+			}*/
+			
+			// add completion times to timesArray
+			/*for each (var timeJSON:Object in json["times"])
+			{
+				try
+				{
+					addTime(timeJSON);
+				} catch (e:Error)
+				{
+					addTime(-1);
+					trace("ERROR: When setting up level, invalid star completion time.\n" + e.getStackTrace());
+				}
+			}*/
+			timesArray = [1000,2000]
 			//trace("Done. We have nodes x:" + nodeArray.length);
 		}
 
@@ -204,6 +232,15 @@
 		public function addMail(mail:ABST_Mail):void
 		{
 			mailArray.push(mail);
+		}
+		
+		/**
+		 * Adds a completion time to timesArray
+		 * @param	time	The completion time to add
+		 */
+		private function addTime(time:int):void
+		{
+			timesArray.push(time);
 		}
 		
 		/**
@@ -289,14 +326,22 @@
 				return completed;
 
 			// if the game state is idle, update everything and check for failure/success
-			if (gameState == PP.GAME_IDLE)
-			{
-				// update the timer and check for time up
-				timeLeft = Math.max(timeLeft-timerTick,0);
-				game.tf_timer.text = updateTime();
-				if (timeLeft == 0)
-					setStateFailure();
+			if (gameState == PP.GAME_IDLE) {
 
+				// update the timer
+				timePassed = timePassed + timerTick
+				game.tf_timer.text = updateTime();
+				if(stars == 3) {
+					if (timePassed >= timesArray[0]) {
+						stars = 2; //TODO make some magical stuff here
+					}
+				} else if (stars == 2) {
+					if (timePassed >= timesArray[1]) {
+						stars = 1; //TODO more magic
+					}
+				}
+				
+				
 				// step all nodes
 				for each (var node:ABST_Node in nodeArray)
 					node.step(); // TODO - check return state	
@@ -384,9 +429,9 @@
 		 */
 		private function updateTime():String
 		{
-			var timeMin:int = int(timeLeft / 60000);
-			var timeSec:int = int((timeLeft - timeMin * 60000) * .001);
-			var timeMSec:int = int((timeLeft - timeMin * 60000 - timeSec * 1000) * .1);
+			var timeMin:int = int(timePassed / 60000);
+			var timeSec:int = int((timePassed - timeMin * 60000) * .001);
+			var timeMSec:int = int((timePassed - timeMin * 60000 - timeSec * 1000) * .1);
 			return timeMin + ":" +
 				  (timeSec < 10 ? "0" : "" ) + timeSec + "." +
 				  (timeMSec < 10 ? "0" : "" ) + timeMSec;
