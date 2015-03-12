@@ -26,8 +26,6 @@
 		public var engine:Engine;					// the game's Engine
 		public var game:SWC_ContainerGame;			// the Game SWC, containing all the base assets
 
-		public var cursor:MovieClip;
-		
 		public var nodeGrid:Array;		// a 2D array containing either null or the node at a (x, y) grid location
 		public var nodeArray:Array;		// a 1D array containing all ABST_Node objects
 		public var mailArray:Array;		// a 1D array containing all ABST_Mail objects
@@ -93,19 +91,19 @@
 			game.x = 400; game.y = 300;
 			addChild(game);
 			
-			game.holder_above.buttonMode = game.holder_above.mouseEnabled = game.holder_above.mouseChildren = false;
-			//game.holder_above.x += 3;		// offset to make it appear above
-			game.holder_above.y -= 3;
+			game.holder_above.buttonMode = game.holder_above.mouseEnabled = game.holder_above.mouseChildren = false;	
+			game.holder_above.y -= 3;	// offset to make it appear above
 			
 			game.btn_retry.addEventListener(MouseEvent.CLICK, onRetry);
 			game.btn_quit.addEventListener(MouseEvent.CLICK, onQuit);
-			game.mc_overlay.visible = false;
+			game.mc_overlaySuccess.visible = false;
+			game.mc_overlayFailure.visible = false;
+			
+			game.mc_overlaySuccess.btn_next.addEventListener(MouseEvent.CLICK, nextLevel);
+			game.mc_overlayFailure.btn_retry.addEventListener(MouseEvent.CLICK, onRetry);
+			game.spotlight.visible = false;
+			game.spotlight.mouseEnabled = game.spotlight.buttonMode = game.spotlight.mouseChildren = false;
 			// end Game SWC setup
-
-			// cursor
-			/*cursor = new GameCursor();
-			game.mc_gui.addChild(cursor);
-			cursor.visible = false;*/
 			
 			// setup node and mail arrays			
 			nodeGrid = [];
@@ -141,19 +139,19 @@
 					if (nodeJSON["type"] == "NodeGroupRect")
 					{
 						NodeClass = getDefinitionByName("packpan.nodes." + nodeJSON["subtype"]) as Class;
-						trace("Level setup: Adding rectangle group of: " + NodeClass);
+						//trace("Level setup: Adding rectangle group of: " + NodeClass);
 						addNodeGroupRect(NodeClass, nodeJSON);
 					}
 					else if (nodeJSON["type"] == "NodeGroupList")
 					{
 						NodeClass = getDefinitionByName("packpan.nodes." + nodeJSON["subtype"]) as Class;
-						trace("Level setup: Adding list group of: " + NodeClass);
+						//trace("Level setup: Adding list group of: " + NodeClass);
 						addNodeGroupList(NodeClass, nodeJSON);
 					}
 					else
 					{
 						NodeClass = getDefinitionByName("packpan.nodes." + nodeJSON["type"]) as Class;
-						trace("Level setup: Adding one of: " + NodeClass);
+						//trace("Level setup: Adding one of: " + NodeClass);
 						addNode(new NodeClass(this, nodeJSON));
 					}
 				} catch (e:Error)
@@ -189,6 +187,7 @@
 				trace("WARNING: When setting up level, no mail was added!");
 			
 			gameState = PP.GAME_IDLE;
+<<<<<<< HEAD
 			trace("Done. We have nodes x:" + nodeArray.length);
 			
 			// validate star completion times
@@ -212,6 +211,9 @@
 				}
 			}*/
 			timesArray = [1000,2000]
+=======
+			//trace("Done. We have nodes x:" + nodeArray.length);
+>>>>>>> d9ce808a275778e58f21fe81e2662a827b6cea2c
 		}
 
 		/**
@@ -322,11 +324,7 @@
 		 * @return		completed, true if this container is done
 		 */
 		override public function step():Boolean
-		{
-			// TODO use custom cursor
-			//cursor.x = mouseX - game.x;
-			//cursor.y = mouseY - game.y;
-			
+		{			
 			if (gameState == PP.GAME_SETUP)		// if still loading, quit
 				return completed;
 
@@ -346,7 +344,7 @@
 					}
 				}
 				
-
+				
 				// step all nodes
 				for each (var node:ABST_Node in nodeArray)
 					node.step(); // TODO - check return state	
@@ -354,6 +352,7 @@
 				// step all Mail
 				var allSuccess:Boolean = true;			// check if all Mail is in success state				
 				var mailFailure:Boolean = false;		// check if any Mail is in failure state
+				var culprit:ABST_Mail;
 				for each (var mail:ABST_Mail in mailArray)
 				{
 					var mailState:int = mail.mailState;
@@ -362,7 +361,10 @@
 					if (mailState != PP.MAIL_SUCCESS)
 						allSuccess = false;
 					if (mailState == PP.MAIL_FAILURE)
+					{
 						mailFailure = true;
+						culprit = mail;
+					}
 				}
 
 				// check for success
@@ -370,12 +372,10 @@
 					setStateSuccess();
 
 				// check for failure
-				if(mailFailure)
-					setStateFailure();
+				if (mailFailure)
+					setStateFailure(culprit);
 
 			}
-
-			//puzzleStep();
 			
 			return completed;
 		}
@@ -386,19 +386,44 @@
 		private function setStateSuccess():void
 		{
 			gameState = PP.GAME_SUCCESS;	// mark the level as done
-			game.mc_overlay.visible = true;	// show the success screen
-			timerTick = 0;			// halt the timer
+			game.mc_overlaySuccess.visible = true;	// show the success screen
+			game.mc_overlaySuccess.play();
+			timerTick = 0;							// halt the timer
+			
+			haltAllAnimations();
 		}
 
 		/**
 		 * Changes the state of the game to failure and displays the overlay
+		 * 
+		 * @param	culprit		Optional; the ABST_Mail that caused the failure
 		 */
-		private function setStateFailure():void
+		private function setStateFailure(culprit:ABST_Mail = null):void
 		{
-			gameState = PP.GAME_FAILURE;	// mark the level as done
-			game.mc_overlay.visible = true;	// show the failure screen
-			game.mc_overlay.tf_status.text = "Failure!";
-			timerTick = 0;			// halt the timer
+			gameState = PP.GAME_FAILURE;			// mark the level as lost
+			game.mc_overlayFailure.visible = true;	// show the failure screen
+			game.mc_overlayFailure.play();
+			timerTick = 0;							// halt the timer
+
+			if (culprit)		// if we know which Mail caused the failure
+			{
+				game.spotlight.visible = true;				// point it out to the user
+				game.spotlight.x = culprit.mc_object.x;
+				game.spotlight.y = culprit.mc_object.y;
+				game.spotlight.play();
+			}
+			
+			haltAllAnimations();
+		}
+		
+		/**
+		 * Stops all Node animations (those using Node.swc)
+		 */
+		private function haltAllAnimations():void
+		{
+			for each (var node:ABST_Node in nodeArray)
+				if (node.mc_object.mc)
+					node.mc_object.mc.stop();
 		}
 		
 		/**
@@ -414,15 +439,6 @@
 				  (timeSec < 10 ? "0" : "" ) + timeSec + "." +
 				  (timeMSec < 10 ? "0" : "" ) + timeMSec;
 		}
-		
-		/**
-		 * The to-be-implemented step() function for this specific puzzle.
-		 * @return	completed, true if this container is done
-		 */
-		/*protected function puzzleStep():void
-		{
-			// -- OVERRIDE THIS FUNCTION
-		}*/
 		
 		/*protected function overButton(e:MouseEvent):void
 		{
@@ -453,6 +469,16 @@
 		{
 			completed = true;
 			destroy(null);
+		}
+		
+		/**
+		 * Called by the button in the success screen.
+		 * @param	e		the captured MouseEvent, unused
+		 */
+		public function nextLevel(e:MouseEvent):void
+		{
+			// TODO
+			onQuit(null);
 		}
 		
 		/**

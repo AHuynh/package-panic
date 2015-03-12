@@ -89,9 +89,10 @@ package packpan
 		//Constructor called by the Engine on startup
 		public function Levels() 
 		{
-			pages = new Array(2);
+			pages = new Array(3);
 			pages[0] = new Array(15);
 			pages[1] = new Array(15);
+			pages[2] = new Array(15);
 
 			pages[0][0] = JSON.parse(new Level_Tut00());
 			pages[0][1] = JSON.parse(new Level_Tut01());
