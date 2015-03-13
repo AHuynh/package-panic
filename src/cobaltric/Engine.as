@@ -72,7 +72,8 @@
 			container.x = 0;
 			container.y = 0;
 			
-			trace("Engine init");
+			// play BGM
+			//SoundManager.playBGM("main");
 		}
 		
 		/*public function newGame():void
