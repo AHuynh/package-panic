@@ -56,7 +56,8 @@
 		public var timePassed:int = 0;
 		
 		public var timesArray:Array;                // completion times for star rewards, fastest times at lowest indices
-		public var stars:int = 3;
+		public var stars:int = 3;					// number of remaining stars
+		private var starBlink:Boolean = false;		// flag to toggle blinking
 				
 		// the JSON object defining this level
 		private var json:Object;
@@ -187,7 +188,7 @@
 				trace("WARNING: When setting up level, no mail was added!");
 			
 			gameState = PP.GAME_IDLE;
-			trace("Done. We have nodes x:" + nodeArray.length);
+			//trace("Done. We have nodes x:" + nodeArray.length);
 			
 			// validate star completion times
 			/*if (!json["times"])
@@ -209,8 +210,7 @@
 					trace("ERROR: When setting up level, invalid star completion time.\n" + e.getStackTrace());
 				}
 			}*/
-			timesArray = [1000,2000]
-			//trace("Done. We have nodes x:" + nodeArray.length);
+			timesArray = [7000, 16000];	
 		}
 
 		/**
@@ -326,18 +326,37 @@
 				return completed;
 
 			// if the game state is idle, update everything and check for failure/success
-			if (gameState == PP.GAME_IDLE) {
+			if (gameState == PP.GAME_IDLE)
+			{
 
 				// update the timer
-				timePassed = timePassed + timerTick
+				timePassed += timerTick;
 				game.tf_timer.text = updateTime();
-				if(stars == 3) {
-					if (timePassed >= timesArray[0]) {
-						stars = 2; //TODO make some magical stuff here
-					}
-				} else if (stars == 2) {
-					if (timePassed >= timesArray[1]) {
-						stars = 1; //TODO more magic
+				
+				if (stars > 1)
+				{
+					if (stars == 3) {
+						if (timePassed >= timesArray[0]) {
+							stars = 2;
+							game.star3.gotoAndStop("off");
+							starBlink = false;
+						}
+						else if (!starBlink && timePassed >= timesArray[0] - 5000)
+						{
+							game.star3.gotoAndPlay("blink");
+							starBlink = true;
+						}
+					} else if (stars == 2) {
+						if (timePassed >= timesArray[1]) {
+							stars = 1;
+							game.star2.gotoAndStop("off");
+							starBlink = false;
+						}
+						else if (!starBlink && timePassed >= timesArray[1] - 5000)
+						{
+							game.star2.gotoAndPlay("blink");
+							starBlink = true;
+						}
 					}
 				}
 				
