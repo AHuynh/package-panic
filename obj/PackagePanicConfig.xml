@@ -16,11 +16,7 @@
     </define>
     <define append="true">
       <name>CONFIG::timeStamp</name>
-<<<<<<< HEAD
       <value>'3/13/2015'</value>
-=======
-      <value>'3/12/2015'</value>
->>>>>>> 1daf71bd3c22c367ddeef6ea7a810417412ac157
     </define>
     <define append="true">
       <name>CONFIG::air</name>
@@ -36,34 +32,18 @@
     </define>
     <verbose-stacktraces>true</verbose-stacktraces>
     <source-path append="true">
-<<<<<<< HEAD
       <path-element>D:\Users\Jesse\Documents\VGDev\package-panic\src</path-element>
       <path-element>C:\Program Files (x86)\FlashDevelop\Library\AS3\classes</path-element>
     </source-path>
     <library-path append="true">
-      <path-element>D:\Users\Jesse\Documents\VGDev\package-panic\swc\SWC_ContainerMenu.swc</path-element>
-      <path-element>D:\Users\Jesse\Documents\VGDev\package-panic\swc\SWC_GameCursor.swc</path-element>
       <path-element>D:\Users\Jesse\Documents\VGDev\package-panic\swc\SWC_ContainerGame.swc</path-element>
       <path-element>D:\Users\Jesse\Documents\VGDev\package-panic\swc\Node.swc</path-element>
       <path-element>D:\Users\Jesse\Documents\VGDev\package-panic\swc\Mail.swc</path-element>
+      <path-element>D:\Users\Jesse\Documents\VGDev\package-panic\swc\SWC_ContainerMenu.swc</path-element>
     </library-path>
   </compiler>
   <file-specs>
     <path-element>D:\Users\Jesse\Documents\VGDev\package-panic\src\packpan\Main.as</path-element>
-=======
-      <path-element>D:\GitHub\package-panic\src</path-element>
-      <path-element>E:\Program Files (x86)\FlashDevelop\Library\AS3\classes</path-element>
-    </source-path>
-    <library-path append="true">
-      <path-element>D:\GitHub\package-panic\swc\SWC_ContainerGame.swc</path-element>
-      <path-element>D:\GitHub\package-panic\swc\Node.swc</path-element>
-      <path-element>D:\GitHub\package-panic\swc\Mail.swc</path-element>
-      <path-element>D:\GitHub\package-panic\swc\SWC_ContainerMenu.swc</path-element>
-    </library-path>
-  </compiler>
-  <file-specs>
-    <path-element>D:\GitHub\package-panic\src\packpan\Main.as</path-element>
->>>>>>> 1daf71bd3c22c367ddeef6ea7a810417412ac157
   </file-specs>
   <default-background-color>#C0C0C0</default-background-color>
   <default-frame-rate>30</default-frame-rate>

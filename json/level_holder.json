@@ -1,121 +1,113 @@
 {  
    "nodes":[  
       {  
+         "clickable":true,
+         "x":7,
+         "y":4,
+         "type":"NodeHolder",
+         "capacity":3
+      },
+      {  
          "subtype":"NodeConveyorNormal",
          "clickable":true,
-         "y1":3,
-         "x1":3,
+         "y1":0,
+         "x1":7,
          "y2":3,
+         "x2":7,
+         "dir":"down",
+         "type":"NodeGroupRect"
+      },
+      {  
+         "subtype":"NodeConveyorNormal",
+         "clickable":true,
+         "y1":4,
+         "x1":2,
+         "y2":4,
+         "x2":6,
+         "dir":"right",
+         "type":"NodeGroupRect"
+      },
+      {  
+         "subtype":"NodeConveyorNormal",
+         "clickable":true,
+         "y1":4,
+         "x1":8,
+         "y2":4,
+         "x2":12,
+         "dir":"left",
+         "type":"NodeGroupRect"
+      },
+      {  
+         "subtype":"NodeConveyorNormal",
+         "clickable":true,
+         "y1":5,
+         "x1":7,
+         "y2":7,
+         "x2":7,
+         "dir":"down",
+         "type":"NodeGroupRect"
+      },
+      {  
+         "clickable":true,
+         "x":7,
+         "y":8,
+         "dir":"down",
+         "type":"NodeConveyorRotate"
+      },
+      {  
+         "color":15,
+         "clickable":false,
+         "x":7,
+         "y":9,
+         "type":"NodeBin"
+      },
+      {  
+         "subtype":"NodeConveyorNormal",
+         "clickable":true,
+         "y1":8,
+         "x1":8,
+         "y2":8,
          "x2":9,
          "dir":"right",
          "type":"NodeGroupRect"
       },
       {  
+         "subtype":"NodeConveyorNormal",
          "clickable":true,
-         "x":10,
-         "y":3,
-         "dir":"right",
-         "type":"NodeConveyorRotate"
+         "y1":8,
+         "x1":5,
+         "y2":8,
+         "x2":6,
+         "dir":"left",
+         "type":"NodeGroupRect"
       },
       {  
          "clickable":true,
-         "x":10,
-         "y":5,
-         "dir":"right",
-         "type":"NodeConveyorRotate"
-      },
-      {  
-         "clickable":true,
-         "x":10,
-         "y":7,
-         "dir":"right",
-         "type":"NodeConveyorRotate"
-      },
-      {  
-         "clickable":true,
-         "x":11,
-         "y":3,
-         "dir":"right",
-         "type":"NodeConveyorNormal"
-      },
-      {  
-         "clickable":true,
-         "x":11,
-         "y":5,
-         "dir":"right",
-         "type":"NodeConveyorNormal"
-      },
-      {  
-         "clickable":true,
-         "x":11,
-         "y":7,
-         "dir":"right",
-         "type":"NodeConveyorNormal"
-      },
-      {  
-         "clickable":true,
-         "x":10,
-         "y":4,
+         "x":4,
+         "y":8,
          "dir":"down",
          "type":"NodeConveyorNormal"
       },
       {  
          "clickable":true,
-         "x":10,
-         "y":6,
-         "dir":"down",
-         "type":"NodeConveyorNormal"
-      },
-      {  
-         "clickable":true,
-         "x":12,
-         "y":3,
-         "type":"NodeHolder",
-         "capacity":1
-      },
-      {  
-         "clickable":true,
-         "x":12,
-         "y":5,
-         "type":"NodeHolder",
-         "capacity":2
-      },
-      {  
-         "clickable":true,
-         "x":12,
-         "y":7,
-         "type":"NodeHolder",
-         "capacity":3
-      },
-      {  
-         "clickable":false,
          "x":10,
          "y":8,
-         "type":"NodeBarrier"
+         "dir":"down",
+         "type":"NodeConveyorNormal"
       },
       {  
-         "clickable":false,
-         "x":2,
-         "y":3,
-         "type":"NodeBarrier"
-      },
-      {  
+         "color":15,
          "clickable":false,
          "x":10,
-         "y":2,
-         "type":"NodeBarrier"
+         "y":9,
+         "type":"NodeBin"
       },
       {  
+         "color":15,
          "clickable":false,
-         "x":9,
-         "y":5,
-         "type":"NodeBarrier"
-      },
-      {  
-         "clickable":false,
-         "x":9,
-         "y":7,
-         "type":"NodeBarrier"
+         "x":4,
+         "y":9,
+         "type":"NodeBin"
       }
    ],
    "notes":[  
@@ -124,30 +116,19 @@
    "mail":[  
       {  
          "color":15,
-         "x":3,
-         "y":3,
+         "x":7,
+         "y":0,
          "type":"MailNormal"
       },
       {  
-         "color":15,
-         "x":4,
-         "y":3,
-         "type":"MailNormal"
-      },
-      {  
-         "x":5,
-         "y":3,
+         "x":2,
+         "y":4,
          "type":"MailMagnetic",
          "polarity":1
       },
       {  
-         "x":6,
-         "y":3,
-         "type":"MailGarbage"
-      },
-      {  
-         "x":7,
-         "y":3,
+         "x":12,
+         "y":4,
          "type":"MailContraband"
       }
    ],
