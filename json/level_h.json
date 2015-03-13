@@ -33,11 +33,9 @@
       },
       {  
          "clickable":true,
-		 "capacity":4,
          "x":3,
          "y":3,
-		 "dir":"down",
-         "type":"NodeHolder"
+         "type":"NodeBin"
       },
       {  
          "clickable":true,

@@ -59,26 +59,16 @@ package packpan.nodes
 				return;
 			}
 			
-			/*var targetMail:Array = PhysicsUtils.cullRectangle(cg.mailArray, new Point(position.x - RANGE, position.y - RANGE),
-																			new Point(position.x + RANGE, position.y + RANGE));
-			for each (var _mail in targetMail)
-			{
-				_mail.state.velocity = new Point(0, 0);
-				_mail.state.position = position;
-			}*/
-																			
 			//Once snapping animation is complete, push package onto Holder stack
 			if (Point.distance(position, mail.state.position) < 0.2 && packages.indexOf(mail) == -1)
 			{
-				mail.state.velocity = new Point(0, 0);
-				mail.state.position = position;
-				
 				mail.state = new PhysicalEntity(1, new Point(position.x, position.y));
 				mail.mc_object.scaleX = mail.mc_object.scaleY = .8;
 				packages.push(mail);
 				
 				//Decrement remaining and check if full
 				remaining--;
+				
 				if (remaining < 0)
 				{
 					isFull = true;
@@ -88,7 +78,7 @@ package packpan.nodes
 		
 		override public function onClick(e:MouseEvent):void
 		{
-			if (packages.pop() == null || packages.length == 0)
+			if (packages.length == 0)
 			{
 				return;
 			}
@@ -120,9 +110,6 @@ package packpan.nodes
 				default:
 					trace("WARNING: NodeHolder at " + position + " has an invalid facing!");
 			}
-			
-			trace("position: " + mail.state.position);
-			trace("velocity: " + mail.state.velocity);
 		}
 		
 		/* INTERFACE packpan.iface.IColorable */
