@@ -68,6 +68,8 @@ package packpan
 		private var Level_Needle:Class;
 		[Embed(source="../../json/level_rainbow.json", mimeType="application/octet-stream")]
 		private var Level_Rainbow:Class;
+		[Embed(source="../../json/level_bounce.json", mimeType="application/octet-stream")]
+		private var Level_Bounce:Class;
 		
 		//Hard levels
 		[Embed(source="../../json/level_magnet.json", mimeType="application/octet-stream")]
@@ -124,6 +126,8 @@ package packpan
 			pages[1][12] = JSON.parse(new Level_Magnet());
 			pages[1][13] = JSON.parse(new Level_Needle());
 			pages[1][14] = JSON.parse(new Level_Mines());
+
+			pages[1][0] = JSON.parse(new Level_Bounce());
 
 
 		}
