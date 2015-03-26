@@ -30,7 +30,9 @@
 			
 			// set up the main menu
 			swc.mc_main.bg.btn_credits.addEventListener(MouseEvent.CLICK, onCredits);
-			swc.credits.btn_back.addEventListener(MouseEvent.CLICK, onCreditsBack);
+			swc.credits.btn_back.addEventListener(MouseEvent.CLICK, onSubBack);
+			swc.mc_main.bg.btn_help.addEventListener(MouseEvent.CLICK, onHelp);
+			swc.help.btn_back.addEventListener(MouseEvent.CLICK, onSubBack);
 			
 			// attach listeners for each factory
 			swc.mc_main.bg.btn_factory0.addEventListener(MouseEvent.CLICK, onFactory);
@@ -39,6 +41,7 @@
 			
 			// set up the level menu
 			swc.credits.visible = false;
+			swc.help.visible = false;
 			swc.mc_levels.tf_levelname.text = "Pick a level!";
 			
 			swc.mc_levels.btn_quit.addEventListener(MouseEvent.CLICK, onQuit);
@@ -64,12 +67,22 @@
 		}
 		
 		/**
-		 * Called by the BACK button in the credits screen; hides the credits
+		 * Called by the HELP button in the main menu; shows the help screen
 		 * @param	e		the captured MouseEvent, unused
 		 */
-		private function onCreditsBack(e:MouseEvent):void
+		private function onHelp(e:MouseEvent):void
+		{
+			swc.help.visible = true;
+		}
+		
+		/**
+		 * Called by the BACK button in the credits or help screen; hides the screens
+		 * @param	e		the captured MouseEvent, unused
+		 */
+		private function onSubBack(e:MouseEvent):void
 		{
 			swc.credits.visible = false;
+			swc.help.visible = false;
 		}
 		
 		/**
@@ -181,7 +194,7 @@
 		 */
 		private function onLevel(e:MouseEvent):void
 		{
-			// clean up resources
+			// remove level button listeners
 			for (var i:int = 0; i < levelButtons.length; i++)
 			{
 				levelButtons[i].hitbox.removeEventListener(MouseEvent.MOUSE_OVER, overLevel);
@@ -190,27 +203,33 @@
 			}
 			levelButtons = null;
 			
-			eng.menuOver();
-			swc.gotoAndPlay(2);
-			addEventListener(Event.ENTER_FRAME, checkEnd);
+			eng.menuOver();			// signal the engine to proceed
+			swc.gotoAndPlay(2);		// start the outgoing animation
+			addEventListener(Event.ENTER_FRAME, checkEnd);		// start checking for the end of the animation
 			
+			// hide things in the way
 			swc.mc_main.visible = false;
 		}
 		
+		/**
+		 * Used during the outgoing animation to determine when the animation is complete.
+		 * @param	e		The captured Event, unused.
+		 */
 		private function checkEnd(e:Event):void
 		{
 			if (swc.currentFrame == swc.totalFrames)
 			{
 				removeEventListener(Event.ENTER_FRAME, checkEnd);
 				
-				// flag this Container as completed for the Engine
-				completed = true;
-				
+				// clean up the SWC
 				removeChild(swc);
 				swc = null
 				
 				// remove reference to Engine
 				eng = null;
+				
+				// flag this Container as completed for the Engine
+				completed = true;
 			}
 		}
 	}

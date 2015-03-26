@@ -201,7 +201,7 @@
 			//trace("Done. We have nodes x:" + nodeArray.length);
 			
 			// validate star completion times
-			/*if (!json["times"])
+			/*if (!json["meta"]["times"])
 			{
 				trace("ERROR: When setting up level, JSON file is missing \"times\"!");
 				completed = true;
@@ -209,7 +209,7 @@
 			}*/
 			
 			// add completion times to timesArray
-			/*for each (var timeJSON:Object in json["times"])
+			/*for each (var timeJSON:Object in json["meta"]["times"])
 			{
 				try
 				{
