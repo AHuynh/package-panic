@@ -20,7 +20,10 @@
 	public class Engine extends MovieClip
 	{
 		private var gameState:int;				// 0:Intro, 1:Game, 2:Outro
-		private var container:ABST_Container;	// the currently active container
+		private var containerMenu:ABST_Container;	// the menu container
+		private var containerGame:ABST_Container;	// the game container
+		
+		private var nextState:Boolean = false;
 
 		// save data
 		public const SAVE_DATA:String = "PACK_PAN";
@@ -65,15 +68,15 @@
 			addEventListener(Event.ENTER_FRAME, step);
 			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			
-			container = new ContainerIntro(this, false, page);
-			addChild(container);
+			containerMenu = new ContainerIntro(this, false, page);
+			addChild(containerMenu);
 
 			// center the container
-			container.x = 0;
-			container.y = 0;
+			containerMenu.x = 0;
+			containerMenu.y = 0;
 			
 			// play BGM
-			//SoundManager.playBGM("main");
+			SoundManager.playBGM("main");
 		}
 		
 		/*public function newGame():void
@@ -81,6 +84,12 @@
 			save();
 			// new data here
 		}*/
+		
+		public function menuOver():void
+		{
+			gameState = 0;
+			nextState = true;
+		}
 		
 		/**
 		 * Primary game loop event firer. Steps the current container, and advances
@@ -90,33 +99,46 @@
 		 */
 		public function step(e:Event):void
 		{
-			if (!container.step())		// step the current container, quit if it's not done
-				return;
-				
-			removeChild(container);		// remove the current, completed container
+			if (containerMenu && containerMenu.step())
+			{
+				removeChild(containerMenu);
+				containerMenu = null;
+			}
+		
+			if (containerGame && containerGame.step())
+			{
+				removeChild(containerGame);
+				containerGame = null;
+				nextState = true;
+			}
 			
+			if (!nextState)
+				return;
+			nextState = false;
+				
 			switch (gameState)			// determine which new container to go to next
 			{
 				case 0:
-					container = new ContainerGame(this, level);
+					containerGame = new ContainerGame(this, level, true);
 					gameState = 1;
 					//SoundPlayer.stopBGM();
+					addChildAt(containerGame, 0);
 				break;
 				case 1:
 					if (retryFlag)
 					{
-						container = new ContainerGame(this, level);
+						containerGame = new ContainerGame(this, level, false);
+						addChildAt(containerGame, 0);
 					}
 					else
 					{
-						container = new ContainerIntro(this, true, page);
+						containerMenu = new ContainerIntro(this, true, page);
+						addChild(containerMenu);
 						gameState = 0;
 					}
 					retryFlag = false;
 				break;
-			}
-			
-			addChild(container);		// add the new container
+			}		
 		}
 		
 		/**
@@ -126,8 +148,8 @@
 		 */
 		private function onAddedToStage(e:Event):void
 		{
-			container.removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
-			container.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyPress);
+			removeEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+			stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyPress);
 		}
 		
 		/**
@@ -137,14 +159,14 @@
 		 */
 		private function onKeyPress(e:KeyboardEvent):void
 		{
-			if (!container.stage)
+			if (!stage)
 				return;
 			if (e.keyCode == 76)		// -- l
-				container.stage.quality = StageQuality.LOW;
+				stage.quality = StageQuality.LOW;
 			else if (e.keyCode == 77)	// -- m
-				container.stage.quality = StageQuality.MEDIUM;
+				stage.quality = StageQuality.MEDIUM;
 			else if (e.keyCode == 72)	// -- h
-				container.stage.quality = StageQuality.HIGH;
+				stage.quality = StageQuality.HIGH;
 		}
 		
 		/*public function save(scoreData:Array = null):void

@@ -28,6 +28,7 @@ package packpan.nodes
 	
 		public function NodeConveyorNormal(_cg:ContainerGame, _json:Object)
 		{
+			tintable = true;
 			super(_cg, _json);
 			
 			// set up custom graphics
