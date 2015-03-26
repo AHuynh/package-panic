@@ -65,7 +65,7 @@ package packpan.nodes
 			{
 				packages.push(mail);
 				velocities.push(mail.state.velocity);
-				trace("vel push = " + mail.state.velocity);
+				//trace("vel push = " + mail.state.velocity);
 				mail.state = new PhysicalEntity(1, new Point(position.x, position.y));
 				mail.mc_object.scaleX = mail.mc_object.scaleY = .8;
 				
@@ -94,35 +94,13 @@ package packpan.nodes
 			
 			vel.normalize(-1);
 			mail.state.velocity = vel;
-			trace("vel pop = " + mail.state.velocity);
+			//trace("vel pop = " + mail.state.velocity);
 			
 			var posOffset:Point = vel.clone();
 			posOffset.normalize(RANGE + 0.01);
-			trace("final vel = " + mail.state.velocity);
+			//trace("final vel = " + mail.state.velocity);
 			
 			mail.state.position = mail.state.position.add(posOffset);
-			//Pop mail out in whatever direction Holder is facing
-			/*switch (facing)
-			{
-				case PP.DIR_RIGHT:
-					mail.state.position.x += (RANGE + 0.01);
-					mail.state.velocity = new Point(1, 0);
-				break;
-				case PP.DIR_UP:
-					mail.state.position.y -= (RANGE + 0.01);
-					mail.state.velocity = new Point(0, -1);
-				break;
-				case PP.DIR_LEFT:
-					mail.state.position.x -= (RANGE + 0.01);
-					mail.state.velocity = new Point(-1, 0);
-				break;
-				case PP.DIR_DOWN:
-					mail.state.position.y += (RANGE + 0.01);
-					mail.state.velocity = new Point(0, 1);
-				break;
-				default:
-					trace("WARNING: NodeHolder at " + position + " has an invalid facing!");
-			}*/
 		}
 		
 		/* INTERFACE packpan.iface.IColorable */
