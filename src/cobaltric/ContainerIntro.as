@@ -182,8 +182,6 @@
 		private function onLevel(e:MouseEvent):void
 		{
 			// clean up resources
-			removeChild(swc);
-			swc = null;
 			for (var i:int = 0; i < levelButtons.length; i++)
 			{
 				levelButtons[i].hitbox.removeEventListener(MouseEvent.MOUSE_OVER, overLevel);
@@ -191,12 +189,29 @@
 				levelButtons[i].hitbox.removeEventListener(MouseEvent.CLICK, onLevel);
 			}
 			levelButtons = null;
-
-			// flag this Container as completed for the Engine
-			completed = true;
 			
-			// remove reference to Engine
-			eng = null;
+			eng.menuOver();
+			swc.gotoAndPlay(2);
+			addEventListener(Event.ENTER_FRAME, checkEnd);
+			
+			swc.mc_main.visible = false;
+		}
+		
+		private function checkEnd(e:Event):void
+		{
+			if (swc.currentFrame == swc.totalFrames)
+			{
+				removeEventListener(Event.ENTER_FRAME, checkEnd);
+				
+				// flag this Container as completed for the Engine
+				completed = true;
+				
+				removeChild(swc);
+				swc = null
+				
+				// remove reference to Engine
+				eng = null;
+			}
 		}
 	}
 }
