@@ -157,6 +157,8 @@
 			
 			// set the level in the engine
 			eng.level = eng.levels.getLevel(page, selectedLevel);
+			eng.page = page;
+			eng.levelInd = selectedLevel;
 			
 			// set title
 			swc.mc_levels.tf_levelname.text = (eng.levels.getLevel(page, selectedLevel))["meta"]["name-external"];

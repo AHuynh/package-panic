@@ -19,11 +19,11 @@
 	 */
 	public class Engine extends MovieClip
 	{
-		private var gameState:int;				// 0:Intro, 1:Game, 2:Outro
+		private var gameState:int;					// state machine helper
 		private var containerMenu:ABST_Container;	// the menu container
 		private var containerGame:ABST_Container;	// the game container
 		
-		private var nextState:Boolean = false;
+		private var nextState:Boolean = false;		// if true, proceed to the next state
 
 		// save data
 		public const SAVE_DATA:String = "PACK_PAN";
@@ -31,15 +31,11 @@
 
 		// Levels
 		public var levels:Levels;
-		public var level:Object;	//dictionary read from json
-		public var page:int = 1;	// remember the page
-		public var retryFlag:Boolean;
-		
-		// A 2D array of arrays corresponding to levels
-		// first index is page (0+)
-		// second index is slot (0-15)
-		// element is [file_name, level_title], both strings
-		public var levelArray:Array;
+		public var level:Object;		// dictionary read from json
+		public var page:int = 1;		// remember the page
+		public var levelInd:int = 1;	// remember the level
+		public var retryFlag:Boolean;	// if true, retry the level
+		public var nextFlag:Boolean;	// if true, move on to the next level
 		
 		public function Engine()
 		{
@@ -130,13 +126,29 @@
 						containerGame = new ContainerGame(this, level, false);
 						addChildAt(containerGame, 0);
 					}
+					else if (nextFlag)
+					{
+						var next:Array = levels.getNextLevel(page, levelInd);
+						if (next == null)
+						{
+							containerMenu = new ContainerIntro(this, true, page);
+							addChild(containerMenu);
+							gameState = 0;
+							levelInd = 0;
+							return;
+						}
+						page = next[1];
+						levelInd = next[2];
+						containerGame = new ContainerGame(this, next[0], false);
+						addChildAt(containerGame, 0);
+					}
 					else
 					{
 						containerMenu = new ContainerIntro(this, true, page);
 						addChild(containerMenu);
 						gameState = 0;
 					}
-					retryFlag = false;
+					retryFlag = nextFlag = false;
 				break;
 			}		
 		}

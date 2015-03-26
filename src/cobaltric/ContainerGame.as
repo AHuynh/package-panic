@@ -515,9 +515,8 @@
 		 */
 		protected function onRetry(e:MouseEvent):void
 		{
-			completed = true;
 			engine.retryFlag = true;
-			destroy(null);
+			onQuit(null);
 		}
 		
 		/**
@@ -537,6 +536,7 @@
 		public function nextLevel(e:MouseEvent):void
 		{
 			// TODO
+			engine.nextFlag = true;
 			onQuit(null);
 		}
 		

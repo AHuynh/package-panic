@@ -159,5 +159,18 @@ package packpan
 		{
 			return pages[page][index];
 		}
+		
+		/**
+		 *	Returns the next level on that page and index as an array.
+		 *	@param	page	The page the level is on
+		 *	@param	index	The index of the level on its page, 0-14
+		 *	@returns	The level on that page at that index
+		 */
+		public function getNextLevel(page:int, index:int):Array
+		{
+			if (++index == pages[page].length)
+				return null;
+			return [pages[page][index], page, index];
+		}
 	}
 }
