@@ -50,6 +50,8 @@ package packpan
 		private var Level_H:Class;
 		[Embed(source="../../json/level_airTut.json", mimeType="application/octet-stream")]
 		private var Level_AirTut:Class;
+		[Embed(source="../../json/level_blargh.json", mimeType="application/octet-stream")]
+		private var Level_Blargh:Class;
 		
 		//Intermediate levels
 		[Embed(source="../../json/level_chuteHard.json", mimeType="application/octet-stream")]
@@ -68,6 +70,12 @@ package packpan
 		private var Level_Needle:Class;
 		[Embed(source="../../json/level_rainbow.json", mimeType="application/octet-stream")]
 		private var Level_Rainbow:Class;
+		[Embed(source="../../json/level_lines.json", mimeType="application/octet-stream")]
+		private var Level_Lines:Class;
+		[Embed(source="../../json/level_roundabout.json", mimeType="application/octet-stream")]
+		private var Level_Roundabout:Class;
+		[Embed(source="../../json/level_junkyard.json", mimeType="application/octet-stream")]
+		private var Level_Junkyard:Class;
 		
 		//Hard levels
 		[Embed(source="../../json/level_magnet.json", mimeType="application/octet-stream")]
@@ -82,6 +90,12 @@ package packpan
 		private var Level_Knot:Class;
 		[Embed(source="../../json/level_mines.json", mimeType="application/octet-stream")]
 		private var Level_Mines:Class;
+		[Embed(source="../../json/level_bounce.json", mimeType="application/octet-stream")]
+		private var Level_Bounce:Class;
+		[Embed(source="../../json/level_multitask.json", mimeType="application/octet-stream")]
+		private var Level_Multitask:Class;
+		[Embed(source="../../json/level_magstack.json", mimeType="application/octet-stream")]
+		private var Level_Magstack:Class;
 		
 		//Each element of the array is a 15-length array of levels - some of which may be undefined
 		private var pages:Array;
@@ -119,12 +133,20 @@ package packpan
 			pages[1][6] = JSON.parse(new Level_Propel());
 			pages[1][7] = JSON.parse(new Level_Swap());
 			pages[1][8] = JSON.parse(new Level_Islands());
-			pages[1][9] = JSON.parse(new Level_Circular());
-			pages[1][10] = JSON.parse(new Level_Knot());
-			pages[1][11] = JSON.parse(new Level_Air());
-			pages[1][12] = JSON.parse(new Level_Magnet());
-			pages[1][13] = JSON.parse(new Level_Needle());
-			pages[1][14] = JSON.parse(new Level_Mines());
+			pages[1][9] = JSON.parse(new Level_Bounce());
+			pages[1][10] = JSON.parse(new Level_Lines());
+			pages[1][11] = JSON.parse(new Level_Roundabout());
+			pages[1][12] = JSON.parse(new Level_Junkyard());
+			
+			pages[2][0] = JSON.parse(new Level_Circular());
+			pages[2][1] = JSON.parse(new Level_Knot());
+			pages[2][2] = JSON.parse(new Level_Air());
+			pages[2][3] = JSON.parse(new Level_Magnet());
+			pages[2][4] = JSON.parse(new Level_Needle());
+			pages[2][5] = JSON.parse(new Level_Mines());
+			pages[2][6] = JSON.parse(new Level_Grid());
+			pages[2][7] = JSON.parse(new Level_Multitask());
+			pages[2][8] = JSON.parse(new Level_Magstack());
 
 
 		}

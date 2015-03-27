@@ -29,12 +29,14 @@ package packpan.nodes
 			blockedMail = PhysicsUtils.cullRectangle(cg.mailArray, new Point(position.x - .92, position.y - .82), new Point(position.x + .92, position.y + .82));
 			for each (var mail:ABST_Mail in blockedMail) {
 				relativePosition = new Point(position.x - mail.state.position.x, position.y - mail.state.position.y);
-				if (relativePosition.x > 0 && mail.state.velocity.x > 0 || 
-					relativePosition.x < 0 && mail.state.velocity.x < 0) {
+				if ((relativePosition.x > 0 && mail.state.velocity.x > 0 || 
+					relativePosition.x < 0 && mail.state.velocity.x < 0) &&
+					Math.abs(relativePosition.y) < .5) {
 					mail.state.velocity.x *= -1;
 				}
-				if (relativePosition.y > 0 && mail.state.velocity.y > 0 || 
-					relativePosition.y < 0 && mail.state.velocity.y < 0) {
+				if ((relativePosition.y > 0 && mail.state.velocity.y > 0 || 
+					relativePosition.y < 0 && mail.state.velocity.y < 0) &&
+					Math.abs(relativePosition.x) < .5) {
 					mail.state.velocity.y *= -1;
 				}
 			}
