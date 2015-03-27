@@ -139,7 +139,8 @@
 						}
 						page = next[1];
 						levelInd = next[2];
-						containerGame = new ContainerGame(this, next[0], false);
+						level = next[0];
+						containerGame = new ContainerGame(this, level, false);
 						addChildAt(containerGame, 0);
 					}
 					else
