@@ -3,11 +3,13 @@
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+	import flash.events.TimerEvent;
 	import flash.geom.Point;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import flash.ui.Mouse;
 	import flash.utils.getDefinitionByName;
+	import flash.utils.Timer;
 	import packpan.ABST_GameObject;
 	import packpan.nodes.*;
 	import packpan.mails.*;
@@ -49,7 +51,6 @@
 		private var GDN_14:NodeIncinerator;
 		private var GDN_15:NodeXRay;
 		
-		
 		// timer
 		public var timerTick:Number = 1000 / 30;		// time to take off per frame
 		public const SECOND:int = 1000;
@@ -62,11 +63,22 @@
 		// the JSON object defining this level
 		private var json:Object;
 		
-		public function ContainerGame(eng:Engine, _json:Object)
+		// helpers to delay starting the game if there is a transition
+		private var startDelay:Timer;
+		private var useDelay:Boolean;
+		
+		/**
+		 * A MovieClip containing all of a PP level.
+		 * @param	eng			A reference to the Engine.
+		 * @param	_json		JSON containing level data.
+		 * @param	_useDelay	If true, wait 1 second before starting the game.
+		 */
+		public function ContainerGame(eng:Engine, _json:Object, _useDelay:Boolean)
 		{
 			super();
 			engine = eng;
 			json = _json;
+			useDelay = _useDelay;
 			addEventListener(Event.ADDED_TO_STAGE, init);		// set up after added to stage
 
 			gameState = PP.GAME_SETUP;
@@ -80,7 +92,6 @@
 		 */
 		private function init(e:Event):void
 		{
-			trace("startup");
 			removeEventListener(Event.ADDED_TO_STAGE, init);
 			addEventListener(Event.REMOVED_FROM_STAGE, destroy);
 			
@@ -187,11 +198,10 @@
 			if (mailArray.length == 0)
 				trace("WARNING: When setting up level, no mail was added!");
 			
-			gameState = PP.GAME_IDLE;
 			//trace("Done. We have nodes x:" + nodeArray.length);
 			
 			// validate star completion times
-			/*if (!json["times"])
+			/*if (!json["meta"]["times"])
 			{
 				trace("ERROR: When setting up level, JSON file is missing \"times\"!");
 				completed = true;
@@ -199,7 +209,7 @@
 			}*/
 			
 			// add completion times to timesArray
-			/*for each (var timeJSON:Object in json["times"])
+			/*for each (var timeJSON:Object in json["meta"]["times"])
 			{
 				try
 				{
@@ -210,7 +220,30 @@
 					trace("ERROR: When setting up level, invalid star completion time.\n" + e.getStackTrace());
 				}
 			}*/
-			timesArray = [7000, 16000];	
+			timesArray = [7000, 16000];
+			
+			// delay the start of the game by 1 second if the menu out animation is playing
+			if (useDelay)
+			{
+				startDelay = new Timer(1000);
+				startDelay.addEventListener(TimerEvent.TIMER, onDelayDone);
+				startDelay.start();
+				haltAllAnimations();
+			}
+			else
+				gameState = PP.GAME_IDLE;
+		}
+		
+		/**
+		 * Starts the game after a brief waiting period
+		 * @param	e		The TimerEvent, unused.
+		 */
+		private function onDelayDone(e:TimerEvent):void
+		{
+			startDelay.removeEventListener(TimerEvent.TIMER, onDelayDone);
+			startDelay = null;
+			gameState = PP.GAME_IDLE;
+			playAllAnimations();
 		}
 
 		/**
@@ -363,7 +396,7 @@
 				
 				// step all nodes
 				for each (var node:ABST_Node in nodeArray)
-					node.step(); // TODO - check return state	
+					node.step();
 
 				// step all Mail
 				var allSuccess:Boolean = true;			// check if all Mail is in success state				
@@ -401,7 +434,7 @@
 		 */
 		private function setStateSuccess():void
 		{
-			gameState = PP.GAME_SUCCESS;	// mark the level as done
+			gameState = PP.GAME_SUCCESS;			// mark the level as done
 			game.mc_overlaySuccess.visible = true;	// show the success screen
 			game.mc_overlaySuccess.play();
 			timerTick = 0;							// halt the timer
@@ -443,6 +476,16 @@
 		}
 		
 		/**
+		 * Play all Node animations (those using Node.swc)
+		 */
+		private function playAllAnimations():void
+		{
+			for each (var node:ABST_Node in nodeArray)
+				if (node.mc_object.mc)
+					node.mc_object.mc.play();
+		}
+		
+		/**
 		 * Provides a formatted string based on the current time left (timeLeft)
 		 * @return		a M:SS.ms formatted-string
 		 */
@@ -472,9 +515,8 @@
 		 */
 		protected function onRetry(e:MouseEvent):void
 		{
-			completed = true;
 			engine.retryFlag = true;
-			destroy(null);
+			onQuit(null);
 		}
 		
 		/**
@@ -494,6 +536,7 @@
 		public function nextLevel(e:MouseEvent):void
 		{
 			// TODO
+			engine.nextFlag = true;
 			onQuit(null);
 		}
 		

@@ -20,6 +20,9 @@ package packpan.nodes
 		
 		/// A reference to this Node's NodeGroup, default is null.
 		public var nodeGroup:NodeGroup = null;
+		
+		/// If this Node's clickable state can be true or false, then if this is true, color the node red
+		protected var tintable:Boolean = false;
 
 		/**
 		 * Should only be called through super(), never instantiated.
@@ -51,9 +54,8 @@ package packpan.nodes
 			
 			if (clickable)		// attach a listener for clicks if this Node can be clicked				
 				mc_object.addEventListener(MouseEvent.CLICK, onClick);
-			else
+			else if (tintable)
 			{
-				// TODO: remove this temporary testing code
 				var col:uint = 0xDD9999;
 				var ct:ColorTransform = new ColorTransform();
 				ct.redMultiplier = int(col / 0x10000) / 255;
