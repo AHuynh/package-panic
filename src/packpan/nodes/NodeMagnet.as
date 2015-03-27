@@ -61,22 +61,22 @@ package packpan.nodes
 				sign = IMagnetic(mail).getPolarity() * polarity;
 				if (sign == -1) {
 					if (facing == PP.DIR_DOWN) {
-						if (Math.abs(mail.state.position.x - position.x) <= range && mail.state.position.y - position.y <= .82) {
+						if (Math.abs(mail.state.position.x - position.x) <= range && Math.abs(mail.state.position.y - position.y) <= .82) {
 							mail.state.velocity.y = 0;
 							continue;
 						}
 					} else if (facing == PP.DIR_LEFT) {
-						if (Math.abs(mail.state.position.y - position.y) <= range && position.x - mail.state.position.x <= .92) {
+						if (Math.abs(mail.state.position.y - position.y) <= range && Math.abs(position.x - mail.state.position.x) <= .92) {
 							mail.state.velocity.x = 0;
 							continue;
 						}
 					} else if (facing == PP.DIR_RIGHT) {
-						if (Math.abs(mail.state.position.y - position.y) <= range && mail.state.position.x - position.x <= .92) {
+						if (Math.abs(mail.state.position.y - position.y) <= range && Math.abs(mail.state.position.x - position.x) <= .92) {
 							mail.state.velocity.x = 0;
 							continue;
 						}
 					} else /*if (facing == PP.DIR_UP)*/ {
-						if (Math.abs(mail.state.position.x - position.x) <= range && position.y - mail.state.position.y <= .82) {
+						if (Math.abs(mail.state.position.x - position.x) <= range && Math.abs(position.y - mail.state.position.y) <= .82) {
 							mail.state.velocity.y = 0;
 							continue;
 						}
