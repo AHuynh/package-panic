@@ -50,6 +50,10 @@
 		private var GDN_13:MailContraband;
 		private var GDN_14:NodeIncinerator;
 		private var GDN_15:NodeXRay;
+<<<<<<< HEAD
+		private var GDN_16:NodeHolder
+=======
+>>>>>>> 7a479170060c63d0fe4ed203f59e8cacf678927e
 		
 		// timer
 		public var timerTick:Number = 1000 / 30;		// time to take off per frame
