@@ -34,8 +34,6 @@ package packpan
 		[Embed(source="../../json/level_holder.json", mimeType="application/octet-stream")]
 		private var Level_Holder:Class; //Holder
 		
-		
-		
 		//Other easy levels
 		[Embed(source="../../json/level_test1.json", mimeType="application/octet-stream")]
 		private var Level_Test1:Class;
@@ -130,6 +128,7 @@ package packpan
 			pages[0][12] = JSON.parse(new Level_Holder());
 			pages[0][13] = JSON.parse(new Level_MagnetEasy());
 			pages[0][14] = JSON.parse(new Level_Contraband());
+			pages[0][0] = JSON.parse(new Level_Holder());
 			
 			pages[1][0] = JSON.parse(new Level_Random());
 			pages[1][1] = JSON.parse(new Level_Sort());
