@@ -16,7 +16,7 @@
     </define>
     <define append="true">
       <name>CONFIG::timeStamp</name>
-      <value>'3/27/2015'</value>
+      <value>'4/2/2015'</value>
     </define>
     <define append="true">
       <name>CONFIG::air</name>
@@ -32,20 +32,6 @@
     </define>
     <verbose-stacktraces>true</verbose-stacktraces>
     <source-path append="true">
-<<<<<<< HEAD
-      <path-element>D:\Users\Jesse\Documents\VGDev\package-panic\src</path-element>
-      <path-element>C:\Program Files (x86)\FlashDevelop\Library\AS3\classes</path-element>
-    </source-path>
-    <library-path append="true">
-      <path-element>D:\Users\Jesse\Documents\VGDev\package-panic\swc\SWC_ContainerGame.swc</path-element>
-      <path-element>D:\Users\Jesse\Documents\VGDev\package-panic\swc\Node.swc</path-element>
-      <path-element>D:\Users\Jesse\Documents\VGDev\package-panic\swc\Mail.swc</path-element>
-      <path-element>D:\Users\Jesse\Documents\VGDev\package-panic\swc\SWC_ContainerMenu.swc</path-element>
-    </library-path>
-  </compiler>
-  <file-specs>
-    <path-element>D:\Users\Jesse\Documents\VGDev\package-panic\src\packpan\Main.as</path-element>
-=======
       <path-element>C:\Users\Alex\Documents\aaGeorgia Tech\6 Spring 15\VGDev S15\package-panic\src</path-element>
       <path-element>C:\Program Files (x86)\FlashDevelop\Library\AS3\classes</path-element>
     </source-path>
@@ -58,7 +44,6 @@
   </compiler>
   <file-specs>
     <path-element>C:\Users\Alex\Documents\aaGeorgia Tech\6 Spring 15\VGDev S15\package-panic\src\packpan\Main.as</path-element>
->>>>>>> 7a479170060c63d0fe4ed203f59e8cacf678927e
   </file-specs>
   <default-background-color>#C0C0C0</default-background-color>
   <default-frame-rate>30</default-frame-rate>

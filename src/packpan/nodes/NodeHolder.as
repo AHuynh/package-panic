@@ -18,10 +18,7 @@ package packpan.nodes
 	 * @author Jesse Chen
 	 */
 	public class NodeHolder extends ABST_Node implements IColorable 
-	{
-		[Embed(source="../../../img/nodeUnknown.png")]
-		private var CustomBitmap:Class;	
-		
+	{		
 		//The color of this chute
 		private var color:uint;
 		
@@ -39,7 +36,11 @@ package packpan.nodes
 		
 		public function NodeHolder(_cg:ContainerGame, _json:Object) 
 		{
-			super(_cg, _json, new CustomBitmap());
+			super(_cg, _json);
+			animatable = false;		// don't animate this timeline
+			
+			// set up custom graphics
+			mc_object.gotoAndStop("nodeHolder");
 			
 			//The color of this chute if it is colored
 			color = 15;	
@@ -49,6 +50,8 @@ package packpan.nodes
 				capacity = json["capacity"];
 				
 			remaining = capacity;
+			mc_object.mc.gotoAndStop(capacity >= 10 ? 2 : 1);
+			setRemaining(remaining);
 		}
 		
 		override public function affectMail(mail:ABST_Mail):void
@@ -69,8 +72,11 @@ package packpan.nodes
 				mail.state = new PhysicalEntity(1, new Point(position.x, position.y));
 				mail.mc_object.scaleX = mail.mc_object.scaleY = .8;
 				
+				// move package to top of display list
+				cg.game.holder_main.setChildIndex(mail.mc_object, cg.lowestPackageDepth + (capacity - remaining));// cg.game.holder_main.numChildren - 1);
+
 				//Decrement remaining and check if full
-				remaining--;
+				setRemaining(--remaining);
 				
 				if (remaining < 0)
 				{
@@ -90,7 +96,7 @@ package packpan.nodes
 			var mail:ABST_Mail = packages.pop();
 			var vel:Point = velocities.pop();
 			mail.mc_object.scaleX = mail.mc_object.scaleY = 1;
-			remaining++;
+			setRemaining(++remaining);
 			
 			vel.normalize(-1);
 			mail.state.velocity = vel;
@@ -101,6 +107,12 @@ package packpan.nodes
 			//trace("final vel = " + mail.state.velocity);
 			
 			mail.state.position = mail.state.position.add(posOffset);
+		}
+		
+		private function setRemaining(rem:int):void
+		{
+			trace("sr " + rem);
+			mc_object.mc.tf_cap.text = rem;
 		}
 		
 		/* INTERFACE packpan.iface.IColorable */

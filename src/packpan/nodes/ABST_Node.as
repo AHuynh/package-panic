@@ -23,6 +23,9 @@ package packpan.nodes
 		
 		/// If this Node's clickable state can be true or false, then if this is true, color the node red
 		protected var tintable:Boolean = false;
+		
+		/// If false, CG will not affect this Node when starting or stopping all animations
+		public var animatable:Boolean = true;
 
 		/**
 		 * Should only be called through super(), never instantiated.
