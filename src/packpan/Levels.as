@@ -76,6 +76,8 @@ package packpan
 		private var Level_Roundabout:Class;
 		[Embed(source="../../json/level_junkyard.json", mimeType="application/octet-stream")]
 		private var Level_Junkyard:Class;
+		[Embed(source="../../json/level_claim.json", mimeType="application/octet-stream")]
+		private var Level_Claim:Class;
 		
 		//Hard levels
 		[Embed(source="../../json/level_magnet.json", mimeType="application/octet-stream")]
@@ -96,6 +98,8 @@ package packpan
 		private var Level_Multitask:Class;
 		[Embed(source="../../json/level_magstack.json", mimeType="application/octet-stream")]
 		private var Level_Magstack:Class;
+		[Embed(source="../../json/level_slope.json", mimeType="application/octet-stream")]
+		private var Level_Slope:Class;
 		
 		//Each element of the array is a 15-length array of levels - some of which may be undefined
 		private var pages:Array;
@@ -122,7 +126,7 @@ package packpan
 			pages[0][11] = JSON.parse(new Level_TestT());
 			pages[0][12] = JSON.parse(new Level_Garbage());
 			pages[0][13] = JSON.parse(new Level_MagnetEasy());
-			pages[0][14] = JSON.parse(new Level_Contraband());
+			pages[0][12] = JSON.parse(new Level_Contraband());
 			
 			pages[1][0] = JSON.parse(new Level_Random());
 			pages[1][1] = JSON.parse(new Level_Sort());
@@ -137,6 +141,7 @@ package packpan
 			pages[1][10] = JSON.parse(new Level_Lines());
 			pages[1][11] = JSON.parse(new Level_Roundabout());
 			pages[1][12] = JSON.parse(new Level_Junkyard());
+			pages[1][13] = JSON.parse(new Level_Claim());
 			
 			pages[2][0] = JSON.parse(new Level_Circular());
 			pages[2][1] = JSON.parse(new Level_Knot());
@@ -147,6 +152,7 @@ package packpan
 			pages[2][6] = JSON.parse(new Level_Grid());
 			pages[2][7] = JSON.parse(new Level_Multitask());
 			pages[2][8] = JSON.parse(new Level_Magstack());
+			pages[2][9] = JSON.parse(new Level_Slope());
 
 
 		}
@@ -190,7 +196,7 @@ package packpan
 		 */
 		public function getNextLevel(page:int, index:int):Array
 		{
-			if (++index == pages[page].length)
+			if (++index == pages[page].length || pages[page][index] == null)
 				return null;
 			return [pages[page][index], page, index];
 		}
