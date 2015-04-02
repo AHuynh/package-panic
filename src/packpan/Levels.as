@@ -31,6 +31,9 @@ package packpan
 		private var Level_Garbage:Class; //Garbage, incinerator
 		[Embed(source="../../json/level_contraband.json", mimeType="application/octet-stream")]
 		private var Level_Contraband:Class; //Contraband, x-ray machine
+		[Embed(source="../../json/level_holder.json", mimeType="application/octet-stream")]
+		private var Level_Holder:Class; //Holder
+		
 		
 		
 		//Other easy levels
@@ -118,15 +121,15 @@ package packpan
 			pages[0][3] = JSON.parse(new Level_Tut02());
 			pages[0][4] = JSON.parse(new Level_Barrier());
 			pages[0][5] = JSON.parse(new Level_Rotate());
-			pages[0][6] = JSON.parse(new Level_Tut03());
-			pages[0][7] = JSON.parse(new Level_H());
-			pages[0][8] = JSON.parse(new Level_Slide());
-			pages[0][9] = JSON.parse(new Level_Chute());
-			pages[0][10] = JSON.parse(new Level_Color());
-			pages[0][11] = JSON.parse(new Level_TestT());
-			pages[0][12] = JSON.parse(new Level_Garbage());
+			pages[0][6] = JSON.parse(new Level_H());
+			pages[0][7] = JSON.parse(new Level_Slide());
+			pages[0][8] = JSON.parse(new Level_Chute());
+			pages[0][9] = JSON.parse(new Level_Color());
+			pages[0][10] = JSON.parse(new Level_TestT());
+			pages[0][11] = JSON.parse(new Level_Garbage());
+			pages[0][12] = JSON.parse(new Level_Holder());
 			pages[0][13] = JSON.parse(new Level_MagnetEasy());
-			pages[0][12] = JSON.parse(new Level_Contraband());
+			pages[0][14] = JSON.parse(new Level_Contraband());
 			
 			pages[1][0] = JSON.parse(new Level_Random());
 			pages[1][1] = JSON.parse(new Level_Sort());
@@ -137,7 +140,7 @@ package packpan
 			pages[1][6] = JSON.parse(new Level_Propel());
 			pages[1][7] = JSON.parse(new Level_Swap());
 			pages[1][8] = JSON.parse(new Level_Islands());
-			pages[1][9] = JSON.parse(new Level_Bounce());
+			pages[1][9] = JSON.parse(new Level_Tut03());
 			pages[1][10] = JSON.parse(new Level_Lines());
 			pages[1][11] = JSON.parse(new Level_Roundabout());
 			pages[1][12] = JSON.parse(new Level_Junkyard());
@@ -153,6 +156,7 @@ package packpan
 			pages[2][7] = JSON.parse(new Level_Multitask());
 			pages[2][8] = JSON.parse(new Level_Magstack());
 			pages[2][9] = JSON.parse(new Level_Slope());
+			pages[2][10] = JSON.parse(new Level_Bounce());
 
 
 		}
