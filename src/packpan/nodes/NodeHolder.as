@@ -111,7 +111,7 @@ package packpan.nodes
 		
 		private function setRemaining(rem:int):void
 		{
-			trace("sr " + rem);
+			//trace("sr " + rem);
 			mc_object.mc.tf_cap.text = rem;
 		}
 		
