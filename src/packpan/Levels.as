@@ -75,8 +75,10 @@ package packpan
 		private var Level_Lines:Class;
 		[Embed(source="../../json/level_roundabout.json", mimeType="application/octet-stream")]
 		private var Level_Roundabout:Class;
-		[Embed(source="../../json/level_junkyard.json", mimeType="application/octet-stream")]
-		private var Level_Junkyard:Class;
+		[Embed(source="../../json/level_claim.json", mimeType="application/octet-stream")]
+		private var Level_Claim:Class;
+		[Embed(source="../../json/level_clump.json", mimeType="application/octet-stream")]
+		private var Level_Clump:Class;
 		
 		//Hard levels
 		[Embed(source="../../json/level_magnet.json", mimeType="application/octet-stream")]
@@ -97,6 +99,10 @@ package packpan
 		private var Level_Multitask:Class;
 		[Embed(source="../../json/level_magstack.json", mimeType="application/octet-stream")]
 		private var Level_Magstack:Class;
+		[Embed(source="../../json/level_slope.json", mimeType="application/octet-stream")]
+		private var Level_Slope:Class;
+		[Embed(source="../../json/level_junkyard.json", mimeType="application/octet-stream")]
+		private var Level_Junkyard:Class;
 		
 		//Each element of the array is a 15-length array of levels - some of which may be undefined
 		private var pages:Array;
@@ -115,16 +121,15 @@ package packpan
 			pages[0][3] = JSON.parse(new Level_Tut02());
 			pages[0][4] = JSON.parse(new Level_Barrier());
 			pages[0][5] = JSON.parse(new Level_Rotate());
-			pages[0][6] = JSON.parse(new Level_Tut03());
-			pages[0][7] = JSON.parse(new Level_H());
-			pages[0][8] = JSON.parse(new Level_Slide());
-			pages[0][9] = JSON.parse(new Level_Chute());
-			pages[0][10] = JSON.parse(new Level_Color());
-			pages[0][11] = JSON.parse(new Level_TestT());
-			pages[0][12] = JSON.parse(new Level_Garbage());
+			pages[0][6] = JSON.parse(new Level_H());
+			pages[0][7] = JSON.parse(new Level_Slide());
+			pages[0][8] = JSON.parse(new Level_Chute());
+			pages[0][9] = JSON.parse(new Level_Color());
+			pages[0][10] = JSON.parse(new Level_TestT());
+			pages[0][11] = JSON.parse(new Level_Garbage());
+			pages[0][12] = JSON.parse(new Level_Holder());
 			pages[0][13] = JSON.parse(new Level_MagnetEasy());
 			pages[0][14] = JSON.parse(new Level_Contraband());
-			pages[0][0] = JSON.parse(new Level_Holder());
 			
 			pages[1][0] = JSON.parse(new Level_Random());
 			pages[1][1] = JSON.parse(new Level_Sort());
@@ -135,10 +140,11 @@ package packpan
 			pages[1][6] = JSON.parse(new Level_Propel());
 			pages[1][7] = JSON.parse(new Level_Swap());
 			pages[1][8] = JSON.parse(new Level_Islands());
-			pages[1][9] = JSON.parse(new Level_Bounce());
+			pages[1][9] = JSON.parse(new Level_Tut03());
 			pages[1][10] = JSON.parse(new Level_Lines());
 			pages[1][11] = JSON.parse(new Level_Roundabout());
-			pages[1][12] = JSON.parse(new Level_Junkyard());
+			pages[1][12] = JSON.parse(new Level_Clump());
+			pages[1][13] = JSON.parse(new Level_Claim());
 			
 			pages[2][0] = JSON.parse(new Level_Circular());
 			pages[2][1] = JSON.parse(new Level_Knot());
@@ -149,6 +155,9 @@ package packpan
 			pages[2][6] = JSON.parse(new Level_Grid());
 			pages[2][7] = JSON.parse(new Level_Multitask());
 			pages[2][8] = JSON.parse(new Level_Magstack());
+			pages[2][9] = JSON.parse(new Level_Slope());
+			pages[2][10] = JSON.parse(new Level_Bounce());
+			pages[2][11] = JSON.parse(new Level_Junkyard());
 
 
 		}
@@ -192,7 +201,7 @@ package packpan
 		 */
 		public function getNextLevel(page:int, index:int):Array
 		{
-			if (++index == pages[page].length)
+			if (++index == pages[page].length || pages[page][index] == null)
 				return null;
 			return [pages[page][index], page, index];
 		}
