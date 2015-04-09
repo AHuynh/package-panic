@@ -103,6 +103,10 @@ package packpan
 		private var Level_Slope:Class;
 		[Embed(source="../../json/level_junkyard.json", mimeType="application/octet-stream")]
 		private var Level_Junkyard:Class;
+		[Embed(source="../../json/level_journey.json", mimeType="application/octet-stream")]
+		private var Level_Journey:Class;
+		[Embed(source="../../json/level_panic.json", mimeType="application/octet-stream")]
+		private var Level_Panic:Class;
 		
 		//Each element of the array is a 15-length array of levels - some of which may be undefined
 		private var pages:Array;
@@ -158,6 +162,8 @@ package packpan
 			pages[2][9] = JSON.parse(new Level_Slope());
 			pages[2][10] = JSON.parse(new Level_Bounce());
 			pages[2][11] = JSON.parse(new Level_Junkyard());
+			pages[2][12] = JSON.parse(new Level_Journey());
+			pages[2][14] = JSON.parse(new Level_Panic());
 
 
 		}
