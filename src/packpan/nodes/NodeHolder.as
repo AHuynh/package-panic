@@ -74,7 +74,7 @@ package packpan.nodes
 				mail.mc_object.scaleX = mail.mc_object.scaleY = .8;
 				
 				// move package to top of display list
-				cg.game.holder_main.setChildIndex(mail.mc_object, cg.lowestPackageDepth + (capacity - remaining));// cg.game.holder_main.numChildren - 1);
+				cg.game.holder_main.setChildIndex(mail.mc_object, cg.lowestPackageDepth + (capacity - remaining));
 
 				//Decrement remaining and check if full
 				setRemaining(--remaining);

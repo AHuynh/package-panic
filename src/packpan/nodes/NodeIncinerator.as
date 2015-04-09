@@ -8,12 +8,13 @@ package packpan.nodes
 	 */
 	public class NodeIncinerator extends ABST_NodeProcessor
 	{
-		[Embed(source="../../../img/nodeIncinerator.png")]	// embed code; change this path to change the image
-		private var CustomBitmap:Class;						// must be directly below the embed code
 		
 		public function NodeIncinerator(_cg:ContainerGame, _json:Object)
 		{
-			super(_cg, _json, new CustomBitmap());
+			super(_cg, _json);
+			
+			// set up custom graphics
+			mc_object.gotoAndStop("NodeIncinerator");
 		}
 		
 		override public function affectMail(mail:ABST_Mail):void 

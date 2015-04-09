@@ -53,7 +53,7 @@
 		private var GDN_16:NodeHolder
 		
 		// display list
-		public var lowestPackageDepth:int = 0;		// lowest childIndex to set packages as
+		public var lowestPackageDepth:int = 1;		// lowest childIndex to set packages as
 		
 		// timer
 		public var timerTick:Number = 1000 / 30;	// time to take off per frame

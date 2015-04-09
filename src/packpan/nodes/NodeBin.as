@@ -63,6 +63,7 @@ package packpan.nodes
 			{
 				mail.state = new PhysicalEntity(1, new Point(position.x, position.y));
 				mail.mc_object.scaleX = mail.mc_object.scaleY = .8;
+				cg.game.holder_main.setChildIndex(mail.mc_object, cg.lowestPackageDepth);	// send to back of display list
 				occupied = true;
 				
 				// fail if mail and bin are colored and colors don't match.
