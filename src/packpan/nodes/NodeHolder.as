@@ -60,6 +60,7 @@ package packpan.nodes
 			if (isFull)
 			{
 				mail.mailState = PP.MAIL_FAILURE;
+				mc_object.mc.tf_cap.text = "X";
 				return;
 			}
 			
@@ -111,7 +112,6 @@ package packpan.nodes
 		
 		private function setRemaining(rem:int):void
 		{
-			//trace("sr " + rem);
 			mc_object.mc.tf_cap.text = rem;
 		}
 		

@@ -72,7 +72,7 @@
 			containerMenu.y = 0;
 			
 			// play BGM
-			SoundManager.playBGM("main");
+			//SoundManager.playBGM("main");
 		}
 		
 		/*public function newGame():void
