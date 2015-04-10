@@ -41,6 +41,7 @@ package packpan.nodes
 			}
 			
 			mc_object.rotation = facing;		// rotate the graphic appropriately
+			SoundManager.play("sfx_rotate");
 		}
 		
 	}
