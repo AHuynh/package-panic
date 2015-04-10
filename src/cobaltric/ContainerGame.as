@@ -149,6 +149,19 @@
 			var MailClass:Class;
 			var node:ABST_Node;
 			
+			// show tutorial graphic if appropriate
+			var tut:String;
+			switch (json["meta"]["name-internal"])
+			{
+				case "level_tut_00":		tut = "first";		break;
+				case "level_tut_02":		tut = "clickable";	break;
+				case "level_garbage":		tut = "incinerate";	break;
+				case "level_holder":		tut = "holder";		break;
+				case "level_contraband":	tut = "contraband";	break;
+			}
+			if (tut)
+				game.tutorial.gotoAndStop(tut);
+			
 			// for each entry in "nodes", add the object
 			for each (var nodeJSON:Object in json["nodes"])
 			{

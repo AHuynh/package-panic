@@ -164,8 +164,6 @@ package packpan
 			pages[2][11] = JSON.parse(new Level_Junkyard());
 			pages[2][12] = JSON.parse(new Level_Journey());
 			pages[2][14] = JSON.parse(new Level_Panic());
-
-
 		}
 
 		/**
