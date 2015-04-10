@@ -3,7 +3,8 @@
     "format": "PP-level",
     "format-version": 1,
     "name-internal": "level_garbage",
-    "name-external": "Thrown Out"
+    "name-external": "Thrown Out",
+	"times": [13500,16000]
   },
   "nodes": [
     {"type": "NodeGroupRect", "subtype": "NodeConveyorNormal", "x1": 2, "y1": 4, "x2": 5, "y2": 4, "dir": "right"},

@@ -303,6 +303,7 @@
       "name-internal":"level_islands",
       "format":"PP-level",
       "format-version":1,
-      "name-external":"Island Hopping"
+      "name-external":"Island Hopping",
+	  "times": [10500,20000]
    }
 }

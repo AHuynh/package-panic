@@ -62,7 +62,8 @@
 		
 		public var timesArray:Array;                // completion times for star rewards, fastest times at lowest indices
 		public var stars:int = 3;					// number of remaining stars
-		private var starBlink:Boolean = false;		// flag to toggle blinking
+		private var star3Blink:Boolean = false;		// flag to toggle blinking
+		private var star2Blink:Boolean = false;		// flag to toggle blinking
 				
 		// the JSON object defining this level
 		private var json:Object;
@@ -205,15 +206,15 @@
 			//trace("Done. We have nodes x:" + nodeArray.length);
 			
 			// validate star completion times
-			/*if (!json["meta"]["times"])
+			if (!json["meta"]["times"])
 			{
 				trace("ERROR: When setting up level, JSON file is missing \"times\"!");
 				completed = true;
 				return;
-			}*/
+			}
 			
 			// add completion times to timesArray
-			/*for each (var timeJSON:Object in json["meta"]["times"])
+			for each (var timeJSON:Number in json["meta"]["times"])
 			{
 				try
 				{
@@ -223,8 +224,8 @@
 					addTime(-1);
 					trace("ERROR: When setting up level, invalid star completion time.\n" + e.getStackTrace());
 				}
-			}*/
-			timesArray = [7000, 16000];
+			}
+			//timesArray = [7000, 16000];
 			
 			// delay the start of the game by 1 second if the menu out animation is playing
 			if (useDelay)
@@ -276,7 +277,7 @@
 		 * Adds a completion time to timesArray
 		 * @param	time	The completion time to add
 		 */
-		private function addTime(time:int):void
+		private function addTime(time:Number):void
 		{
 			timesArray.push(time);
 		}
@@ -371,31 +372,25 @@
 				timePassed += timerTick;
 				game.tf_timer.text = updateTime();
 				
-				if (stars > 1)
+				if (timePassed >= timesArray[0]) {
+					stars = 2;
+					game.star3.gotoAndStop("off");
+					star3Blink = false;
+				}
+				else if (!star3Blink && timePassed >= timesArray[0] - 5000)
 				{
-					if (stars == 3) {
-						if (timePassed >= timesArray[0]) {
-							stars = 2;
-							game.star3.gotoAndStop("off");
-							starBlink = false;
-						}
-						else if (!starBlink && timePassed >= timesArray[0] - 5000)
-						{
-							game.star3.gotoAndPlay("blink");
-							starBlink = true;
-						}
-					} else if (stars == 2) {
-						if (timePassed >= timesArray[1]) {
-							stars = 1;
-							game.star2.gotoAndStop("off");
-							starBlink = false;
-						}
-						else if (!starBlink && timePassed >= timesArray[1] - 5000)
-						{
-							game.star2.gotoAndPlay("blink");
-							starBlink = true;
-						}
-					}
+					game.star3.gotoAndPlay("blink");
+					star3Blink = true;
+				}
+				if (timePassed >= timesArray[1]) {
+					stars = 1;
+					game.star2.gotoAndStop("off");
+					star2Blink = false;
+				}
+				else if (!star2Blink && timePassed >= timesArray[1] - 5000)
+				{
+					game.star2.gotoAndPlay("blink");
+					star2Blink = true;
 				}
 				
 				
@@ -443,6 +438,17 @@
 			game.mc_overlaySuccess.visible = true;	// show the success screen
 			game.mc_overlaySuccess.play();
 			timerTick = 0;							// halt the timer
+			
+			if (star3Blink)
+			{
+				star3Blink = false;
+				game.star3.gotoAndStop("blink");
+			}
+			if (star2Blink)
+			{
+				star2Blink = false;
+				game.star2.gotoAndStop("blink");
+			}
 			
 			haltAllAnimations();
 		}

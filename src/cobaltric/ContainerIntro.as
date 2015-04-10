@@ -172,6 +172,10 @@
 		 */
 		private function outLevel(e:MouseEvent):void
 		{
+			if (levelButtons == null)
+			{
+				return;
+			}
 			for (var i:int = 0; i < levelButtons.length; i++)		// turn off all lights
 				levelButtons[i].gotoAndStop(1);
 			swc.mc_levels.tf_levelname.text = "Pick a level!";		// reset title

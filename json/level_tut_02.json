@@ -129,6 +129,7 @@
       "name-internal":"level_tut_02",
       "format":"PP-level",
       "format-version":1,
-      "name-external":"Locked Up"
+      "name-external":"Locked Up",
+	  "times": [14000,16500]
    }
 }

@@ -89,6 +89,7 @@
       "name-internal":"level_tut_01",
       "format":"PP-level",
       "format-version":1,
-      "name-external":"Move it Along"
+      "name-external":"Move it Along",
+	  "times": [12000,15000]
    }
 }

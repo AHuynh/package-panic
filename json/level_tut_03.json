@@ -206,6 +206,7 @@
       "name-internal":"level_tut_03",
       "format":"PP-level",
       "format-version":1,
-      "name-external":"Can't Touch This"
+      "name-external":"Can't Touch This",
+	  "times": [18000,21000]
    }
 }
