@@ -108,6 +108,15 @@
 			}
 			swc.mc_levels.gotoAndPlay(2);
 			initLevels();
+			setElevatorStyle(page + 1);
+		}
+		
+		private function setElevatorStyle(style:int):void
+		{
+			swc.mc_levels.ev_levels.gotoAndStop(style);
+			swc.mc_levels.elevator.doorL.gotoAndStop(style);
+			swc.mc_levels.elevator.doorR.gotoAndStop(style);
+			swc.mc_levels.elevator.ev_base.gotoAndStop(style);
 		}
 		
 		private function initLevels():void
