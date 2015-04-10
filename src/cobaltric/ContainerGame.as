@@ -398,7 +398,7 @@
 					game.star3.gotoAndStop("off");
 					star3Blink = false;
 				}
-				else if (!star3Blink && timePassed >= timesArray[0] - 3000)
+				else if (!star3Blink && timePassed >= timesArray[0] - 5000)
 				{
 					game.star3.gotoAndPlay("blink");
 					star3Blink = true;
@@ -408,7 +408,7 @@
 					game.star2.gotoAndStop("off");
 					star2Blink = false;
 				}
-				else if (!star2Blink && timePassed >= timesArray[1] - 3000)
+				else if (!star2Blink && timePassed >= timesArray[1] - 5000)
 				{
 					game.star2.gotoAndPlay("blink");
 					star2Blink = true;
@@ -484,7 +484,7 @@
 			
 			haltAllAnimations();
 			SoundManager.stopBGM();
-			SoundManager.play(game.star3.currentFrameLabel == "off" ? "sfx_success" : "sfx_successSup");
+			SoundManager.play("sfx_success");
 		}
 
 		/**
@@ -538,7 +538,8 @@
 		private function stepAllAnimations():void
 		{
 			for each (var node:ABST_Node in nodeArray)
-				if (node.animatable && node.mc_object.mc)
+			
+				if (node.animatable && node.mc_object.mc && !node is NodeXRay)
 				{
 					if (node.mc_object.mc.currentFrame == node.mc_object.mc.totalFrames)
 						node.mc_object.mc.gotoAndPlay(1);
