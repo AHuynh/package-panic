@@ -1,6 +1,7 @@
 package packpan.nodes 
 {
 	import cobaltric.ContainerGame;
+	import cobaltric.SoundManager;
 	import flash.display.MovieClip;
 	import packpan.mails.ABST_Mail;
 	import packpan.mails.MailContraband;
@@ -43,8 +44,10 @@ package packpan.nodes
 				} else {
 					if (foundContraband) {
 						mc_object.mc.gotoAndStop("warn");
+						SoundManager.play("sfx_xbad");
 					} else {
 						mc_object.mc.gotoAndStop("clear");
+						SoundManager.play("sfx_good");
 					}
 				}
 			} else {

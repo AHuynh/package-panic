@@ -5,6 +5,7 @@ package packpan.nodes
 	import flash.geom.Point;
 	import packpan.mails.ABST_Mail;
 	import packpan.PP;
+	import cobaltric.SoundManager;
 	import packpan.PhysicsUtils;
 	
 	/**
@@ -109,6 +110,7 @@ package packpan.nodes
 			}
 			
 			mc_object.rotation = facing;		// rotate the graphic appropriately
+			SoundManager.play("sfx_rotate");
 		}
 		
 		/**

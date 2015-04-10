@@ -118,6 +118,7 @@
 					containerGame = new ContainerGame(this, level, true);
 					gameState = 1;
 					//SoundPlayer.stopBGM();
+					SoundManager.play("elevator");
 					addChildAt(containerGame, 0);
 				break;
 				case 1:

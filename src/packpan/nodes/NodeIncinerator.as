@@ -1,6 +1,7 @@
 package packpan.nodes 
 {
 	import cobaltric.ContainerGame;
+	import cobaltric.SoundManager;
 	import packpan.mails.ABST_Mail;
 	/**
 	 * ...
@@ -20,6 +21,7 @@ package packpan.nodes
 		override public function affectMail(mail:ABST_Mail):void 
 		{
 			DestroyMail(mail);
+			SoundManager.play("sfx_incinerate");
 		}
 	}
 

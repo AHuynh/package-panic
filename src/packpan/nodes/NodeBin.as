@@ -1,6 +1,7 @@
 package packpan.nodes 
 {
 	import cobaltric.ContainerGame;
+	import cobaltric.SoundManager;
 	import flash.display.Bitmap;
 	import flash.display.ColorCorrection;
 	import flash.geom.ColorTransform;
@@ -75,6 +76,7 @@ package packpan.nodes
 				}
 				// success state
 				mail.mailState = PP.MAIL_SUCCESS;
+				SoundManager.play("sfx_bin");
 			}
 		}
 		

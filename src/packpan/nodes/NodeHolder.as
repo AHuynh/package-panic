@@ -1,6 +1,7 @@
 package packpan.nodes 
 {
 	import cobaltric.ContainerGame;
+	import cobaltric.SoundManager;
 	import flash.display.Bitmap;
 	import flash.display.ColorCorrection;
 	import flash.events.MouseEvent;
@@ -78,6 +79,7 @@ package packpan.nodes
 
 				//Decrement remaining and check if full
 				setRemaining(--remaining);
+				SoundManager.play("sfx_bin");
 				
 				if (remaining < 0)
 				{
