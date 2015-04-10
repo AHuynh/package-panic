@@ -1,6 +1,7 @@
 package packpan.nodes 
 {
 	import cobaltric.ContainerGame;
+	import cobaltric.SoundManager;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	import packpan.mails.ABST_Mail;
