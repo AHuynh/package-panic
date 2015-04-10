@@ -1,6 +1,7 @@
 package packpan.mails
 {
 	import cobaltric.ContainerGame;
+	import cobaltric.SoundManager;
 	import flash.display.Bitmap;
 	import flash.display.MovieClip;
 	import flash.errors.IllegalOperationError;
@@ -58,7 +59,8 @@ package packpan.mails
 			{
 				if (!cg.nodeGrid[position.x][position.y])		// if we are not on a Node (we are on the ground)
 				{
-					mailState = PP.MAIL_FAILURE;	// TODO falling-off animation
+					mailState = PP.MAIL_FAILURE;
+					SoundManager.play("sfx_fall");
 				}
 				else								// otherwise have the Node in this grid square affect us
 					cg.nodeGrid[position.x][position.y].affectMail(this);

@@ -14,7 +14,7 @@
 		private var eng:Engine;				// a reference to the Engine
 		
 		private var levelButtons:Array;		// list of level buttons
-		private var page:int = 0;			// current page of 15 levels; also the first index into eng.levelArray
+		public var page:int = 0;			// current page of 15 levels; also the first index into eng.levelArray
 		
 		private var selectedLevel:int = -1;
 		
@@ -108,6 +108,15 @@
 			}
 			swc.mc_levels.gotoAndPlay(2);
 			initLevels();
+			setElevatorStyle(page + 1);
+		}
+		
+		private function setElevatorStyle(style:int):void
+		{
+			swc.mc_levels.ev_levels.gotoAndStop(style);
+			swc.mc_levels.elevator.doorL.gotoAndStop(style);
+			swc.mc_levels.elevator.doorR.gotoAndStop(style);
+			swc.mc_levels.elevator.ev_base.gotoAndStop(style);
 		}
 		
 		private function initLevels():void

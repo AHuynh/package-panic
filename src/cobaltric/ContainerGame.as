@@ -34,6 +34,9 @@
 		
 		protected var gameState:int;		// state of game using PP.as constants
 		
+		private var timeFactor:int = 1;
+		private var timeFlag:Boolean = true;
+		
 		// allows getDefinitionByName to work; variable name is arbitary and is not ever used
 		private var GDN_01:NodeConveyorNormal;
 		private var GDN_02:NodeConveyorRotate;
@@ -53,7 +56,7 @@
 		private var GDN_16:NodeHolder
 		
 		// display list
-		public var lowestPackageDepth:int = 0;		// lowest childIndex to set packages as
+		public var lowestPackageDepth:int = 1;		// lowest childIndex to set packages as
 		
 		// timer
 		public var timerTick:Number = 1000 / 30;	// time to take off per frame
@@ -108,11 +111,16 @@
 			game.x = 400; game.y = 300;
 			addChild(game);
 			
+			game.bg_main.gotoAndStop(engine.page + 1);
+			
 			game.holder_above.buttonMode = game.holder_above.mouseEnabled = game.holder_above.mouseChildren = false;	
 			game.holder_above.y -= 3;	// offset to make it appear above
 			
 			game.btn_retry.addEventListener(MouseEvent.CLICK, onRetry);
 			game.btn_quit.addEventListener(MouseEvent.CLICK, onQuit);
+			game.btn_fast.addEventListener(MouseEvent.CLICK, onSlow);
+			game.btn_slow.addEventListener(MouseEvent.CLICK, onFast);
+			game.btn_fast.visible = false;
 			game.mc_overlaySuccess.visible = false;
 			game.mc_overlayFailure.visible = false;
 			
@@ -147,6 +155,19 @@
 			var NodeClass:Class;
 			var MailClass:Class;
 			var node:ABST_Node;
+			
+			// show tutorial graphic if appropriate
+			var tut:String;
+			switch (json["meta"]["name-internal"])
+			{
+				case "level_tut_00":		tut = "first";		break;
+				case "level_tut_02":		tut = "clickable";	break;
+				case "level_garbage":		tut = "incinerate";	break;
+				case "level_holder":		tut = "holder";		break;
+				case "level_contraband":	tut = "contraband";	break;
+			}
+			if (tut)
+				game.tutorial.gotoAndStop(tut);
 			
 			// for each entry in "nodes", add the object
 			for each (var nodeJSON:Object in json["nodes"])
@@ -393,7 +414,6 @@
 					star2Blink = true;
 				}
 				
-				
 				// step all nodes
 				for each (var node:ABST_Node in nodeArray)
 					node.step();
@@ -426,6 +446,18 @@
 
 			}
 			
+			if (timeFactor == 2)
+			{
+				if (timeFlag)
+				{
+					timeFlag = false;
+					step();
+					stepAllAnimations();
+				}
+				else
+					timeFlag = true;
+			}
+			
 			return completed;
 		}
 
@@ -451,6 +483,8 @@
 			}
 			
 			haltAllAnimations();
+			SoundManager.stopBGM();
+			SoundManager.play("sfx_success");
 		}
 
 		/**
@@ -474,6 +508,8 @@
 			}
 			
 			haltAllAnimations();
+			SoundManager.stopBGM();
+			SoundManager.play("sfx_failure");
 		}
 		
 		/**
@@ -494,6 +530,21 @@
 			for each (var node:ABST_Node in nodeArray)
 				if (node.animatable && node.mc_object.mc)
 					node.mc_object.mc.play();
+		}
+		
+		/**
+		 * Step all Node animations by 1 frame (those using Node.swc)
+		 */
+		private function stepAllAnimations():void
+		{
+			for each (var node:ABST_Node in nodeArray)
+				if (node.animatable && node.mc_object.mc)
+				{
+					if (node.mc_object.mc.currentFrame == node.mc_object.mc.totalFrames)
+						node.mc_object.mc.gotoAndPlay(1);
+					else
+						node.mc_object.mc.gotoAndPlay(node.mc_object.mc.currentFrame + 1);
+				}
 		}
 		
 		/**
@@ -546,9 +597,23 @@
 		 */
 		public function nextLevel(e:MouseEvent):void
 		{
-			// TODO
 			engine.nextFlag = true;
 			onQuit(null);
+		}
+		
+		public function onFast(e:MouseEvent):void
+		{
+			game.btn_slow.visible = false;
+			game.btn_fast.visible = true;
+			timeFactor = 2;
+			timeFlag = true;
+		}
+		
+		public function onSlow(e:MouseEvent):void
+		{
+			game.btn_slow.visible = true;
+			game.btn_fast.visible = false;
+			timeFactor = 1;
 		}
 		
 		/**

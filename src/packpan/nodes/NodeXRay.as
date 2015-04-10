@@ -1,6 +1,7 @@
 package packpan.nodes 
 {
 	import cobaltric.ContainerGame;
+	import cobaltric.SoundManager;
 	import flash.display.MovieClip;
 	import packpan.mails.ABST_Mail;
 	import packpan.mails.MailContraband;
@@ -16,6 +17,8 @@ package packpan.nodes
 		private var foundMail : Boolean;
 		private var foundContraband : Boolean;
 		private var isConfused : Boolean;
+		
+		private var cbGFX:int;	// graphic to display on contraband
 		
 		public function NodeXRay(_cg:ContainerGame, _json:Object)
 		{
@@ -43,8 +46,11 @@ package packpan.nodes
 				} else {
 					if (foundContraband) {
 						mc_object.mc.gotoAndStop("warn");
+						mc_object.mc.contraband.gotoAndStop(cbGFX);
+						SoundManager.play("sfx_xbad");
 					} else {
 						mc_object.mc.gotoAndStop("clear");
+						//SoundManager.play("sfx_xgood");
 					}
 				}
 			} else {
@@ -58,6 +64,10 @@ package packpan.nodes
 			var temp : Boolean = false;
 			if (mail is MailContraband) {
 				temp = (mail as MailContraband).ShouldDestroy();
+				// read or assign a specific contraband graphic
+				if (!mail.mc_object.cb_id)
+					mail.mc_object.cb_id = int(getRand(1, 7));
+				cbGFX = mail.mc_object.cb_id;
 			}
 			if (!foundMail) {
 				foundContraband = temp;

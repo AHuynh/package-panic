@@ -1,6 +1,7 @@
 package packpan.nodes 
 {
 	import cobaltric.ContainerGame;
+	import cobaltric.SoundManager;
 	import flash.display.Bitmap;
 	import flash.display.ColorCorrection;
 	import flash.geom.ColorTransform;
@@ -63,6 +64,7 @@ package packpan.nodes
 			{
 				mail.state = new PhysicalEntity(1, new Point(position.x, position.y));
 				mail.mc_object.scaleX = mail.mc_object.scaleY = .8;
+				cg.game.holder_main.setChildIndex(mail.mc_object, cg.lowestPackageDepth);	// send to back of display list
 				occupied = true;
 				
 				// fail if mail and bin are colored and colors don't match.
@@ -74,6 +76,7 @@ package packpan.nodes
 				}
 				// success state
 				mail.mailState = PP.MAIL_SUCCESS;
+				SoundManager.play("sfx_bin");
 			}
 		}
 		

@@ -1,6 +1,7 @@
 package packpan.nodes 
 {
 	import cobaltric.ContainerGame;
+	import cobaltric.SoundManager;
 	import flash.display.Bitmap;
 	import flash.display.ColorCorrection;
 	import flash.events.MouseEvent;
@@ -60,6 +61,7 @@ package packpan.nodes
 			if (isFull)
 			{
 				mail.mailState = PP.MAIL_FAILURE;
+				mc_object.mc.tf_cap.text = "X";
 				return;
 			}
 			
@@ -73,10 +75,11 @@ package packpan.nodes
 				mail.mc_object.scaleX = mail.mc_object.scaleY = .8;
 				
 				// move package to top of display list
-				cg.game.holder_main.setChildIndex(mail.mc_object, cg.lowestPackageDepth + (capacity - remaining));// cg.game.holder_main.numChildren - 1);
+				cg.game.holder_main.setChildIndex(mail.mc_object, cg.lowestPackageDepth + (capacity - remaining));
 
 				//Decrement remaining and check if full
 				setRemaining(--remaining);
+				SoundManager.play("sfx_bin");
 				
 				if (remaining < 0)
 				{
@@ -111,7 +114,6 @@ package packpan.nodes
 		
 		private function setRemaining(rem:int):void
 		{
-			//trace("sr " + rem);
 			mc_object.mc.tf_cap.text = rem;
 		}
 		
