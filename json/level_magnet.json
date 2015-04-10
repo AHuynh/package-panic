@@ -3,7 +3,8 @@
     "format": "PP-level",
     "format-version": 1,
     "name-internal": "level_magnet",
-    "name-external": "Magnet Mayhem"
+    "name-external": "Magnet Mayhem",
+	"times": [25000,35000]
   },
   "nodes": [
     {"type": "NodeMagnet", "x": 4, "y": 1, "dir": "down", "clickable": false, "polarity": 1},

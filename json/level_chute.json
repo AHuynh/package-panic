@@ -58,6 +58,7 @@
       "name-internal":"level_chute",
       "format":"PP-level",
       "format-version":1,
-      "name-external":"Chute Warp"
+      "name-external":"Chute Warp",
+	  "times": [9500,11000]
    }
 }

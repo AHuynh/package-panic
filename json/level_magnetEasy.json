@@ -3,7 +3,8 @@
     "format": "PP-level",
     "format-version": 1,
     "name-internal": "levelmagnet",
-    "name-external": "Polarities"
+    "name-external": "Polarities",
+	"times": [13500,16000]
   },
   "nodes": [
     {"type": "NodeBarrier", "x": 0, "y": 4},

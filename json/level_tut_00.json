@@ -38,6 +38,7 @@
       "name-internal":"level_tut_00",
       "format":"PP-level",
       "format-version":1,
-      "name-external":"New Guy"
+      "name-external":"New Guy",
+	  "times": [7500,10000]
    }
 }

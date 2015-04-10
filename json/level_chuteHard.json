@@ -236,6 +236,7 @@
       "name-internal":"level_portalHard",
       "format":"PP-level",
       "format-version":1,
-      "name-external":"Crazy Chutes"
+      "name-external":"Crazy Chutes",
+	  "times": [13500,16000]
    }
 }

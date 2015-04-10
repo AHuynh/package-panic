@@ -3,7 +3,8 @@
     "format": "PP-level",
     "format-version": 1,
     "name-internal": "levelbarrier",
-    "name-external": "Crossed"
+    "name-external": "Crossed",
+	"times": [4500,7000]
   },
   "nodes": [
     {"type": "NodeBarrier", "x": 7, "y": 4},

@@ -3,7 +3,8 @@
     "format": "PP-level",
     "format-version": 1,
     "name-internal": "level test j",
-    "name-external": "Choose your Fate"
+    "name-external": "Choose your Fate",
+	"times": [17000,20000]
   },
   "nodes": [
     {"type": "NodeConveyorNormal", "x": 9, "y": 2, "dir": "up"},
