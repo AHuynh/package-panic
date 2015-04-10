@@ -9,6 +9,7 @@
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
 	import flash.utils.getDefinitionByName;
+	import cobaltric.SoundManager;
 	import packpan.Levels;
 	import packpan.PP;
 	
@@ -20,7 +21,7 @@
 	public class Engine extends MovieClip
 	{
 		private var gameState:int;					// state machine helper
-		private var containerMenu:ABST_Container;	// the menu container
+		private var containerMenu:ContainerIntro;	// the menu container
 		private var containerGame:ABST_Container;	// the game container
 		
 		private var nextState:Boolean = false;		// if true, proceed to the next state
@@ -72,7 +73,7 @@
 			containerMenu.y = 0;
 			
 			// play BGM
-			//SoundManager.playBGM("main");
+			SoundManager.playBGM("main");
 		}
 		
 		/*public function newGame():void
@@ -111,14 +112,16 @@
 			if (!nextState)
 				return;
 			nextState = false;
+			
+			SoundManager.shutUp();
 				
 			switch (gameState)			// determine which new container to go to next
 			{
 				case 0:
 					containerGame = new ContainerGame(this, level, true);
 					gameState = 1;
-					//SoundPlayer.stopBGM();
-					SoundManager.play("elevator");
+					SoundManager.play("sfx_elevator");
+					startBGM();
 					addChildAt(containerGame, 0);
 				break;
 				case 1:
@@ -126,6 +129,7 @@
 					{
 						containerGame = new ContainerGame(this, level, false);
 						addChildAt(containerGame, 0);
+						startBGM();
 					}
 					else if (nextFlag)
 					{
@@ -136,6 +140,7 @@
 							addChild(containerMenu);
 							gameState = 0;
 							levelInd = 0;
+							SoundManager.playBGM("main");
 							return;
 						}
 						page = next[1];
@@ -143,11 +148,13 @@
 						level = next[0];
 						containerGame = new ContainerGame(this, level, false);
 						addChildAt(containerGame, 0);
+						startBGM();
 					}
 					else
 					{
 						containerMenu = new ContainerIntro(this, true, page);
 						addChild(containerMenu);
+						SoundManager.playBGM("main");
 						gameState = 0;
 					}
 					retryFlag = nextFlag = false;
@@ -181,6 +188,16 @@
 				stage.quality = StageQuality.MEDIUM;
 			else if (e.keyCode == 72)	// -- h
 				stage.quality = StageQuality.HIGH;
+		}
+		
+		private function startBGM():void
+		{
+			switch (page)
+			{
+				case 0:		SoundManager.playBGM("bgm_cb");		break;
+				case 1:		SoundManager.playBGM("bgm_pp");		break;
+				case 2:		SoundManager.playBGM("bgm_pl");		break;
+			}
 		}
 		
 		/*public function save(scoreData:Array = null):void

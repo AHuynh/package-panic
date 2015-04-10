@@ -107,6 +107,8 @@
 			game.x = 400; game.y = 300;
 			addChild(game);
 			
+			game.bg_main.gotoAndStop(engine.page + 1);
+			
 			game.holder_above.buttonMode = game.holder_above.mouseEnabled = game.holder_above.mouseChildren = false;	
 			game.holder_above.y -= 3;	// offset to make it appear above
 			
@@ -371,7 +373,8 @@
 				timePassed += timerTick;
 				game.tf_timer.text = updateTime();
 				
-				if (stars > 1)
+				// star logic
+				/*if (stars > 1)
 				{
 					if (stars == 3) {
 						if (timePassed >= timesArray[0]) {
@@ -396,7 +399,7 @@
 							starBlink = true;
 						}
 					}
-				}
+				}*/
 				
 				
 				// step all nodes
@@ -445,6 +448,8 @@
 			timerTick = 0;							// halt the timer
 			
 			haltAllAnimations();
+			SoundManager.stopBGM();
+			SoundManager.play("sfx_success");
 		}
 
 		/**
@@ -468,6 +473,8 @@
 			}
 			
 			haltAllAnimations();
+			SoundManager.stopBGM();
+			SoundManager.play("sfx_failure");
 		}
 		
 		/**

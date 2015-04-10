@@ -14,7 +14,7 @@
 		private var eng:Engine;				// a reference to the Engine
 		
 		private var levelButtons:Array;		// list of level buttons
-		private var page:int = 0;			// current page of 15 levels; also the first index into eng.levelArray
+		public var page:int = 0;			// current page of 15 levels; also the first index into eng.levelArray
 		
 		private var selectedLevel:int = -1;
 		

@@ -2,6 +2,7 @@ package cobaltric
 {
 	import flash.media.Sound;
 	import flash.media.SoundChannel;
+	import flash.media.SoundMixer;
 	
 	/**
 	 * Static class for playing sounds.
@@ -33,6 +34,10 @@ package cobaltric
 		private static var SFX_xgood:Class;
 		[Embed(source = "../../sound/SFX_xrayGood.mp3")]
 		private static var SFX_xbad:Class;
+		[Embed(source = "../../sound/SFX_success.mp3")]
+		private static var SFX_success:Class;
+		[Embed(source = "../../sound/SFX_failure.mp3")]
+		private static var SFX_failure:Class;
 		
 		private static var sfx_rotate:Sound = new SFX_rotate();
 		private static var sfx_elevator:Sound = new SFX_elevator();
@@ -41,6 +46,8 @@ package cobaltric
 		private static var sfx_fall:Sound = new SFX_fall();
 		private static var sfx_xgood:Sound = new SFX_xgood();
 		private static var sfx_xbad:Sound = new SFX_xbad();
+		private static var sfx_success:Sound = new SFX_success();
+		private static var sfx_failure:Sound = new SFX_failure();
 		
 		public static var bgm:SoundChannel;
 		
@@ -61,6 +68,10 @@ package cobaltric
 				case "sfx_fall":		sfx_fall.play();		break;
 				case "sfx_xgood":		sfx_xgood.play();		break;
 				case "sfx_xbad":		sfx_xbad.play();		break;
+				case "sfx_success":		sfx_success.play();		break;
+				case "sfx_failure":		sfx_failure.play();		break;
+				default:
+					trace("WARNING: no sound defined for " + sound);
 			}
 		}
 		
@@ -72,6 +83,12 @@ package cobaltric
 			switch (sound)
 			{
 				case "main":	snd = new bgm_main();		break;
+				case "bgm_cb":	snd = new bgm_cb();			break;
+				case "bgm_pp":	snd = new bgm_pp();			break;
+				case "bgm_pl":	snd = new bgm_pl();			break;
+				default:
+					trace("WARNING: no BGM defined for " + sound);
+					return;
 			}
 			bgm = snd.play(0, 9999);
 		}
@@ -88,6 +105,11 @@ package cobaltric
 				bgm.stop();
 				bgm = null;
 			}
+		}
+		
+		public static function shutUp():void
+		{
+			SoundMixer.stopAll();
 		}
 	}
 }
