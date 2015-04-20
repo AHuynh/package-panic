@@ -38,7 +38,7 @@ package cobaltric
 		[Embed(source = "../../sound/SFX_success.mp3")]
 		private static var SFX_success:Class;
 		[Embed(source = "../../sound/SFX_successSuper.mp3")]
-		private static var SFX_successSup:Class;
+		private static var SFX_successSuper:Class;
 		[Embed(source = "../../sound/SFX_failure.mp3")]
 		private static var SFX_failure:Class;
 		
@@ -50,7 +50,7 @@ package cobaltric
 		private static var sfx_xgood:Sound = new SFX_xgood();
 		private static var sfx_xbad:Sound = new SFX_xbad();
 		private static var sfx_success:Sound = new SFX_success();
-		private static var sfx_successSup:Sound = new SFX_successSup();
+		private static var sfx_successSuper:Sound = new SFX_successSuper();
 		private static var sfx_failure:Sound = new SFX_failure();
 		
 		public static var bgm:SoundChannel;
@@ -77,7 +77,7 @@ package cobaltric
 				case "sfx_xgood":		sfx_xgood.play();		break;
 				case "sfx_xbad":		sfx_xbad.play();		break;
 				case "sfx_success":		sfx_success.play();		break;
-				case "sfx_successSup":	sfx_successSup.play();	break;
+				case "sfx_successSuper":sfx_successSuper.play();break;
 				case "sfx_failure":		sfx_failure.play();		break;
 				default:
 					trace("WARNING: no sound defined for " + sound);
