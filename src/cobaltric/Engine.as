@@ -1,5 +1,8 @@
 ﻿package cobaltric
 {
+	import cobaltric.SoundManager;
+	import packpan.Levels;
+	import packpan.PP;
 	import flash.automation.StageCapture;
 	import flash.display.MovieClip;
 	import flash.display.StageQuality;
@@ -8,10 +11,6 @@
 	import flash.net.SharedObject;
 	import flash.net.URLLoader;
 	import flash.net.URLRequest;
-	import flash.utils.getDefinitionByName;
-	import cobaltric.SoundManager;
-	import packpan.Levels;
-	import packpan.PP;
 	
 	/** 
 	 * Primary game loop event firer and state machine.
@@ -26,43 +25,26 @@
 		
 		private var nextState:Boolean = false;		// if true, proceed to the next state
 
-		// save data
-		public const SAVE_DATA:String = "PACK_PAN";
-		public var saveData:SharedObject = SharedObject.getLocal(SAVE_DATA, "/");
-
 		// Levels
-		public var levels:Levels;
+		public var levels:Levels;		// Level manager class
 		public var level:Object;		// dictionary read from json
 		public var page:int = 1;		// remember the page
 		public var levelInd:int = 1;	// remember the level
 		public var retryFlag:Boolean;	// if true, retry the level
 		public var nextFlag:Boolean;	// if true, move on to the next level
 		
+		/**
+		 * MovieClip holding and controlling everything.
+		 */
 		public function Engine()
-		{
-			// try to load save data
-			/*if (saveData.data.sd_isValid)
-			{
-				scoreData = [];
-				for (var i:int = 0; i < 8; i++)
-				{
-					scoreData.push([saveData.data.sd_name[i],
-									saveData.data.sd_day[i],
-									saveData.data.sd_money[i]]);
-				}
-			}
-			else
-				newGame();*/
-				
+		{				
 			gameState = 0;
-			
-			//SoundPlayer.playBGM(true);
 
 			// parse the embedded levels
 			levels = new Levels();
 			
 			// finish setup
-			addEventListener(Event.ENTER_FRAME, step);
+			addEventListener(Event.ENTER_FRAME, step);				// primary game loop firer
 			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
 			
 			containerMenu = new ContainerIntro(this, false, page);
@@ -76,12 +58,9 @@
 			SoundManager.playBGM("main");
 		}
 		
-		/*public function newGame():void
-		{
-			save();
-			// new data here
-		}*/
-		
+		/**
+		 * Called by ContainerIntro to signal that a level is starting.
+		 */
 		public function menuOver():void
 		{
 			gameState = 0;
@@ -174,7 +153,7 @@
 		}
 		
 		/**
-		 * Global keyboard listener, used to listen for quality buttons
+		 * Global keyboard listener, used to listen for quality hotkeys.
 		 * 
 		 * @param	e	the captured KeyboardEvent, used to find the pressed key
 		 */
@@ -190,6 +169,9 @@
 				stage.quality = StageQuality.HIGH;
 		}
 		
+		/**
+		 * Starts the BGM for a level, based on what factory we were in.
+		 */
 		private function startBGM():void
 		{
 			switch (page)
@@ -199,15 +181,6 @@
 				case 2:		SoundManager.playBGM("bgm_pl");		break;
 			}
 		}
-		
-		/*public function save(scoreData:Array = null):void
-		{ 
-			saveData.clear();
-			if (!scoreData)
-				// init new score Data
-			saveData.data.sd_isValid = true;
-			saveData.flush();
-		}*/
 	}
 	
 }

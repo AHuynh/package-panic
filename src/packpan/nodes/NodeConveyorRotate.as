@@ -13,7 +13,6 @@ package packpan.nodes
 	 */
 	public class NodeConveyorRotate extends NodeConveyorNormal 
 	{
-		
 		public function NodeConveyorRotate(_cg:ContainerGame, _json:Object)
 		{
 			super(_cg, _json);
@@ -22,7 +21,7 @@ package packpan.nodes
 		
 		override public function onClick(e:MouseEvent):void
 		{
-			// face the opposite direction
+			// rotate counter-clockwise
 			switch (facing)
 			{
 				case PP.DIR_RIGHT:
@@ -38,7 +37,7 @@ package packpan.nodes
 					facing = PP.DIR_RIGHT;
 				break;
 				default:
-					trace("WARNING: NodeConveyorNormal at " + position + " has an invalid facing!");
+					trace("WARNING: NodeConveyorRotate at " + position + " has an invalid facing!");
 			}
 			
 			mc_object.rotation = facing;		// rotate the graphic appropriately

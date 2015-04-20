@@ -4,9 +4,10 @@ package packpan
 	import flash.display.Bitmap;
 	import flash.display.MovieClip;
 	import flash.geom.Point;
+
 	/**
 	 * An abstract class containing functionality useful to all game objects.
-	 * Extended by ABST_Mail and ABST_Node
+	 * Extended by ABST_Mail and ABST_Node.
 	 * @author 	Alexander Huynh
 	 */
 	public class ABST_GameObject 

@@ -1,6 +1,7 @@
 package packpan
 {
 	import flash.geom.Point;
+
 	/**
 	 * A class representing the physical state of an object, i.e. position, velocity, etc.
 	 * @author Jay Fisher

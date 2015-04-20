@@ -3,8 +3,9 @@ package packpan.nodes
 	import cobaltric.ContainerGame;
 	import flash.display.Bitmap;
 	import packpan.mails.ABST_Mail;
+
 	/**
-	 * ...
+	 * A Node that modifies a given Mail object
 	 * @author James LIu
 	 */
 	public class ABST_NodeProcessor extends ABST_Node

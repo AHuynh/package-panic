@@ -10,8 +10,8 @@ package packpan.nodes
 	import packpan.PhysicsUtils;
 	
 	/**
-	 * ...
-	 * @author ...
+	 * A Node that affects mail implementing the Magnetic interface.
+	 * @author Cheng Hann Gan
 	 */
 	public class NodeMagnet extends ABST_Node 
 	{
@@ -123,7 +123,5 @@ package packpan.nodes
 				mc_object.rotation = facing;
 			}
 		}
-		
 	}
-
 }

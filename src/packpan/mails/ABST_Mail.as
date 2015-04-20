@@ -13,6 +13,7 @@ package packpan.mails
 	import packpan.PP;
 	import packpan.PhysicalEntity;
 	import packpan.PhysicsUtils;
+
 	/**
 	 * An abstract Mail object, extended to become items that are manipulated by nodes.
 	 * @author Alexander Huynh
@@ -21,7 +22,7 @@ package packpan.mails
 	{		
 		public var state:PhysicalEntity;			// the physical state of the mail
 		public var mailState:int = PP.MAIL_IDLE;	// is this mail in a idle, success, or failure state
-		public var destroyed:Boolean = false;
+		public var destroyed:Boolean = false;		// if this mail was destroyed
 		
 		/**
 		 * Should only be called through super(), never instantiated.
@@ -62,7 +63,7 @@ package packpan.mails
 					mailState = PP.MAIL_FAILURE;
 					SoundManager.play("sfx_fall");
 				}
-				else								// otherwise have the Node in this grid square affect us
+				else							// otherwise have the Node in this grid square affect us
 					cg.nodeGrid[position.x][position.y].affectMail(this);
 			}
 

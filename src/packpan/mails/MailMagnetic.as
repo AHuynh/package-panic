@@ -5,7 +5,7 @@ package packpan.mails
 	import packpan.iface.IMagnetic;
 	
 	/**
-	 * ...
+	 * A Mail object that is affected by magnet Nodes.
 	 * @author Cheng Hann Gan
 	 */
 	public class MailMagnetic extends ABST_Mail implements IMagnetic
@@ -17,15 +17,15 @@ package packpan.mails
 		
 		/// The magnetic polarity of this Mail
 		public var polarity:int = 0;
-		
-		
+
 		public function MailMagnetic(_cg:ContainerGame, _json:Object) 
 		{
 			super(_cg, _json);
 			
 			if (json["polarity"])
 				setPolarity(json["polarity"]);
-				
+			
+			// determine graphic based on polarity
 			var CustomBitmap:Class;
 			if (getPolarity() == 1) {
 				addImage(new CustomBitmap1());
@@ -45,7 +45,5 @@ package packpan.mails
 		public function getInteraction(pol:int):int {
 			return polarity * pol;
 		}
-		
 	}
-
 }

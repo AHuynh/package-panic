@@ -2,8 +2,10 @@ package packpan.nodes
 {
 	import flash.events.MouseEvent;
 	import packpan.PP;
+
 	/**
-	 * A group of Nodes that work as one object
+	 * A group of Nodes that work as one object.
+	 * Clicking one Node in the group is like clicking all of the Nodes in the group.
 	 * 
 	 * @author Alexander Huynh
 	 */

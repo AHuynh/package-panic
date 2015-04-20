@@ -1,41 +1,35 @@
 ﻿package cobaltric
 {	
+	import packpan.nodes.*;
+	import packpan.mails.*;
+	import packpan.PP;
+	import packpan.PhysicsUtils;
+	import packpan.ABST_GameObject;
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.events.TimerEvent;
 	import flash.geom.Point;
-	import flash.net.URLLoader;
-	import flash.net.URLRequest;
-	import flash.ui.Mouse;
 	import flash.utils.getDefinitionByName;
 	import flash.utils.Timer;
-	import packpan.ABST_GameObject;
-	import packpan.nodes.*;
-	import packpan.mails.*;
-	import packpan.PP;
-	import packpan.PhysicsUtils;
 	
 	/**
 	 * Primary game container and controller.
 	 * 
 	 * Note:	All coordinates use x positive right and y positive down. GRID_ORIGIN is the top left corner.
 	 * 
-	 * @author Alexander Huynh
+	 * @author Alexander Huynh, various
 	 */
 	public class ContainerGame extends ABST_Container
 	{		
-		public var engine:Engine;					// the game's Engine
-		public var game:SWC_ContainerGame;			// the Game SWC, containing all the base assets
+		public var engine:Engine;				// the game's Engine
+		public var game:SWC_ContainerGame;		// the Game SWC, containing all the base assets
+		protected var gameState:int;			// state of game using PP.as constants
 
-		public var nodeGrid:Array;		// a 2D array containing either null or the node at a (x, y) grid location
-		public var nodeArray:Array;		// a 1D array containing all ABST_Node objects
-		public var mailArray:Array;		// a 1D array containing all ABST_Mail objects
-		
-		protected var gameState:int;		// state of game using PP.as constants
-		
-		private var timeFactor:int = 1;
-		private var timeFlag:Boolean = true;
+		// game objects
+		public var nodeGrid:Array;				// a 2D array containing either null or the node at a (x, y) grid location
+		public var nodeArray:Array;				// a 1D array containing all ABST_Node objects
+		public var mailArray:Array;				// a 1D array containing all ABST_Mail objects
 		
 		// allows getDefinitionByName to work; variable name is arbitary and is not ever used
 		private var GDN_01:NodeConveyorNormal;
@@ -56,21 +50,26 @@
 		private var GDN_16:NodeHolder
 		
 		// display list
-		public var lowestPackageDepth:int = 1;		// lowest childIndex to set packages as
+		public var lowestPackageDepth:int = 1;		// lowest childIndex to set packages as, used externally
 		
-		// timer
-		public var timerTick:Number = 1000 / 30;	// time to take off per frame
-		public const SECOND:int = 1000;
-		public var timePassed:int = 0;
+		// general time
+		public var timerTick:Number = 1000 / 30;	// time to add per frame
+		public const SECOND:int = 1000;				// 1000ms
+		public var timePassed:int = 0;				// total time elapsed in this level
 		
+		// star time
 		public var timesArray:Array;                // completion times for star rewards, fastest times at lowest indices
 		public var stars:int = 3;					// number of remaining stars
 		private var star3Blink:Boolean = false;		// flag to toggle blinking
 		private var star2Blink:Boolean = false;		// flag to toggle blinking
-				
+
+		// double time
+		private var timeFactor:int = 1;				// game speed; 1x or 2x
+		private var timeFlag:Boolean = true;		// used with 2x game speed
+
 		// the JSON object defining this level
 		private var json:Object;
-		
+
 		// helpers to delay starting the game if there is a transition
 		private var startDelay:Timer;
 		private var useDelay:Boolean;
@@ -87,8 +86,9 @@
 			engine = eng;
 			json = _json;
 			useDelay = _useDelay;
-			addEventListener(Event.ADDED_TO_STAGE, init);		// set up after added to stage
-
+			
+			// set up after added to stage
+			addEventListener(Event.ADDED_TO_STAGE, init);
 			gameState = PP.GAME_SETUP;
 		}
 		
@@ -106,7 +106,7 @@
 			// disable right click menu
 			stage.showDefaultContextMenu = false;
 	
-			// setup the Game SWC
+			// -- setup the Game SWC ---------------------------------------------------
 			game = new SWC_ContainerGame();
 			game.x = 400; game.y = 300;
 			addChild(game);
@@ -128,7 +128,7 @@
 			game.mc_overlayFailure.btn_retry.addEventListener(MouseEvent.CLICK, onRetry);
 			game.spotlight.visible = false;
 			game.spotlight.mouseEnabled = game.spotlight.buttonMode = game.spotlight.mouseChildren = false;
-			// end Game SWC setup
+			// -- end Game SWC setup ---------------------------------------------------
 			
 			// setup node and mail arrays			
 			nodeGrid = [];
@@ -151,10 +151,6 @@
 				completed = true;
 				return;
 			}
-
-			var NodeClass:Class;
-			var MailClass:Class;
-			var node:ABST_Node;
 			
 			// show tutorial graphic if appropriate
 			var tut:String;
@@ -168,6 +164,11 @@
 			}
 			if (tut)
 				game.tutorial.gotoAndStop(tut);
+
+			// prepare to add objects
+			var NodeClass:Class;
+			var MailClass:Class;
+			var node:ABST_Node;
 			
 			// for each entry in "nodes", add the object
 			for each (var nodeJSON:Object in json["nodes"])
@@ -177,19 +178,16 @@
 					if (nodeJSON["type"] == "NodeGroupRect")
 					{
 						NodeClass = getDefinitionByName("packpan.nodes." + nodeJSON["subtype"]) as Class;
-						//trace("Level setup: Adding rectangle group of: " + NodeClass);
 						addNodeGroupRect(NodeClass, nodeJSON);
 					}
 					else if (nodeJSON["type"] == "NodeGroupList")
 					{
 						NodeClass = getDefinitionByName("packpan.nodes." + nodeJSON["subtype"]) as Class;
-						//trace("Level setup: Adding list group of: " + NodeClass);
 						addNodeGroupList(NodeClass, nodeJSON);
 					}
 					else
 					{
 						NodeClass = getDefinitionByName("packpan.nodes." + nodeJSON["type"]) as Class;
-						//trace("Level setup: Adding one of: " + NodeClass);
 						addNode(new NodeClass(this, nodeJSON));
 					}
 				} catch (e:Error)
@@ -220,11 +218,8 @@
 					trace("ERROR: When setting up level, invalid mail.\n" + e.getStackTrace());
 				}
 			}
-			
 			if (mailArray.length == 0)
 				trace("WARNING: When setting up level, no mail was added!");
-			
-			//trace("Done. We have nodes x:" + nodeArray.length);
 			
 			// validate star completion times
 			if (!json["meta"]["times"])
@@ -246,7 +241,6 @@
 					trace("ERROR: When setting up level, invalid star completion time.\n" + e.getStackTrace());
 				}
 			}
-			//timesArray = [7000, 16000];
 			
 			// delay the start of the game by 1 second if the menu out animation is playing
 			if (useDelay)
@@ -382,18 +376,20 @@
 		 */
 		override public function step():Boolean
 		{			
-			if (gameState == PP.GAME_SETUP)		// if still loading, quit
+			// if still loading, quit
+			if (gameState == PP.GAME_SETUP)
 				return completed;
 
 			// if the game state is idle, update everything and check for failure/success
 			if (gameState == PP.GAME_IDLE)
 			{
-
 				// update the timer
 				timePassed += timerTick;
 				game.tf_timer.text = updateTime();
 				
-				if (timePassed >= timesArray[0]) {
+				// update stars
+				if (timePassed >= timesArray[0])
+				{
 					stars = 2;
 					game.star3.gotoAndStop("off");
 					star3Blink = false;
@@ -403,7 +399,8 @@
 					game.star3.gotoAndPlay("blink");
 					star3Blink = true;
 				}
-				if (timePassed >= timesArray[1]) {
+				if (timePassed >= timesArray[1])
+				{
 					stars = 1;
 					game.star2.gotoAndStop("off");
 					star2Blink = false;
@@ -421,7 +418,7 @@
 				// step all Mail
 				var allSuccess:Boolean = true;			// check if all Mail is in success state				
 				var mailFailure:Boolean = false;		// check if any Mail is in failure state
-				var culprit:ABST_Mail;
+				var culprit:ABST_Mail;					// if a failure occurs, identify which Mail caused it
 				for each (var mail:ABST_Mail in mailArray)
 				{
 					var mailState:int = mail.mailState;
@@ -443,22 +440,22 @@
 				// check for failure
 				if (mailFailure)
 					setStateFailure(culprit);
-
 			}
 			
+			// handle 2x time
 			if (timeFactor == 2)
 			{
-				if (timeFlag)
+				if (timeFlag)			// perform the double step
 				{
 					timeFlag = false;
 					step();
 					stepAllAnimations();
 				}
-				else
+				else					// flag the game to double step next
 					timeFlag = true;
 			}
 			
-			return completed;
+			return completed;			// return the state of the container (if true, it is done)
 		}
 
 		/**
@@ -484,7 +481,7 @@
 			
 			haltAllAnimations();
 			SoundManager.stopBGM();
-			SoundManager.play("sfx_success");
+			SoundManager.play(stars == 3 ? "sfx_successSuper" : "sfx_success");
 		}
 
 		/**
@@ -534,18 +531,22 @@
 		
 		/**
 		 * Step all Node animations by 1 frame (those using Node.swc)
+		 * Used for 2x time
 		 */
 		private function stepAllAnimations():void
 		{
+			var clip:MovieClip;
 			for each (var node:ABST_Node in nodeArray)
-			
-				if (node.animatable && node.mc_object.mc && !node is NodeXRay)
+			{
+				clip = node.mc_object.mc;
+				if (node.animatable && clip && !node is NodeXRay)
 				{
-					if (node.mc_object.mc.currentFrame == node.mc_object.mc.totalFrames)
-						node.mc_object.mc.gotoAndPlay(1);
+					if (clip.currentFrame == clip.totalFrames)
+						clip.gotoAndPlay(1);
 					else
-						node.mc_object.mc.gotoAndPlay(node.mc_object.mc.currentFrame + 1);
+						clip.gotoAndPlay(clip.currentFrame + 1);
 				}
+			}
 		}
 		
 		/**
@@ -561,16 +562,6 @@
 				  (timeSec < 10 ? "0" : "" ) + timeSec + "." +
 				  (timeMSec < 10 ? "0" : "" ) + timeMSec;
 		}
-		
-		/*protected function overButton(e:MouseEvent):void
-		{
-			SoundPlayer.play("sfx_menu_blip_over");
-		}*/
-		
-		/*protected function onButton(e:MouseEvent):void
-		{
-			SoundPlayer.play("sfx_menu_blip");
-		}*/
 		
 		/**
 		 * Called when the Retry button is clicked.
@@ -602,6 +593,11 @@
 			onQuit(null);
 		}
 		
+		/**
+		 * Called by the 2x speed button.
+		 * Enables double time.
+		 * @param	e
+		 */
 		public function onFast(e:MouseEvent):void
 		{
 			game.btn_slow.visible = false;
@@ -610,6 +606,11 @@
 			timeFlag = true;
 		}
 		
+		/**
+		 * Called by the 1x speed button.
+		 * Reverts to normal time.
+		 * @param	e
+		 */
 		public function onSlow(e:MouseEvent):void
 		{
 			game.btn_slow.visible = true;
@@ -624,12 +625,18 @@
 		 */
 		protected function destroy(e:Event):void
 		{
+			removeEventListener(Event.REMOVED_FROM_STAGE, destroy);
+			
 			game.btn_retry.removeEventListener(MouseEvent.CLICK, onRetry);
 			game.btn_quit.removeEventListener(MouseEvent.CLICK, onQuit);
-			removeEventListener(Event.REMOVED_FROM_STAGE, destroy);
-			Mouse.show();
+			game.btn_fast.removeEventListener(MouseEvent.CLICK, onSlow);
+			game.btn_slow.removeEventListener(MouseEvent.CLICK, onFast);
+			game.mc_overlaySuccess.btn_next.removeEventListener(MouseEvent.CLICK, nextLevel);
+			game.mc_overlayFailure.btn_retry.removeEventListener(MouseEvent.CLICK, onRetry);
 			
-			// TODO additional cleanup
+			nodeGrid = null;
+			nodeArray = null;
+			mailArray = null;	
 		}
 	}
 }

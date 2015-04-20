@@ -9,8 +9,9 @@ package packpan.nodes
 	import packpan.ABST_GameObject;
 	import packpan.mails.ABST_Mail;
 	import packpan.PP;
+
 	/**
-	 * An abstract node, extended to create conveyor belts, ramps, bins, etc.
+	 * An abstract node, extended to create conveyor belts, barriers, bins, etc.
 	 * @author Alexander Huynh
 	 */
 	public class ABST_Node extends ABST_GameObject
@@ -18,13 +19,13 @@ package packpan.nodes
 		/// If a mouse click manipulates this Node, clickable is true.
 		public var clickable:Boolean = true;
 		
-		/// A reference to this Node's NodeGroup, default is null.
+		/// A reference to this Node's NodeGroup if it has one, default is null.
 		public var nodeGroup:NodeGroup = null;
 		
-		/// If this Node's clickable state can be true or false, then if this is true, color the node red
+		/// If this Node's clickable state can be true or false, then if this is true, tint the node red
 		protected var tintable:Boolean = false;
 		
-		/// If false, CG will not affect this Node when starting or stopping all animations
+		/// If false, ContainerGame will not affect this Node when starting or stopping all animations
 		public var animatable:Boolean = true;
 
 		/**
@@ -57,7 +58,7 @@ package packpan.nodes
 			
 			if (clickable)		// attach a listener for clicks if this Node can be clicked				
 				mc_object.addEventListener(MouseEvent.CLICK, onClick);
-			else if (tintable)
+			else if (tintable)	// tint red
 			{
 				var col:uint = 0xDD9999;
 				var ct:ColorTransform = new ColorTransform();

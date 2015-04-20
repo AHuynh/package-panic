@@ -1,8 +1,7 @@
 package packpan.iface 
 {
-	
 	/**
-	 * ...
+	 * Mail that can be modified by a Node will implement this interface.
 	 * @author James Liu
 	 */
 	public interface IProcessable 

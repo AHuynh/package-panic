@@ -20,10 +20,10 @@ package packpan.nodes
 	 */
 	public class NodeHolder extends ABST_Node implements IColorable 
 	{		
-		//The color of this chute
+		// The color of this bin
 		private var color:uint;
 		
-		//the strength of the forces that center the package
+		// the strength of the forces that center the package
 		private var friction:Number = 5;
 		private var spring:Number = 10;
 		
@@ -38,12 +38,12 @@ package packpan.nodes
 		public function NodeHolder(_cg:ContainerGame, _json:Object) 
 		{
 			super(_cg, _json);
-			animatable = false;		// don't animate this timeline
+			animatable = false;		// don't animate this object
 			
 			// set up custom graphics
 			mc_object.gotoAndStop("nodeHolder");
 			
-			//The color of this chute if it is colored
+			//The color of this bin if it is colored
 			color = 15;	
 			if (json["color"])
 				setColor(json["color"]);
@@ -51,7 +51,7 @@ package packpan.nodes
 				capacity = json["capacity"];
 				
 			remaining = capacity;
-			mc_object.mc.gotoAndStop(capacity >= 10 ? 2 : 1);
+			mc_object.mc.gotoAndStop(capacity >= 10 ? 2 : 1);	// handle counter GFX
 			setRemaining(remaining);
 		}
 		
@@ -70,7 +70,7 @@ package packpan.nodes
 			{
 				packages.push(mail);
 				velocities.push(mail.state.velocity);
-				//trace("vel push = " + mail.state.velocity);
+
 				mail.state = new PhysicalEntity(1, new Point(position.x, position.y));
 				mail.mc_object.scaleX = mail.mc_object.scaleY = .8;
 				
@@ -103,15 +103,17 @@ package packpan.nodes
 			
 			vel.normalize(-1);
 			mail.state.velocity = vel;
-			//trace("vel pop = " + mail.state.velocity);
 			
 			var posOffset:Point = vel.clone();
 			posOffset.normalize(RANGE + 0.01);
-			//trace("final vel = " + mail.state.velocity);
 			
 			mail.state.position = mail.state.position.add(posOffset);
 		}
 		
+		/**
+		 * Updates the counter on the Holder to display how many more packages it can hold.
+		 * @param	rem		The number to display (capacity left)
+		 */
 		private function setRemaining(rem:int):void
 		{
 			mc_object.mc.tf_cap.text = rem;

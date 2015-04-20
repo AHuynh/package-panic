@@ -10,6 +10,7 @@ package cobaltric
 	 */
 	public class SoundManager 
 	{
+		// background music
 		[Embed(source = "../../sound/BGM_PackagePanicLoop.mp3")]
 		private static var bgm_main:Class;
 		[Embed(source = "../../sound/BGM_ConveyerBelts.mp3")]
@@ -19,7 +20,7 @@ package cobaltric
 		[Embed(source = "../../sound/BGM_PackagePalooza.mp3")]
 		private static var bgm_pl:Class;
 		
-		
+		// sound effects
 		[Embed(source = "../../sound/SFX_conveyorRotate.mp3")]
 		private static var SFX_rotate:Class;
 		[Embed(source = "../../sound/SFX_elevator.mp3")]
@@ -60,6 +61,10 @@ package cobaltric
 			trace("WARNING: SoundManager should not be instiantiated!");
 		}
 		
+		/**
+		 * Plays the given SFX once.
+		 * @param	sound		String of the SFX to play, ex "sfx_bin"
+		 */
 		public static function play(sound:String):void
 		{
 			switch (sound)
@@ -72,13 +77,17 @@ package cobaltric
 				case "sfx_xgood":		sfx_xgood.play();		break;
 				case "sfx_xbad":		sfx_xbad.play();		break;
 				case "sfx_success":		sfx_success.play();		break;
-				case "sfx_successSup":	sfx_successSup.play();		break;
+				case "sfx_successSup":	sfx_successSup.play();	break;
 				case "sfx_failure":		sfx_failure.play();		break;
 				default:
 					trace("WARNING: no sound defined for " + sound);
 			}
 		}
 		
+		/**
+		 * Plays the given BGM on a loop.
+		 * @param	sound		String of the BGM to play, ex "bgm_main"
+		 */
 		public static function playBGM(sound:String):void
 		{
 			stopBGM();
@@ -97,11 +106,18 @@ package cobaltric
 			bgm = snd.play(0, 9999);
 		}
 		
+		/**
+		 * Checker if BGM is currently playing.
+		 * @return		true if BGM is playing, false otherwise
+		 */
 		public static function isBGMplaying():Boolean
 		{
 			return bgm != null;
 		}
 		
+		/**
+		 * Stops the BGM if it is playing.
+		 */
 		public static function stopBGM():void
 		{
 			if (bgm)
@@ -111,6 +127,9 @@ package cobaltric
 			}
 		}
 		
+		/**
+		 * Stops all sounds.
+		 */
 		public static function shutUp():void
 		{
 			SoundMixer.stopAll();

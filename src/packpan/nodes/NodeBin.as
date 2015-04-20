@@ -13,30 +13,33 @@ package packpan.nodes
 	import flash.geom.Point;
 	
 	/**
-	 * A goal bin.
+	 * A single-capacity goal bin.
+	 * Occupied bins allow other items to slide over it.
+	 * 
 	 * @author Alexander Huynh
 	 */
 	public class NodeBin extends ABST_Node implements IColorable
 	{
+		[Embed(source="../../../img/binNormal.png")]	// embed code; change this path to change the image
+		private var CustomBitmap:Class;					// must be directly below the embed code
+
 		/// The color of this object
 		private var color:uint;
 		
-		//the strength of the forces that center the package
+		// the strength of the forces that center the package
 		private var friction:Number = 5;
 		private var spring:Number = 10;
 		
-		public var occupied:Boolean;			// if true, there is a package in this bin
-		
-		[Embed(source="../../../img/binNormal.png")]	// embed code; change this path to change the image
-		private var CustomBitmap:Class;					// must be directly below the embed code
-		
+		/// if true, there is a package in this bin
+		public var occupied:Boolean;					
+
 		public function NodeBin(_cg:ContainerGame, _json:Object) 
 		{
 			super(_cg, _json, new CustomBitmap());
 			
 			occupied = false;
 			
-			// the color of this mail if it is colored
+			// the color of this mail if it is colored (default white/none)
 			color = 15;	
 			if (json["color"])
 				setColor(json["color"]);
@@ -51,10 +54,9 @@ package packpan.nodes
 		override public function affectMail(mail:ABST_Mail):void
 		{
 			if (occupied)
-			{
-				return;		// TODO failure state
-			}
+				return;
 			
+			// ease the mail to the center
 			mail.state.addForce(PhysicsUtils.linearDamping(friction, mail.state, new Point(0, 0)));
 			mail.state.addForce(PhysicsUtils.linearRestoreX(spring, mail.state, position.x));
 			mail.state.addForce(PhysicsUtils.linearRestoreY(spring, mail.state, position.y));
@@ -63,7 +65,7 @@ package packpan.nodes
 			if (Point.distance(position,mail.state.position) < 0.2)
 			{
 				mail.state = new PhysicalEntity(1, new Point(position.x, position.y));
-				mail.mc_object.scaleX = mail.mc_object.scaleY = .8;
+				mail.mc_object.scaleX = mail.mc_object.scaleY = .8;							// visually shrink the mail
 				cg.game.holder_main.setChildIndex(mail.mc_object, cg.lowestPackageDepth);	// send to back of display list
 				occupied = true;
 				

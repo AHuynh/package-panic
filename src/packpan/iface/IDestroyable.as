@@ -1,8 +1,7 @@
 package packpan.iface 
 {
-	
 	/**
-	 * ...
+	 * Mail that can be destroyed will implement this interface.
 	 * @author James Liu
 	 */
 	public interface IDestroyable 

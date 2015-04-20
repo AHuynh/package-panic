@@ -115,6 +115,7 @@ package packpan
 			pages[1] = new Array(15);
 			pages[2] = new Array(15);
 
+			// factory 1 - easy
 			pages[0][0] = JSON.parse(new Level_Tut00());
 			pages[0][1] = JSON.parse(new Level_Tut01());
 			pages[0][2] = JSON.parse(new Level_Barrier());
@@ -130,6 +131,7 @@ package packpan
 			pages[0][12] = JSON.parse(new Level_Garbage());
 			pages[0][13] = JSON.parse(new Level_Sort());
 			
+			// factory 2 - intermediate
 			pages[1][0] = JSON.parse(new Level_Random());
 			pages[1][1] = JSON.parse(new Level_Contraband());
 			pages[1][2] = JSON.parse(new Level_Rainbow());
@@ -144,6 +146,7 @@ package packpan
 			pages[1][11] = JSON.parse(new Level_Clump());
 			pages[1][12] = JSON.parse(new Level_Claim());
 			
+			// factory 3 - difficult
 			pages[2][0] = JSON.parse(new Level_Circular());
 			pages[2][1] = JSON.parse(new Level_Knot());
 			pages[2][2] = JSON.parse(new Level_Air());
@@ -161,7 +164,7 @@ package packpan
 		}
 
 		/**
-		 *	Returns the number of pages
+		 *	Returns the number of level pages
 		 *	@returns	The number of pages
 		 */
 		public function numPages():uint

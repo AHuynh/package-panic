@@ -1,9 +1,8 @@
 package packpan 
 {
 	/**
-	 * PackagePanic static helper
-	 * 
-	 * Contains global consants
+	 * PackagePanic static helper.
+	 * Contains global consants.
 	 * 
 	 * @author Alexander Huynh
 	 */
@@ -34,13 +33,6 @@ package packpan
 		public static const DIR_UP:int = 270;
 		public static const DIR_RIGHT:int = 0;
 		public static const DIR_DOWN:int = 90;
-		
-		/*public static const NODE_CONV_NORMAL:String = "packpan.nodes.NodeConveyorNormal";
-		public static const NODE_CONV_ROTATE:String = "packpan.nodes.NodeConveyorRotate";
-		public static const NODE_BARRIER:String = "packpan.nodes.NodeBarrier";
-		public static const NODE_AIRTABLE:String = "packpan.nodes.NodeAirTable";
-		public static const NODE_BIN_NORMAL:String = "packpan.nodes.NodeBin";
-		public static const NODE_MAGNET:String = "packpan.nodes.NodeMagnet";*/
 
 		//color constants for matching objects. based on http://en.wikipedia.org/wiki/Web_colors#HTML_color_names
 		public static const COLORS:Array = [
@@ -61,9 +53,6 @@ package packpan
 			0xFFFF00,	//yellow	14
 			0xFFFFFF	//white		15
 		];
-		
-		// arbitary non-negative integer constants for indexing into GameObject.properties
-		public static const PROP_COLOR:int = 0;
 		
 		public function PP() 
 		{

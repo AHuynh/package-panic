@@ -3,6 +3,7 @@
 	import flash.display.MovieClip;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
+
 	/**
 	 * Main menu and level select screen.
 	 * 
@@ -16,8 +17,14 @@
 		private var levelButtons:Array;		// list of level buttons
 		public var page:int = 0;			// current page of 15 levels; also the first index into eng.levelArray
 		
-		private var selectedLevel:int = -1;
+		private var selectedLevel:int = -1;	// index of the most recently selected level
 		
+		/**
+		 * A MovieClip handling the main menu.
+		 * @param	_eng			A reference to the Engine.
+		 * @param	_showLevels		If true, show the level screen instead of the main screen.
+		 * @param	_page			The index of the factory to show.
+		 */
 		public function ContainerIntro(_eng:Engine, _showLevels:Boolean, _page:int)
 		{			
 			super();
@@ -46,7 +53,7 @@
 			
 			swc.mc_levels.btn_quit.addEventListener(MouseEvent.CLICK, onQuit);
 			swc.mc_levels.gotoAndStop(1);
-			swc.mc_levels.visible = _showLevels;		// hide/show level select screen		
+			swc.mc_levels.visible = _showLevels;	// hide/show level select screen		
 			
 			// set up level buttons in the level menu
 			levelButtons = [swc.mc_levels.level_0, swc.mc_levels.level_1, swc.mc_levels.level_2,
@@ -55,6 +62,7 @@
 							swc.mc_levels.level_9, swc.mc_levels.level_10, swc.mc_levels.level_11,
 							swc.mc_levels.level_12, swc.mc_levels.level_13, swc.mc_levels.level_14];
 			initLevels();
+			setElevatorStyle(page + 1);				// update elevator visuals
 		}
 		
 		/**
@@ -106,11 +114,15 @@
 					page = 2;
 				break;
 			}
-			swc.mc_levels.gotoAndPlay(2);
+			swc.mc_levels.gotoAndPlay(2);		// play the main->levels animation
 			initLevels();
 			setElevatorStyle(page + 1);
 		}
 		
+		/**
+		 * Updates the level select screen to display a style.
+		 * @param	style		The style to use in the range [1, 3]
+		 */
 		private function setElevatorStyle(style:int):void
 		{
 			swc.mc_levels.ev_levels.gotoAndStop(style);
@@ -119,6 +131,9 @@
 			swc.mc_levels.elevator.ev_base.gotoAndStop(style);
 		}
 		
+		/**
+		 * Update the level select screen's elevator buttons.
+		 */
 		private function initLevels():void
 		{
 			// attach listeners to each level button's hitbox and set text fields
@@ -136,18 +151,9 @@
 				}
 			}
 			
+			// tell the Engine which factory we used most recently
 			eng.page = page;
 		}
-		
-		/*private function onButton(e:MouseEvent):void
-		{
-			SoundPlayer.play("sfx_menu_blip");
-		}*/
-		
-		/*private function overButton(e:MouseEvent):void
-		{
-			SoundPlayer.play("sfx_menu_blip_over");
-		}*/
 		
 		/**
 		 * Called when the mouse enters a level button.
@@ -182,9 +188,7 @@
 		private function outLevel(e:MouseEvent):void
 		{
 			if (levelButtons == null)
-			{
 				return;
-			}
 			for (var i:int = 0; i < levelButtons.length; i++)		// turn off all lights
 				levelButtons[i].gotoAndStop(1);
 			swc.mc_levels.tf_levelname.text = "Pick a level!";		// reset title
@@ -224,6 +228,16 @@
 			
 			// hide things in the way
 			swc.mc_main.visible = false;
+			
+			// clean up listeners
+			swc.mc_main.bg.btn_credits.removeEventListener(MouseEvent.CLICK, onCredits);
+			swc.credits.btn_back.removeEventListener(MouseEvent.CLICK, onSubBack);
+			swc.mc_main.bg.btn_help.removeEventListener(MouseEvent.CLICK, onHelp);
+			swc.help.btn_back.removeEventListener(MouseEvent.CLICK, onSubBack);
+			
+			swc.mc_main.bg.btn_factory0.removeEventListener(MouseEvent.CLICK, onFactory);
+			swc.mc_main.bg.btn_factory1.removeEventListener(MouseEvent.CLICK, onFactory);
+			swc.mc_main.bg.btn_factory2.removeEventListener(MouseEvent.CLICK, onFactory);
 		}
 		
 		/**

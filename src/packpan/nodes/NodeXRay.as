@@ -5,6 +5,7 @@ package packpan.nodes
 	import flash.display.MovieClip;
 	import packpan.mails.ABST_Mail;
 	import packpan.mails.MailContraband;
+
 	/**
 	 * When mail passes through this Node, detects if there is contraband.
 	 * If there is more than 1 mail on this Node with conflicting statuses, XRay will become confused.

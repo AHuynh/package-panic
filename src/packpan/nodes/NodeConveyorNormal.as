@@ -16,9 +16,9 @@ package packpan.nodes
 	 */
 	public class NodeConveyorNormal extends ABST_Node 
 	{
-		protected var speed:Number = 1;
-		protected var friction:Number = 10;	//the strength of the friction
-		protected var spring: Number = 60;	//the strength of the "spring" that centers the package
+		protected var speed:Number = 1;		// speed at which to move mail objects
+		protected var friction:Number = 10;	// the strength of the friction
+		protected var spring: Number = 60;	// the strength of the "spring" that centers the package
 		
 		protected var cap:int = 0; 
 		/*	keeps track of special graphics cases
@@ -45,6 +45,8 @@ package packpan.nodes
 		override public function addToGroup(group:NodeGroup, index:int):void
 		{
 			nodeGroup = group;		// keep this line
+			
+			// determine special graphics cases (start, center, or end piece)
 			if (index == 0)
 			{
 				if (facing == PP.DIR_UP || facing == PP.DIR_LEFT)
